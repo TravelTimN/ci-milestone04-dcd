@@ -158,7 +158,9 @@ _TBD_
 
 ### Media
 
-_TBD_
+Sources of the images used on this site:
+
+- **favicon** : [Clipart-Library](http://clipart-library.com/kawaii-cookie-cliparts.html)
 
 ### Code
 
