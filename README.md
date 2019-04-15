@@ -162,7 +162,7 @@ _TBD_
 
 ### Code
 
-_TBD_
+- Suggested **.gitignore** files from [GitHub/gitignore](https://github.com/github/gitignore)
 
 ### Acknowledgements
 

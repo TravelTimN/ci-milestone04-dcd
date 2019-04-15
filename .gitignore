@@ -1,0 +1,46 @@
+# VS Code #
+.vscode
+.vs/
+~$*
+*~
+
+# Sass #
+#.sass-cache/
+#*.css.map
+#*.sass.map
+#*.scss.map
+
+# Byte-compiled / Optimized #
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Flask #
+instance/
+.webassets-cache
+
+# pyenv #
+.python-version
+.Python
+
+# environments #
+ENV
+env
+env/
+.env
+env.bak/
+VENV
+venv
+venv/
+.venv
+venv.bak/
+
+# Installer Logs #
+pip-delete-this-directory.txt
+pip-log.txt
+
+# Unit Test #
+.cache
+.hypothesis/
+.pytest_cache/
+nosetests.xml
