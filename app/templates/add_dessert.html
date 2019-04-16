@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block content %}
+
+(actual page: add_dessert.html)
+<br>
+<br>
+
+<form action="{{ url_for('add_dessert_toDB') }}" method="POST">
+
+    <label for="dessert_type">Dessert Type</label>
+    <select id="dessert_type" name="dessert_type">
+        <option value="" disabled selected>Choose Dessert</option>
+        {% for dessert in desserts %}
+        <option value="{{ dessert }}">{{ dessert }}</option>
+        {% endfor %}
+    </select>
+    <br>
+    <br>
+
+
+    <label for="recipe_name">Recipe Name</label>
+    <input id="recipe_name" name="recipe_name" type="text" class="validate">
+    <br>
+    <br>
+
+
+    <label for="ingredients">Ingredients</label>
+    <textarea name="ingredients" id="ingredients" placeholder="enter one ingredient per line"></textarea>
+    <br>
+    <br>
+
+
+    <label for="directions">Directions</label>
+    <textarea name="directions" id="directions" placeholder="enter each direction on a new line"></textarea>
+    <br>
+    <br>
+
+
+    <label for="total_hrs">Hours</label>
+    <input id="total_hrs" name="total_hrs" type="number" class="validate">
+    <br>
+    <br>
+
+
+    <label for="total_mins">Minutes</label>
+    <input id="total_mins" name="total_mins" type="number" class="validate">
+    <br>
+    <br>
+
+
+    <label for="allergens">Possible Allergens</label>
+    <select id="allergens" name="allergens" multiple>
+        <option value="" disabled>List any allergens</option>
+        {% for allergen in allergens %}
+        <option value="{{ allergen }}">{{ allergen }}</option>
+        {% endfor %}
+    </select>
+    <br>
+    <br>
+
+
+    <label for="img_src">Recipe Photo</label>
+    <input id="img_src" name="img_src" type="text" class="validate" placeholder="website for your image">
+    <br>
+    <br>
+
+    <input type="hidden" name="date_added" id="date_added" value="">
+
+    <button type="submit" name="action">Add Recipe!</button>
+</form>
+
+{% endblock %}
