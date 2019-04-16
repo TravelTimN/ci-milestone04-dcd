@@ -4,4 +4,6 @@ Flask-PyMongo==2.2.0
 itsdangerous==1.1.0
 pymongo==3.7.2
 PyMySQL==0.9.3
+python-slugify==3.0.2
+text-unidecode==1.2
 Werkzeug==0.14.1
