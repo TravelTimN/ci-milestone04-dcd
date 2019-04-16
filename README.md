@@ -161,6 +161,7 @@ _TBD_
 Sources of the images used on this site:
 
 - **favicon** : [Clipart-Library](http://clipart-library.com/kawaii-cookie-cliparts.html)
+- **recipe placeholder image** : [Pixabay](https://pixabay.com/photos/waffles-waffles-bake-ingredients-2190961/)
 
 ### Code
 
