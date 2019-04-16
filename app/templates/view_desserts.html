@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+(actual page: view_desserts.html)
+<br><br>
+
+<ul>
+    {% for recipe in recipes %}
+    <li>
+        {% if recipe.img_src %}
+        <div id="recipe-imgs" style="background: url('{{ recipe.img_src }}') center/cover no-repeat;" alt="Dessert"></div>
+        {% else %}
+        <div id="recipe-imgs" style="background: url('../static/img/no-img.png') center/cover no-repeat;" alt="No Image Available"></div>
+        {% endif %}
+        <a href="{{ url_for('view_dessert', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}">
+            <p>{{ recipe.recipe_name }}</p>
+        </a>
+    </li>
+    {% endfor %}
+</ul>
+
+{% endblock %}

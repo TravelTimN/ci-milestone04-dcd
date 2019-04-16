@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    {% for message in messages %}
+    {{ message }}
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+</h1>
+
+(actual page: view_dessert.html)
+<br><br>
+
+{% if recipe_name.img_src %}
+<div id="recipe-img" style="background: url('{{ recipe_name.img_src }}') center/cover no-repeat;" alt="Dessert"></div>
+{% else %}
+<div id="recipe-img" style="background: url('/static/img/no-img.png') center/cover no-repeat;" alt="No Image Available"></div>
+{% endif %}
+
+<p>Recipe: {{ recipe_name.recipe_name }}</p>
+<p>Added: {{ recipe_name.date_added }}</p>
+
+<p>Total Time:
+    {% if recipe_name.total_hrs %}
+    {{ recipe_name.total_hrs }}
+    {% else %}
+    0
+    {% endif %}
+    hrs
+    {% if recipe_name.total_mins %}
+    {{ recipe_name.total_mins }}
+    {% else %}
+    0
+    {% endif %}
+    mins
+</p>
+<hr>
+<p>Ingredients</p>
+{% for ingredient in recipe_name.ingredients %}
+<p>{{ loop.index }}. {{ ingredient }}</p>
+{% endfor %}
+<hr>
+<p>Directions</p>
+{% for direction in recipe_name.directions %}
+<p>{{ loop.index }}. {{ direction }}</p>
+{% endfor %}
+
+{% endblock %}
