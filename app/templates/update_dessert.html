@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    {% for message in messages %}
+    {{ message }}
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+</h1>
+
+(actual page: update_dessert.html)
+<br><br>
+
+{% if updateDessert.img_src %}
+<div id="recipe-img" style="background: url('{{ updateDessert.img_src }}') center/cover no-repeat;" alt="Dessert"></div>
+{% else %}
+<div id="recipe-img" style="background: url('/static/img/no-img.png') center/cover no-repeat;" alt="No Image Available">
+</div>
+{% endif %}
+
+<br><br>
+
+<form action="{{ url_for('update_dessert_toDB', recipe_id=updateDessert._id) }}" method="POST">
+
+    <label for="dessert_type">Dessert Type</label>
+    <select id="dessert_type" name="dessert_type">
+        <option value="" disabled selected>Choose Dessert</option>
+        {% for dessert in desserts %}
+        {% if dessert == updateDessert.dessert_type %}
+        <option value="{{ dessert }}" selected>{{ dessert }}</option>
+        {% else %}
+        <option value="{{ dessert }}">{{ dessert }}</option>
+        {% endif %}
+        {% endfor %}
+    </select>
+    <br>
+    <br>
+
+
+    <label for="recipe_name">Recipe Name</label>
+    {% if updateDessert.recipe_name %}
+    <input id="recipe_name" name="recipe_name" type="text" class="validate" value="{{ updateDessert.recipe_name}}">
+    {% else %}
+    <input id="recipe_name" name="recipe_name" type="text" class="validate">
+    {% endif %}
+    <br>
+    <br>
+
+
+    <label for="ingredients">Ingredients</label>
+    {% if updateDessert.ingredients %}
+    <textarea name="ingredients" id="ingredients"
+        placeholder="enter one ingredient per line">{{ updateDessert.ingredients }}</textarea>
+    {% else %}
+    <textarea name="ingredients" id="ingredients" placeholder="enter one ingredient per line"></textarea>
+    {% endif %}
+    <br>
+    <br>
+
+
+    <label for="directions">Directions</label>
+    {% if updateDessert.directions %}
+    <textarea name="directions" id="directions"
+        placeholder="enter each direction on a new line">{{ updateDessert.directions }}</textarea>
+    {% else %}
+    <textarea name="directions" id="directions" placeholder="enter each direction on a new line"></textarea>
+    {% endif %}
+    <br>
+    <br>
+
+
+    <label for="total_hrs">Hour(s)</label>
+    {% if updateDessert.total_hrs %}
+    <input id="total_hrs" name="total_hrs" type="number" min="0" max="99" class="validate" value="{{ updateDessert.total_hrs }}">
+    {% else %}
+    <input id="total_hrs" name="total_hrs" type="number" min="0" max="99" class="validate">
+    {% endif %}
+    <br>
+    <br>
+
+
+    <label for="total_mins">Minute(s)</label>
+    {% if updateDessert.total_mins %}
+    <input id="total_mins" name="total_mins" type="number" min="0" max="59" class="validate" value="{{ updateDessert.total_mins }}">
+    {% else %}
+    <input id="total_mins" name="total_mins" type="number" min="0" max="59" class="validate">
+    {% endif %}
+    <br>
+    <br>
+
+
+    <label for="allergens">Possible Allergens</label>
+    <select id="allergens" name="allergens" multiple>
+        <option value="" disabled>List any allergens</option>
+        {% for allergen in allergens %}
+            {% if allergen == updateDessert.allergens %}
+                <option value="{{ allergen }}" selected>{{ allergen }}</option>
+            {% else %}
+                <option value="{{ allergen }}">{{ allergen }}</option>
+            {% endif %}
+        {% endfor %}
+    </select>
+    <br>
+    <br>
+
+
+    <label for="img_src">Recipe Photo</label>
+    {% if updateDessert.img_src %}
+    <input id="img_src" name="img_src" type="text" class="validate" placeholder="website for your image"
+        value="{{ updateDessert.img_src }}">
+    {% else %}
+    <input id="img_src" name="img_src" type="text" class="validate" placeholder="website for your image">
+    {% endif %}
+    <br>
+    <br>
+
+    <input type="hidden" name="date_added" id="date_added" value="">
+
+    <button type="submit" name="action">Update!</button>
+    <br><br>
+
+    <button type="reset" onclick="history.go(-1)">Ignore Changes</button>
+
+</form>
+
+{% endblock %}
