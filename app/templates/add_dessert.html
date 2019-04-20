@@ -1,9 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 
-(actual page: add_dessert.html)
-<br>
-<br>
+<br><br>
 
 <form action="{{ url_for('add_dessert_toDB') }}" method="POST">
 
@@ -110,8 +108,8 @@
     <br>
     <br>
 
-    <button type="submit" name="action">Add Recipe!</button>
-    <button type="reset" onclick="history.go(-1)">Cancel</button>
+    <button type="submit" name="action" class="waves-effect waves-light btn">Add Recipe!</button>
+    <button type="reset" class="waves-effect waves-light btn red" onclick="history.go(-1)">Cancel</button>
 
 </form>
 

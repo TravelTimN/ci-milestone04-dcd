@@ -12,12 +12,6 @@
     {% endwith %}
 </h1>
 
-(actual page: view_dessert.html)
-<br><br>
-
-<a href="{{ url_for('update_dessert', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}">Update Dessert</a>
-<br><br>
-
 {% if recipe.img_src %}
 <div id="recipe-img" style="background: url('{{ recipe.img_src }}') center/cover no-repeat;" alt="Dessert"></div>
 {% else %}
@@ -86,5 +80,23 @@
     <li>{{ direction }}</li>
     {% endfor %}
 </ol>
+
+
+<!-- UPDATE recipe -->
+<a class="waves-effect waves-light btn" href="{{ url_for('update_dessert', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}">UPDATE RECIPE</a>
+
+<!-- DELETE recipe -->
+<a class="waves-effect waves-light btn modal-trigger red" href="#modal-delete_recipe">DELETE RECIPE</a>
+<div id="modal-delete_recipe" class="modal">
+    <div class="modal-content">
+        <h4>CONFIRM DELETION</h4>
+        <h5>Your recipe will be deleted!</h5>
+        <h6>This action cannot be undone.</h6>
+    </div>
+    <div class="modal-footer">
+        <a class="waves-effect waves-light red btn " href="{{ url_for('delete_dessert', recipe_id=recipe._id) }}">Delete Recipe</a>
+        <a href="#!" class="modal-close waves-effect waves-light btn">Cancel</a>
+    </div>
+</div>
 
 {% endblock %}

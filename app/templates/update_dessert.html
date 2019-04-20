@@ -11,10 +11,6 @@
     {% endwith %}
 </h1>
 
-(actual page: update_dessert.html)
-<br>
-<br>
-
 {% if recipe.img_src %}
 <div id="recipe-img" style="background: url('{{ recipe.img_src }}') center/cover no-repeat;" alt="Dessert"></div>
 {% else %}
@@ -189,8 +185,8 @@
     <br>
 
     <input type="hidden" name="views" id="views" value="1">
-    <button type="submit" name="action">Update Recipe!</button>
-    <button type="reset" onclick="history.go(-1)">Cancel</button>
+    <button type="submit" name="action" class="waves-effect waves-light btn">Update Recipe!</button>
+    <button type="reset" class="waves-effect waves-light btn red" onclick="history.go(-1)">Cancel</button>
 
 </form>
 

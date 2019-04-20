@@ -20,12 +20,9 @@
 <body>
 
 
-    <a href="{{ url_for('home') }}">Home</a>
-    <br>
-    <a href="{{ url_for('view_desserts') }}">View desserts</a>
-    <br>
-    <a href="{{ url_for('add_dessert') }}">Add dessert</a>
-    <br>
+    <a class="waves-effect waves-light btn" href="{{ url_for('home') }}">HOME</a>
+    <a class="waves-effect waves-light btn" href="{{ url_for('view_desserts') }}">VIEW DESSERTS</a>
+    <a class="waves-effect waves-light btn" href="{{ url_for('add_dessert') }}">ADD A DESSERT</a>
 
     <div class="container">
     {% block content %}

@@ -1,5 +1,8 @@
 $(document).ready(function () {
 
+    // intialize Modals
+    $(".modal").modal();
+
     // tooltip functionality for Materialize
     $(".tooltipped").tooltip();
 

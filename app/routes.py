@@ -227,3 +227,10 @@ def update_dessert_toDB(recipe_id):
         slugUrl = slugify(request.form.get("recipe_name"))
         flash("Your recipe has been updated successfully!")
         return redirect(url_for("view_dessert", recipe_id=recipe_id, slugUrl=slugUrl))
+
+
+# (cruD) ----- DELETE a recipe from the database -----#
+@app.route("/delete/<recipe_id>")
+def delete_dessert(recipe_id):
+        recipes.remove({"_id": ObjectId(recipe_id)})
+        return redirect(url_for("view_desserts"))
