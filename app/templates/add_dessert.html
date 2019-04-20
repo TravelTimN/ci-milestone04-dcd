@@ -7,9 +7,23 @@
 
 <form action="{{ url_for('add_dessert_toDB') }}" method="POST">
 
+    <label for="recipe_name">Recipe Name</label>
+    <br>
+    <input id="recipe_name" name="recipe_name" type="text" class="validate" autocomplete="off" placeholder="Mary's Pumpkin Pie" required>
+    <br>
+    <br>
+
+
+    <label for="description">Brief Description of your Recipe</label>
+    <br>
+    <textarea name="description" id="description" class="validate" cols="50" rows="5" autocomplete="off" placeholder="This is probably the easiest pie you'll ever make, and it's super moist and delicious!" required></textarea>
+    <br><br>
+
+
     <label for="dessert_type">Dessert Type</label>
-    <select id="dessert_type" name="dessert_type">
-        <option value="" disabled selected>Choose Dessert</option>
+    <br>
+    <select id="dessert_type" name="dessert_type" class="validate" required>
+        <option value="" disabled selected>Dessert Type</option>
         {% for dessert in desserts %}
         <option value="{{ dessert }}">{{ dessert }}</option>
         {% endfor %}
@@ -18,39 +32,70 @@
     <br>
 
 
-    <label for="recipe_name">Recipe Name</label>
-    <input id="recipe_name" name="recipe_name" type="text" class="validate">
+    <label for="ingredient_amount">Ingredients (quantity, unit, ingredient)</label>
     <br>
-    <br>
+    <div class="new-ingredient ingredient browser-default">
+        <input id="ingredient_amount" name="ingredient_amount" type="text" class="ingredient_amount validate" autocomplete="off" placeholder="1/2" required>
 
+        <label for="ingredient_measurement"></label>
+        <select id="ingredient_measurement" name="ingredient_measurement" class="validate" required>
+            <option value="" disabled selected>select</option>
+            <optgroup label="not applicable">
+                {% for measurement in measurements %}
+                    {% if loop.index == 1 %}
+                        <option value="{{ measurement }}">{{ measurement }}</option>
+                    {% endif %}
+                {% endfor %}
+            </optgroup>
+            <optgroup label="METRIC">
+                {% for measurement in measurements %}
+                    {% if loop.index > 1 and loop.index < 6 %}
+                        <option value="{{ measurement }}">{{ measurement }}</option>
+                    {% endif %}
+                {% endfor %}
+            </optgroup>
+            <optgroup label="IMPERIAL">
+                {% for measurement in measurements %}
+                    {% if loop.index > 5 %}
+                        <option value="{{ measurement }}">{{ measurement }}</option>
+                    {% endif %}
+                {% endfor %}
+            </optgroup>
+        </select>
 
-    <label for="ingredients">Ingredients</label>
-    <textarea name="ingredients" id="ingredients" placeholder="enter one ingredient per line"></textarea>
+        <label for="ingredient_name"></label>
+        <input id="ingredient_name" name="ingredient_name" type="text" class="ingredient_name validate" autocomplete="off" placeholder="packed brown sugar" required>
+    </div>
+    <button type="button" class="add-ingredient">+</button>
+    <button type="button" class="remove-ingredient">-</button>
     <br>
     <br>
 
 
     <label for="directions">Directions</label>
-    <textarea name="directions" id="directions" placeholder="enter each direction on a new line"></textarea>
+    <br>
+    <div class="new-direction direction">
+        <input id="directions" name="directions" type="text" class="directions validate" autocomplete="off" placeholder="list each step per line" required>
+    </div>
+    <button type="button" class="add-direction">+</button>
+    <button type="button" class="remove-direction">-</button>
     <br>
     <br>
 
 
-    <label for="total_hrs">Hours</label>
-    <input id="total_hrs" name="total_hrs" type="number" class="validate">
+    <label for="total_hrs">Total Time Required</label>
     <br>
+    <input id="total_hrs" name="total_hrs" type="number" min="0" max="99" autocomplete="off" placeholder="2"> hrs
     <br>
-
-
-    <label for="total_mins">Minutes</label>
-    <input id="total_mins" name="total_mins" type="number" class="validate">
+    <label for="total_mins"></label>
+    <input id="total_mins" name="total_mins" type="number" min="0" max="59" autocomplete="off" class="validate" placeholder="45" required> mins
     <br>
     <br>
 
 
     <label for="allergens">Possible Allergens</label>
+    <br>
     <select id="allergens" name="allergens" multiple>
-        <option value="" disabled>List any allergens</option>
         {% for allergen in allergens %}
         <option value="{{ allergen }}">{{ allergen }}</option>
         {% endfor %}
@@ -60,13 +105,14 @@
 
 
     <label for="img_src">Recipe Photo</label>
-    <input id="img_src" name="img_src" type="text" class="validate" placeholder="website for your image">
+    <br>
+    <input id="img_src" name="img_src" type="text" autocomplete="off" placeholder="http://lorempixel.com/400/200/food/7">
     <br>
     <br>
-
-    <input type="hidden" name="date_added" id="date_added" value="">
 
     <button type="submit" name="action">Add Recipe!</button>
+    <button type="reset" onclick="history.go(-1)">Cancel</button>
+
 </form>
 
 {% endblock %}

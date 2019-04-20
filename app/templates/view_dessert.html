@@ -15,51 +15,47 @@
 (actual page: view_dessert.html)
 <br><br>
 
-<a href="{{ url_for('update_dessert', recipe_id=thisRecipe._id, slugUrl=thisRecipe.recipe_slug) }}">Update Dessert</a>
+<a href="{{ url_for('update_dessert', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}">Update Dessert</a>
 <br><br>
 
-{% if thisRecipe.img_src %}
-<div id="recipe-img" style="background: url('{{ thisRecipe.img_src }}') center/cover no-repeat;" alt="Dessert"></div>
+{% if recipe.img_src %}
+<div id="recipe-img" style="background: url('{{ recipe.img_src }}') center/cover no-repeat;" alt="Dessert"></div>
 {% else %}
 <div id="recipe-img" style="background: url('/static/img/no-img.png') center/cover no-repeat;" alt="No Image Available">
 </div>
 {% endif %}
 
-<p>Recipe: {{ thisRecipe.recipe_name }}</p>
-<p>Last Updated: {{ thisRecipe.date_added }}</p>
-<p>Views: {{ thisRecipe.views }}</p>
-
-<p>Total Time:
-    {% if thisRecipe.total_hrs %}
-        {{ thisRecipe.total_hrs }}
-            {% if thisRecipe.total_hrs == "1" %} hr
-            {% else %} hrs
-            {% endif %}
-        {% else %} 0 hrs
-    {% endif %}
-
-    {% if thisRecipe.total_mins %}
-        {{ thisRecipe.total_mins }}
-            {% if thisRecipe.total_mins == "1" %} min
-            {% else %} mins
-            {% endif %}
-        {% else %} 0 mins
-    {% endif %}
-</p>
+<p>Recipe: {{ recipe.recipe_name }}</p>
+<p>Recipe by: {{ recipe.author }}</p>
+<p>Category: {{ recipe.dessert_type }}</p>
+<p>Last Updated: {{ recipe.date_updated }}</p>
+<p>Views: {{ recipe.views }}</p>
 
 <p>
     Known Allergens:
-    {% for allergen in thisRecipe.allergens %}
+    {% for allergen in recipe.allergens %}
     <div class="chip">{{ allergen }}</div>
     {% endfor %}
 </p>
+
+<p>&ldquo;{{ recipe.description }}&rdquo;</p>
 
 <hr>
 
 <p>Ingredients</p>
 <ul>
-    {% for ingredient in thisRecipe.ingredients %}
+    {% for amount,measurement,ingredient in full_ingredient %}
+    {% set unit_loop = loop %}
     <li>
+        {{ amount }}
+
+        {% if measurement == "not applicable" %}
+        {% else %}
+        <span class="tooltipped" data-position="right" data-tooltip="{{ units[unit_loop.index-1] }}">
+            {{ measurement }} of
+        </span>
+        {% endif %}
+
         {{ ingredient }}
     </li>
     {% endfor %}
@@ -68,12 +64,26 @@
 <hr>
 
 <p>Directions</p>
+<p>Total Time:
+    {% if recipe.total_hrs %}
+    {{ recipe.total_hrs }}
+    {% if recipe.total_hrs == "1" %} hr
+    {% else %} hrs
+    {% endif %}
+    {% else %} 0 hrs
+    {% endif %}
+
+    {% if recipe.total_mins %}
+    {{ recipe.total_mins }}
+    {% if recipe.total_mins == "1" %} min
+    {% else %} mins
+    {% endif %}
+    {% else %} 0 mins
+    {% endif %}
+</p>
 <ol>
-    {% for direction in thisRecipe.directions %}
-    <li>
-        <!--{{ loop.index }}. {{ direction }}-->
-        {{ direction }}
-    </li>
+    {% for direction in recipe.directions %}
+    <li>{{ direction }}</li>
     {% endfor %}
 </ol>
 

@@ -4,17 +4,40 @@
 (actual page: view_desserts.html)
 <br><br>
 
+<h2>Total Recipes in Database: {{ total_recipes }}</h2>
+
 <ul>
     {% for recipe in recipes %}
     <li>
         {% if recipe.img_src %}
-        <div id="recipe-imgs" style="background: url('{{ recipe.img_src }}') center/cover no-repeat;" alt="Dessert"></div>
+        <div id="recipe-imgs" style="background: url('{{ recipe.img_src }}') center/cover no-repeat;" alt="Dessert">
+        </div>
         {% else %}
-        <div id="recipe-imgs" style="background: url('../static/img/no-img.png') center/cover no-repeat;" alt="No Image Available"></div>
+        <div id="recipe-imgs" style="background: url('../static/img/no-img.png') center/cover no-repeat;"
+            alt="No Image Available"></div>
         {% endif %}
         <a href="{{ url_for('view_dessert', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}">
             <p>{{ recipe.recipe_name }}</p>
         </a>
+        <p class="truncate">{{ recipe.dessert }}</p>
+        <p>Total Time:
+            {% if recipe.total_hrs %}
+            {{ recipe.total_hrs }}
+            {% if recipe.total_hrs == "1" %} hr
+            {% else %} hrs
+            {% endif %}
+            {% else %} 0 hrs
+            {% endif %}
+
+            {% if recipe.total_mins %}
+            {{ recipe.total_mins }}
+            {% if recipe.total_mins == "1" %} min
+            {% else %} mins
+            {% endif %}
+            {% else %} 0 mins
+            {% endif %}
+        </p>
+        <p>Views: {{ recipe.views }}</p>
     </li>
     {% endfor %}
 </ul>
