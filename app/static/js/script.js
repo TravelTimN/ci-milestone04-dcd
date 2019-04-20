@@ -1,27 +1,51 @@
 $(document).ready(function () {
 
-    // add today into hidden input field for database
-    let now = new Date();
-    let date = now.getDate();
-    let month = new Array();
-    month[0] = "January";
-    month[1] = "February";
-    month[2] = "March";
-    month[3] = "April";
-    month[4] = "May";
-    month[5] = "June";
-    month[6] = "July";
-    month[7] = "August";
-    month[8] = "September";
-    month[9] = "October";
-    month[10] = "November";
-    month[11] = "December";
-    let monthName = month[now.getMonth()];
-    let year = now.getFullYear();
-    if (date < 10) {
-        date = "0" + date;
-    }
-    let today = date + " " + monthName + ", " + year;
-    $("#date_added").val(today);
+    // tooltip functionality for Materialize
+    $(".tooltipped").tooltip();
+
+    // Materialize dropdowns
+    $("select").formSelect();
+    // solution to dropdowns not enforcing validation: https://stackoverflow.com/questions/34248898/how-to-validate-select-option-for-a-materialize-dropdown
+    $("select[required]").css({display: "block", height: 0, padding: 0, width: 0, position: "absolute"});
+
+    // Add new ingredient item if clicked
+    let ingredientCount = $(".ingredient").length;
+    $(".add-ingredient").on("click", function () {
+        // 'destroy' is needed in order to clone select fields
+        $("select").formSelect("destroy");
+        // clone the ingredient line, and remove its values
+        $(".new-ingredient:first").clone().insertBefore(".add-ingredient").find("input[type='text'], select").val("");
+        $("select").formSelect();
+        // increase counter so original ingredient never gets deleted
+        ingredientCount += 1;
+    });
+    // Delete last item in ingredients if clicked
+    $(".remove-ingredient").on("click", function () {
+        if (ingredientCount > 1) {
+            // only remove the :last item
+            $(this).siblings(".new-ingredient:last").remove();
+            // ensure original ingredient line never gets deleted
+            ingredientCount -= 1;
+        }
+    });
+
+
+    // Add new direction if clicked
+    let directionCount = $(".direction").length;
+    $(".add-direction").on("click", function () {
+        // clone the direction line, and remove its value
+        $(".new-direction:first").clone().insertBefore(".add-direction").find("input[type='text']").val("");
+        // increase counter so original direction never gets deleted
+        directionCount += 1;
+    });
+    // Delete last direction if clicked
+    $(".remove-direction").on("click", function () {
+        if (directionCount > 1) {
+            // only remove the :last item
+            $(this).siblings(".new-direction:last").remove();
+            // ensure original direction line never gets deleted
+            directionCount -= 1;
+        }
+    });
 
 });
