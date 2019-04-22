@@ -19,14 +19,14 @@
 
 <body>
 
+    <header>
+            {% include "partials/_navbar.html" %}
+    </header>
 
-    <a class="waves-effect waves-light btn" href="{{ url_for('home') }}">HOME</a>
-    <a class="waves-effect waves-light btn" href="{{ url_for('view_desserts') }}">VIEW DESSERTS</a>
-    <a class="waves-effect waves-light btn" href="{{ url_for('add_dessert') }}">ADD A DESSERT</a>
 
     <div class="container">
-    {% block content %}
-    {% endblock %}
+        {% block content %}
+        {% endblock %}
     </div>
 
     <script src="https://code.jquery.com/jquery-3.4.0.slim.js" integrity="sha256-milezx5lakrZu0OP9b2QWFy1ft/UEUK6NH1Jqz8hUhQ=" crossorigin="anonymous"></script>

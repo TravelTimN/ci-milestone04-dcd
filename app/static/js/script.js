@@ -1,12 +1,16 @@
 $(document).ready(function () {
 
-    // intialize Modals
+    // initialize Modals
     $(".modal").modal();
 
     // tooltip functionality for Materialize
     $(".tooltipped").tooltip();
 
+    // sideNav for Materialize
+    $(".sidenav").sidenav();
+
     // Materialize dropdowns
+    $(".dropdown-trigger").dropdown();
     $("select").formSelect();
     // solution to dropdowns not enforcing validation: https://stackoverflow.com/questions/34248898/how-to-validate-select-option-for-a-materialize-dropdown
     $("select[required]").css({display: "block", height: 0, padding: 0, width: 0, position: "absolute"});

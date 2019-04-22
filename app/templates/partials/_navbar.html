@@ -1,0 +1,42 @@
+<!-- TOP NAV -->
+<nav class="nav-extended">
+    <div class="nav-wrapper black">
+        <a href="{{ url_for('home') }}" class="brand-logo">2BN-Desserts</a>
+        <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+            <li><a class="btn black tooltipped" data-position="bottom" data-tooltip="Home" href="{{ url_for('home') }}"><i class="fas fa-home material-icons"></i></a></li>
+            {% if session.user %}
+                <li><a class="btn green tooltipped" data-position="bottom" data-tooltip="My Profile" href="{{ url_for('profile', username=session['user']) }}"><i class="fas fa-user-circle material-icons left"></i>{{ session['user']|upper }}</a></li>
+                <li><a class="btn red" href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt material-icons left white-text"></i>LOG OUT</a></li>
+            {% else %}
+                <li><a class="btn green tooltipped" data-position="bottom" data-tooltip="Add your own recipes!" href="{{ url_for('register') }}"><i class="fas fa-user-plus material-icons left"></i>REGISTER</a></li>
+                <li><a class="btn blue tooltipped" data-position="bottom" data-tooltip="Already registered?" href="{{ url_for('login') }}"><i class="fas fa-sign-in-alt material-icons left"></i>LOG IN</a></li>
+            {% endif %}
+        </ul>
+    </div>
+    
+    
+    <!-- BOTTOM NAV -->
+    <div class="nav-content purple">
+        <ul class="tabs tabs-transparent">
+            <li class="tab"><a class="waves-effect waves-light tooltipped" data-position="bottom" data-tooltip="View All Desserts" href="{{ url_for('view_desserts') }}">DESSERTS</a></li>
+        </ul>
+        {% if session.user %}
+            <a class="btn-floating btn-large halfway-fab tooltipped" data-position="left" data-tooltip="Add a Recipe" href="{{ url_for('add_dessert') }}"><i class="material-icons purple accent-3">add</i></a>
+        {% endif %}
+    </div>
+</nav>
+
+
+<!-- MOBILE SIDE NAV -->
+<ul class="sidenav" id="mobile-demo">
+    <li><a class="waves-effect waves-light btn purple hoverable" href="{{ url_for('home') }}"><i class="fas fa-home material-icons left white-text"></i>HOME</a></li>
+    <li><a class="waves-effect waves-light btn purple hoverable" href="{{ url_for('view_desserts') }}"><i class="fas fa-utensils material-icons left white-text"></i>DESSERTS</a></li>
+    {% if session.user %}
+        <li><a class="waves-effect waves-light btn green hoverable" href="{{ url_for('profile', username=session['user']) }}"><i class="fas fa-user-circle material-icons left white-text"></i>{{ session['user']|upper }}</a></li>
+        <li><a class="waves-effect waves-light btn red hoverable" href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt material-icons left white-text"></i>LOG OUT</a></li>
+    {% else %}
+        <li><a class="waves-effect waves-light btn green hoverable" href="{{ url_for('register') }}"><i class="fas fa-user-plus material-icons left white-text"></i>REGISTER</a></li>
+        <li><a class="waves-effect waves-light btn blue hoverable" href="{{ url_for('login') }}"><i class="fas fa-sign-in-alt material-icons left white-text"></i>LOG IN</a></li>
+    {% endif %}
+</ul>
