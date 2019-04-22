@@ -1,9 +1,51 @@
-#recipe-imgs {
-    height: 200px;
-    width: 300px;
-}
-
 #recipe-img {
     height: 350px;
     width: 600px;
+}
+
+.card {
+    border-radius: 8px;
+}
+
+.card-image img {
+    object-fit: cover;
+    height: 50vw;
+}
+
+.card-image {
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+.card .card-image .card-title {
+    background-color: rgba(243, 229, 245, 0.8);
+    padding: 5px;
+    width: 100%;
+    font-weight: bold;
+}
+
+.card a {
+    font-weight: bold;
+    color: #9c27b0;
+}
+
+.card .card-content {
+    padding: 5px;
+}
+
+.card-action {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    justify-items: center;
+    align-items: center;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+
+/*----- >600px Materialize Tablet size (.m) -----*/
+@media (min-width: 600px) {
+    .card-image img {
+        height: 50vh;
+    }
 }

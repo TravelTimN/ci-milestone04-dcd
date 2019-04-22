@@ -162,6 +162,10 @@ def add_dessert():
 def add_dessert_toDB():
         # input fields to be submitted to database
         today = datetime.now().strftime("%d %B, %Y")
+
+        # get user_id
+        user_id = users_collection.find_one({"username": session["user"]})["_id"]
+        
         submit = {
                 "recipe_name": request.form.get("recipe_name"),
                 "recipe_slug": slugify(request.form.get("recipe_name")),
@@ -174,14 +178,16 @@ def add_dessert_toDB():
                 "total_hrs": request.form.get("total_hrs"),
                 "total_mins": request.form.get("total_mins"),
                 "allergens": request.form.getlist("allergens"),
-                "author": "2BN-Tim",
+                "author": user_id,
                 "img_src": request.form.get("img_src"),
                 "date_added": today,
                 "date_updated": today,
-                "views": 1
+                "views": 0
         }
+
         # get the new _id being created on submit
         newID = recipes_collection.insert_one(submit)
+
         # slugify url to be user-friendly
         slugUrl = slugify(request.form.get("recipe_name"))
         flash("Sounds delicious! Thanks for adding this recipe!")
@@ -312,10 +318,12 @@ def update_dessert_toDB(recipe_id):
         today = datetime.now().strftime("%d %B, %Y")
 
         # get current hidden values
-        get_author = recipe.get("author")
         get_date_added = recipe.get("date_added")
         get_views = recipe.get("views")
 
+        # get user_id
+        user_id = users_collection.find_one({"username": session["user"]})["_id"]
+        
         # find recipe to be updated, then push updates
         recipes_collection.update( {"_id": ObjectId(recipe_id)},
         {
@@ -330,7 +338,7 @@ def update_dessert_toDB(recipe_id):
                 "total_hrs": request.form.get("total_hrs"),
                 "total_mins": request.form.get("total_mins"),
                 "allergens": request.form.getlist("allergens"),
-                "author": get_author,
+                "author": user_id,
                 "img_src": request.form.get("img_src"),
                 "date_added": get_date_added,
                 "date_updated": today,

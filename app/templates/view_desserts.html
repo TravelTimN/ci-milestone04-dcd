@@ -2,42 +2,56 @@
 
 {% block content %}
 
-<h2>Total Recipes in Database: {{ total_recipes }}</h2>
+<h4 class="center">TOTAL RECIPES: {{ total_recipes }}</h4>
 
-<ul>
+<div class="row">
+
+    <!-- for each recipe, create Materialize Card -->
     {% for recipe in recipes %}
-    <li>
-        {% if recipe.img_src %}
-        <div id="recipe-imgs" style="background: url('{{ recipe.img_src }}') center/cover no-repeat;" alt="Dessert">
-        </div>
-        {% else %}
-        <div id="recipe-imgs" style="background: url('../static/img/no-img.png') center/cover no-repeat;"
-            alt="No Image Available"></div>
-        {% endif %}
-        <a href="{{ url_for('view_dessert', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}">
-            <p>{{ recipe.recipe_name }}</p>
-        </a>
-        <p class="truncate">{{ recipe.dessert }}</p>
-        <p>Total Time:
-            {% if recipe.total_hrs %}
-            {{ recipe.total_hrs }}
-            {% if recipe.total_hrs == "1" %} hr
-            {% else %} hrs
-            {% endif %}
-            {% else %} 0 hrs
-            {% endif %}
+    <div class="col s12 m6 l3">
+        <div class="card sticky-action hoverable">
 
-            {% if recipe.total_mins %}
-            {{ recipe.total_mins }}
-            {% if recipe.total_mins == "1" %} min
-            {% else %} mins
-            {% endif %}
-            {% else %} 0 mins
-            {% endif %}
-        </p>
-        <p>Views: {{ recipe.views }}</p>
-    </li>
+            <!-- Card Image -->
+            <div class="card-image waves-effect waves-block waves-light">
+                {% if recipe.img_src %}
+                <img src="{{ recipe.img_src }}" alt="Dessert" class="activator">
+                {% else %}
+                <img src="{{ url_for('static', filename='img/no-img.png') }}" alt="Dessert" class="activator">
+                {% endif %}
+                <span class="card-title grey-text center text-darken-4">
+                    <a href="{{ url_for('view_dessert', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}" class="purple-text">{{ recipe.recipe_name }}</a>
+                </span>
+            </div>
+
+            <!-- Card Content (category) -->
+            <div class="card-content purple lighten-4">
+                <span class="card-title center">{{ recipe.dessert_type }}</span>
+            </div>
+
+            <!-- Card Action (stats) -->
+            <div class="card-action purple lighten-3">
+                <span class="tooltipped" data-position="top" data-tooltip="Total Time: {% if recipe.total_hrs %}{{ recipe.total_hrs }}h{% endif %} {{ recipe.total_mins }}m">
+                    <i class="far fa-clock material-icons"></i>
+                    {% if recipe.total_hrs %}{{ recipe.total_hrs }}h{% endif %} {{ recipe.total_mins }}m
+                </span>
+                <span class="tooltipped" data-position="top" data-tooltip="Total Views: {{ recipe.views }}">
+                    <i class="far fa-eye material-icons"></i> {{ recipe.views }}
+                </span>
+            </div>
+
+            <!-- Card Reveal (hidden until clicked) -->
+            <div class="card-reveal">
+                <p class="card-title"><i class="material-icons right">close</i></p>
+                <p class="card-title grey-text text-darken-4">
+                    <a href="{{ url_for('view_dessert', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}">{{ recipe.recipe_name }}</a>
+                </p>
+                <p class="purple-text">{{ recipe.dessert_type }}</p>
+                <p>{{ recipe.description }}</p>
+            </div>
+        </div>
+    </div>
     {% endfor %}
-</ul>
+
+</div>
 
 {% endblock %}
