@@ -4,7 +4,8 @@ from datetime import datetime
 from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
 from slugify import slugify
-from flask import Flask, render_template, redirect, request, url_for, flash
+from flask import Flask, render_template, redirect, request, url_for, flash, session, Markup
+from werkzeug.security import check_password_hash, generate_password_hash
 
 mongo = PyMongo(app)
 
@@ -26,6 +27,54 @@ def home():
         return render_template("base.html")
 
 
+
+
+#---------- USER: REGISTER | LOGIN | PROFILE | LOGOUT ----------#
+
+#----- REGISTER -----#
+@app.route("/register", methods=["GET", "POST"])
+def register():
+        if request.method == "POST":
+                # check if username already taken
+                existing_user = users_collection.find_one({"username_lower": request.form.get("username").lower()})
+                if existing_user:
+                        flash(Markup(f"{request.form.get('username')} is an excellent choice! (but it's already taken)<br> Want to <a href='login' class='purple-text'>Log In?</a>"))
+                        return render_template("register.html")
+                
+                # check if username is alphanumeric or contains 'test'
+                username_input = request.form.get("username").lower()
+                username_check = re.search(r"(?!\-\_)[\W]|(t|T)+(e|E)+(s|S)+(t|T)+", username_input)
+                if username_check:
+                        flash(Markup(f"Your username should be 3-15 alphanumeric.<br>Usernames containing <span class='purple-text'>{username_check.group(0).upper()}</span> are not permitted."))
+                        return render_template("register.html")
+                
+                # username should be 3-5 alphanumeric
+                if len(request.form.get("username")) < 3 or len(request.form.get("username")) > 15:
+                        flash("Usernames should be 3-15 characters long.")
+                        return render_template("register.html")
+                
+                # password should be 5-15 characters
+                if len(request.form.get("password")) < 5 or len(request.form.get("password")) > 15:
+                        flash("Passwords should be 5-15 characters long.")
+                        return render_template("register.html")
+                
+                # generate password hash
+                hashed_pass = generate_password_hash(request.form.get("password"))
+
+                # add successful user to database
+                register = {
+                        "username": request.form.get("username"),
+                        "username_lower": request.form.get("username").lower(),
+                        "user_password": hashed_pass,
+                        "user_recipes": [],
+                        "user_favorites": []
+                }
+                users_collection.insert_one(register)
+                # put the user in 'session'
+                session["user"] = request.form.get("username")
+                return redirect(url_for("profile", username=session["user"]))
+
+        return render_template("register.html")
 
 
 #---------- CRUD: CREATE | READ | UPDATE | DELETE ----------#
