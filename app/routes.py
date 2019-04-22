@@ -105,6 +105,12 @@ def login():
         return render_template("login.html")
 
 
+#----- PROFILE -----#
+@app.route("/<username>")
+def profile(username):
+        return render_template("profile.html", username=session["user"])
+
+
 #----- LOGOUT -----#
 @app.route("/logout")
 def logout():
