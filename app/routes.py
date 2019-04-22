@@ -77,6 +77,44 @@ def register():
         return render_template("register.html")
 
 
+#----- LOGIN ----- #
+@app.route("/login", methods=["GET", "POST"])
+def login():
+        if request.method == "POST":
+                # check if username is in database
+                existing_user = users_collection.find_one({"username_lower": request.form.get("username").lower()})
+                
+                if existing_user:
+                        # ensure hashed password matches user input
+                        if check_password_hash(existing_user["user_password"], request.form.get("password")):
+                                session["user"] = request.form.get("username")
+                                #if session["user"] == "2BN-Admin" or session["user"] == "2BN-Tim":
+                                        #return redirect(url_for("admin"))
+                                #else:
+                                        #return redirect(url_for("profile", user=existing_user["username"]))
+                                return redirect(url_for("profile", username=session["user"]))
+                        else:
+                                # invalid password match
+                                flash(Markup(f"Whoops! <span class='purple-text'>{request.form.get('username')}</span> it looks like your password is incorrect."))
+                                return redirect(url_for("login"))
+                else:
+                        # username doesn't exist
+                        flash(Markup(f"Hmmm... <span class='purple-text'>{request.form.get('username')}</span> doesn't seem to exist.<br> Want to <a href='register' class='purple-text'>Register?</a>"))
+                        return redirect(url_for("login"))
+        
+        return render_template("login.html")
+
+
+#----- LOGOUT -----#
+@app.route("/logout")
+def logout():
+        # remove user from 'session' cookies
+        session.pop("user")
+        return redirect(url_for("home"))
+
+
+
+
 #---------- CRUD: CREATE | READ | UPDATE | DELETE ----------#
 
 # (Crud) ----- CREATE a new dessert -----#
