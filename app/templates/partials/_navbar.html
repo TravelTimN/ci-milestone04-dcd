@@ -19,7 +19,7 @@
     <!-- BOTTOM NAV -->
     <div class="nav-content purple">
         <ul class="tabs tabs-transparent">
-            <li class="tab"><a class="waves-effect waves-light tooltipped" data-position="bottom" data-tooltip="View All Desserts" href="{{ url_for('view_desserts') }}">DESSERTS ({{ total_recipes }})</a></li>
+            <li class="tab"><a class="waves-effect waves-light tooltipped" data-position="bottom" data-tooltip="View All Desserts ({{ total_recipes() }})" href="{{ url_for('view_desserts') }}">DESSERTS ({{ total_recipes() }})</a></li>
         </ul>
         {% if session.user %}
             <a class="btn-floating btn-large halfway-fab tooltipped" data-position="left" data-tooltip="Add a Recipe" href="{{ url_for('add_dessert') }}"><i class="material-icons purple accent-3">add</i></a>

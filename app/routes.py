@@ -18,6 +18,18 @@ users_collection = mongo.db.users
 
 
 
+#---------- GLOBAL HELPERS ----------#
+
+#----- Total Recipes Count -----#
+def get_total_recipes():
+        return int(recipes_collection.count())
+
+@app.context_processor
+def total_recipes():
+        return dict(total_recipes=get_total_recipes)
+
+
+
 
 #---------- APP ROUTES ----------#
 
@@ -43,7 +55,7 @@ def register():
                 
                 # check if username is alphanumeric or contains 'test'
                 username_input = request.form.get("username").lower()
-                username_check = re.search(r"(?!\-\_)[\W]|(t|T)+(e|E)+(s|S)+(t|T)+", username_input)
+                username_check = re.search(r"(?!\-)[\W]|(t|T)+(e|E)+(s|S)+(t|T)+", username_input)
                 if username_check:
                         flash(Markup(f"Your username should be 3-15 alphanumeric.<br>Usernames containing <span class='purple-text'>{username_check.group(0).upper()}</span> are not permitted."))
                         return render_template("register.html")
@@ -178,11 +190,12 @@ def add_dessert_toDB():
                 "total_hrs": request.form.get("total_hrs"),
                 "total_mins": request.form.get("total_mins"),
                 "allergens": request.form.getlist("allergens"),
-                "author": user_id,
                 "img_src": request.form.get("img_src"),
+                "author": user_id,
                 "date_added": today,
                 "date_updated": today,
-                "views": 0
+                "views": 0,
+                "user_favs": []
         }
 
         # get the new _id being created on submit
@@ -201,20 +214,19 @@ def add_dessert_toDB():
 def view_desserts():
         # sort: alphabetically
         sort_recipe_name = recipes_collection.find().sort([("recipe_name", 1)])
+
         # sort: number of views
         #sort_views = recipes_collection.find().sort([("views", -1)])
 
-        # total number of recipes
-        total_recipes = recipes_collection.count()
         return render_template("view_desserts.html",
-                                recipes=sort_recipe_name,
-                                total_recipes=total_recipes)
+                                recipes=sort_recipe_name)
 
 
 # (cRud) ----- READ a single dessert -----#
 @app.route("/dessert/<recipe_id>/<slugUrl>")
 def view_dessert(recipe_id, slugUrl):
         recipe = recipes_collection.find_one({"_id": ObjectId(recipe_id)})
+        author = users_collection.find_one({"_id": ObjectId(recipe.get("author"))})["username"]
         amounts = recipe.get("ingredient_amount")
         measurements = recipe.get("ingredient_measurement")
         ingredients = recipe.get("ingredient_name")
@@ -248,7 +260,8 @@ def view_dessert(recipe_id, slugUrl):
         return render_template("view_dessert.html",
                                 recipe=recipe,
                                 full_ingredient=full_ingredient,
-                                units=units)
+                                units=units,
+                                author=author)
 
 
 # (crUd) ----- UPDATE a recipe -----#
@@ -318,12 +331,11 @@ def update_dessert_toDB(recipe_id):
         today = datetime.now().strftime("%d %B, %Y")
 
         # get current hidden values
+        get_author = recipe.get("author")
         get_date_added = recipe.get("date_added")
         get_views = recipe.get("views")
+        get_user_favs = recipe.get("user_favs")
 
-        # get user_id
-        user_id = users_collection.find_one({"username": session["user"]})["_id"]
-        
         # find recipe to be updated, then push updates
         recipes_collection.update( {"_id": ObjectId(recipe_id)},
         {
@@ -338,11 +350,12 @@ def update_dessert_toDB(recipe_id):
                 "total_hrs": request.form.get("total_hrs"),
                 "total_mins": request.form.get("total_mins"),
                 "allergens": request.form.getlist("allergens"),
-                "author": user_id,
                 "img_src": request.form.get("img_src"),
+                "author": get_author,
                 "date_added": get_date_added,
                 "date_updated": today,
-                "views": get_views
+                "views": get_views,
+                "user_favs": get_user_favs
         })
         slugUrl = slugify(request.form.get("recipe_name"))
         flash("Your recipe has been updated successfully!")

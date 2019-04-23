@@ -20,7 +20,7 @@
 {% endif %}
 
 <p>Recipe: {{ recipe.recipe_name }}</p>
-<p>Recipe by: {{ recipe.author }}</p>
+<p>Recipe by: {{ author }}</p>
 <p>Category: {{ recipe.dessert_type }}</p>
 <p>Last Updated: {{ recipe.date_updated }}</p>
 <p>Views: {{ recipe.views }}</p>
@@ -82,6 +82,7 @@
 </ol>
 
 
+{% if session.user == author or session.user == "admin" %}
 <!-- UPDATE recipe -->
 <a class="waves-effect waves-light btn" href="{{ url_for('update_dessert', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}">UPDATE RECIPE</a>
 
@@ -98,5 +99,6 @@
         <a href="#!" class="modal-close waves-effect waves-light btn">Cancel</a>
     </div>
 </div>
+{% endif %}
 
 {% endblock %}
