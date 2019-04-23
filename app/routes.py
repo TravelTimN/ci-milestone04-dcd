@@ -50,43 +50,40 @@ def register():
                 # check if username already taken
                 existing_user = users_collection.find_one({"username_lower": request.form.get("username").lower()})
                 if existing_user:
-                        flash(Markup(f"{request.form.get('username')} is an excellent choice! (but it's already taken)<br> Want to <a href='login' class='purple-text'>Log In?</a>"))
-                        return render_template("register.html")
+                        flash(Markup(f"<span class='purple-text'>{request.form.get('username')}</span> is an excellent choice! (but it's already taken)"))
+                        return redirect(url_for("register"))
                 
                 # check if username is alphanumeric or contains 'test'
                 username_input = request.form.get("username").lower()
                 username_check = re.search(r"(?!\-)[\W]|(t|T)+(e|E)+(s|S)+(t|T)+", username_input)
                 if username_check:
-                        flash(Markup(f"Your username should be 3-15 alphanumeric.<br>Usernames containing <span class='purple-text'>{username_check.group(0).upper()}</span> are not permitted."))
-                        return render_template("register.html")
+                        flash(Markup(f"Usernames containing <span class='purple-text'>{username_check.group(0).upper()}</span> are not permitted."))
+                        return redirect(url_for("register"))
                 
                 # username should be 3-5 alphanumeric
                 if len(request.form.get("username")) < 3 or len(request.form.get("username")) > 15:
                         flash("Usernames should be 3-15 characters long.")
-                        return render_template("register.html")
+                        return redirect(url_for("register"))
                 
                 # password should be 5-15 characters
                 if len(request.form.get("password")) < 5 or len(request.form.get("password")) > 15:
                         flash("Passwords should be 5-15 characters long.")
-                        return render_template("register.html")
+                        return redirect(url_for("register"))
                 
-                # generate password hash
-                hashed_pass = generate_password_hash(request.form.get("password"))
-
                 # add successful user to database
                 register = {
                         "username": request.form.get("username"),
                         "username_lower": request.form.get("username").lower(),
-                        "user_password": hashed_pass,
+                        "user_password": generate_password_hash(request.form.get("password")),
                         "user_recipes": [],
-                        "user_favorites": []
+                        "user_favs": []
                 }
                 users_collection.insert_one(register)
                 # put the user in 'session'
-                session["user"] = request.form.get("username")
+                session["user"] = request.form.get("username").lower()
                 return redirect(url_for("profile", username=session["user"]))
 
-        return render_template("register.html")
+        return render_template("log_reg.html")
 
 
 #----- LOGIN ----- #
@@ -99,8 +96,8 @@ def login():
                 if existing_user:
                         # ensure hashed password matches user input
                         if check_password_hash(existing_user["user_password"], request.form.get("password")):
-                                session["user"] = request.form.get("username")
-                                #if session["user"] == "2BN-Admin" or session["user"] == "2BN-Tim":
+                                session["user"] = request.form.get("username").lower()
+                                #if session["user"] == "admin":
                                         #return redirect(url_for("admin"))
                                 #else:
                                         #return redirect(url_for("profile", user=existing_user["username"]))
@@ -111,10 +108,10 @@ def login():
                                 return redirect(url_for("login"))
                 else:
                         # username doesn't exist
-                        flash(Markup(f"Hmmm... <span class='purple-text'>{request.form.get('username')}</span> doesn't seem to exist.<br> Want to <a href='register' class='purple-text'>Register?</a>"))
+                        flash(Markup(f"Hmm... username <span class='purple-text'>{request.form.get('username')}</span> doesn't seem to exist."))
                         return redirect(url_for("login"))
         
-        return render_template("login.html")
+        return render_template("log_reg.html")
 
 
 #----- PROFILE -----#

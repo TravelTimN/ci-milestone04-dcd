@@ -9,8 +9,7 @@
                 <li><a class="btn green tooltipped" data-position="bottom" data-tooltip="My Profile" href="{{ url_for('profile', username=session['user']) }}"><i class="fas fa-user-circle material-icons left"></i>{{ session['user']|upper }}</a></li>
                 <li><a class="btn red" href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt material-icons left white-text"></i>LOG OUT</a></li>
             {% else %}
-                <li><a class="btn green tooltipped" data-position="bottom" data-tooltip="Add your own recipes!" href="{{ url_for('register') }}"><i class="fas fa-user-plus material-icons left"></i>REGISTER</a></li>
-                <li><a class="btn blue tooltipped" data-position="bottom" data-tooltip="Already registered?" href="{{ url_for('login') }}"><i class="fas fa-sign-in-alt material-icons left"></i>LOG IN</a></li>
+                <li><a class="btn purple tooltipped" data-position="bottom" data-tooltip="Log In or Register" href="{{ url_for('register') }}"><i class="fas fa-sign-in-alt material-icons left"></i>LOG IN | REGISTER</a></li>
             {% endif %}
         </ul>
     </div>
@@ -19,7 +18,7 @@
     <!-- BOTTOM NAV -->
     <div class="nav-content purple">
         <ul class="tabs tabs-transparent">
-            <li class="tab"><a class="waves-effect waves-light tooltipped" data-position="bottom" data-tooltip="View All Desserts ({{ total_recipes() }})" href="{{ url_for('view_desserts') }}">DESSERTS ({{ total_recipes() }})</a></li>
+            <li class="tab"><a class="waves-effect waves-light tooltipped" data-position="bottom" data-tooltip="View All Desserts ({{ total_recipes() }})" href="{{ url_for('view_desserts') }}" target="_self">DESSERTS ({{ total_recipes() }})</a></li>
         </ul>
         {% if session.user %}
             <a class="btn-floating btn-large halfway-fab tooltipped" data-position="left" data-tooltip="Add a Recipe" href="{{ url_for('add_dessert') }}"><i class="material-icons purple accent-3">add</i></a>

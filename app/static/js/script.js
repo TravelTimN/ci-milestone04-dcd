@@ -1,5 +1,8 @@
 $(document).ready(function () {
 
+    // initialize tabs
+    $(".tabs").tabs();
+
     // initialize Modals
     $(".modal").modal();
 

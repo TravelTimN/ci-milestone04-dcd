@@ -3,6 +3,16 @@
     width: 600px;
 }
 
+.login-register {
+    margin-top: 15px;
+    border-radius: 10px;
+}
+
+.login-form-container,
+.register-form-container {
+    padding: 10px 50px;
+}
+
 .card {
     border-radius: 8px;
 }
@@ -47,5 +57,12 @@
 @media (min-width: 600px) {
     .card-image img {
         height: 50vh;
+    }
+}
+
+/*----- >992px Materialize Desktop size (.l) -----*/
+@media (min-width: 992px) {
+    .login-register {
+        max-width: 50vw;
     }
 }

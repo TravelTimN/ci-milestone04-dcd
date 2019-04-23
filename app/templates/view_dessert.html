@@ -82,7 +82,7 @@
 </ol>
 
 
-{% if session.user == author or session.user == "admin" %}
+{% if session.user|lower == author|lower or session.user|lower == "admin"|lower %}
 <!-- UPDATE recipe -->
 <a class="waves-effect waves-light btn" href="{{ url_for('update_dessert', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}">UPDATE RECIPE</a>
 
