@@ -1,8 +1,13 @@
-#recipe-img {
-    height: 350px;
-    width: 600px;
+/*----- @imports -----*/
+@import url("https://fonts.googleapis.com/css?family=Abril+Fatface");
+
+/*----- Global Settings -----*/
+body {
+    background-color: rgba(243, 229, 245, 0.5);
 }
 
+
+/*----- Login | Register -----*/
 .login-register {
     margin-top: 15px;
     border-radius: 10px;
@@ -13,6 +18,8 @@
     padding: 10px 50px;
 }
 
+
+/*----- Cards -----*/
 .card {
     border-radius: 8px;
 }
@@ -52,6 +59,54 @@
     border-bottom-right-radius: 8px;
 }
 
+
+/*----- Recipe Cards -----*/
+#recipe-card {
+    padding: 15px;
+}
+
+#recipe-card .card-title {
+    color: #9c27b0;
+    text-shadow: 0 5px 5px #000;
+    mix-blend-mode: luminosity;
+    font-size: 1.6em;
+    border-radius: 5px;
+    box-shadow: 0 5px 10px #9c27b0;
+    background: rgba(0, 0, 0, 0.75);
+}
+
+
+/*----- Recipe Directions -----*/
+ol {
+    list-style: none;
+    counter-reset: directions-counter;
+    padding: 0px;
+}
+
+ol li {
+    counter-increment: directions-counter;
+    display: flex;
+    font-size: 1em;
+    margin-bottom: 0.75em;
+}
+
+ol > li::before {
+    content: "0"counter(directions-counter);
+    color: #9c27b0;
+    font-weight: bold;
+    font-size: 3em;
+    margin-right: 0.25em;
+    letter-spacing: 2px;
+    font-family: "Abril Fatface", serif, cursive;
+    line-height: 1;
+}
+
+ol > li:nth-child(n+19)::before {
+    content: counter(directions-counter);
+}
+
+
+/*-------------------- @media queries --------------------*/
 
 /*----- >600px Materialize Tablet size (.m) -----*/
 @media (min-width: 600px) {

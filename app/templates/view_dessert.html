@@ -12,93 +12,116 @@
     {% endwith %}
 </h1>
 
-{% if recipe.img_src %}
-<div id="recipe-img" style="background: url('{{ recipe.img_src }}') center/cover no-repeat;" alt="Dessert"></div>
-{% else %}
-<div id="recipe-img" style="background: url('/static/img/no-img.png') center/cover no-repeat;" alt="No Image Available">
-</div>
-{% endif %}
 
-<p>Recipe: {{ recipe.recipe_name }}</p>
-<p>Recipe by: {{ author }}</p>
-<p>Category: {{ recipe.dessert_type }}</p>
-<p>Last Updated: {{ recipe.date_updated }}</p>
-<p>Views: {{ recipe.views }}</p>
+<div class="container">
 
-<p>
-    Known Allergens:
-    {% for allergen in recipe.allergens %}
-    <div class="chip">{{ allergen }}</div>
-    {% endfor %}
-</p>
+    {% if session.user|lower == author|lower or session.user|lower == "admin"|lower %}
+    <!-- UPDATE and DELETE buttons -->
+    <div class="row center-align section">
+        <div class="col s12 m6">
+            <!-- Update Button -->
+            <a class="waves-effect waves-light btn"
+                href="{{ url_for('update_dessert', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}">UPDATE
+                RECIPE</a>
+        </div>
 
-<p>&ldquo;{{ recipe.description }}&rdquo;</p>
-
-<hr>
-
-<p>Ingredients</p>
-<ul>
-    {% for amount,measurement,ingredient in full_ingredient %}
-    {% set unit_loop = loop %}
-    <li>
-        {{ amount }}
-
-        {% if measurement == "not applicable" %}
-        {% else %}
-        <span class="tooltipped" data-position="right" data-tooltip="{{ units[unit_loop.index-1] }}">
-            {{ measurement }} of
-        </span>
-        {% endif %}
-
-        {{ ingredient }}
-    </li>
-    {% endfor %}
-</ul>
-
-<hr>
-
-<p>Directions</p>
-<p>Total Time:
-    {% if recipe.total_hrs %}
-    {{ recipe.total_hrs }}
-    {% if recipe.total_hrs == "1" %} hr
-    {% else %} hrs
-    {% endif %}
-    {% else %} 0 hrs
-    {% endif %}
-
-    {% if recipe.total_mins %}
-    {{ recipe.total_mins }}
-    {% if recipe.total_mins == "1" %} min
-    {% else %} mins
-    {% endif %}
-    {% else %} 0 mins
-    {% endif %}
-</p>
-<ol>
-    {% for direction in recipe.directions %}
-    <li>{{ direction }}</li>
-    {% endfor %}
-</ol>
-
-
-{% if session.user|lower == author|lower or session.user|lower == "admin"|lower %}
-<!-- UPDATE recipe -->
-<a class="waves-effect waves-light btn" href="{{ url_for('update_dessert', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}">UPDATE RECIPE</a>
-
-<!-- DELETE recipe -->
-<a class="waves-effect waves-light btn modal-trigger red" href="#modal-delete_recipe">DELETE RECIPE</a>
-<div id="modal-delete_recipe" class="modal">
-    <div class="modal-content">
-        <h4>CONFIRM DELETION</h4>
-        <h5>Your recipe will be deleted!</h5>
-        <h6>This action cannot be undone.</h6>
+        <div class="col s12 m6">
+            <!-- Delete Button -->
+            <a class="waves-effect waves-light btn modal-trigger red" href="#modal-delete-recipe">DELETE RECIPE</a>
+            <div id="modal-delete-recipe" class="modal">
+                <div class="modal-content">
+                    <h4>CONFIRM DELETION</h4>
+                    <h5>Your recipe will be deleted!</h5>
+                    <h6>This action cannot be undone.</h6>
+                </div>
+                <div class="modal-footer">
+                    <a class="waves-effect waves-light red btn "
+                        href="{{ url_for('delete_dessert', recipe_id=recipe._id) }}">Delete
+                        Recipe</a>
+                    <a href="#!" class="modal-close waves-effect waves-light btn">Cancel</a>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="modal-footer">
-        <a class="waves-effect waves-light red btn " href="{{ url_for('delete_dessert', recipe_id=recipe._id) }}">Delete Recipe</a>
-        <a href="#!" class="modal-close waves-effect waves-light btn">Cancel</a>
+    {% endif %}
+
+
+    <!-- THE RECIPE -->
+    <div class="row card z-depth-2" id="recipe-card">
+        <!-- Recipe Image -->
+        <div class="col s12 m6 center-align card-image">
+            {% if recipe.img_src %}
+            <img src="{{ recipe.img_src }}" class="responsive-img" alt="Dessert">
+            {% else %}
+            <img src="{{ url_for('static', filename='img/no-img.png') }}" class="responsive-img" alt="Dessert">
+            {% endif %}
+            <span class="card-title purple-text">{{ recipe.dessert_type }}</span>
+        </div>
+
+        <!-- Recipe Details -->
+        <div class="col s12 m6 center-align">
+            <h4><strong>{{ recipe.recipe_name }}</strong></h4>
+            <p>Recipe by: <strong class="purple-text">{{ author }}</strong></p>
+            <q>{{ recipe.description }}</q>
+            <p>Total Time:
+                <strong>
+                    {% if recipe.total_hrs %}
+                    {{ recipe.total_hrs }}h
+                    {% endif %}
+
+                    {% if recipe.total_mins %}
+                    {{ recipe.total_mins }}m
+                    {% endif %}
+                </strong>
+            </p>
+            <p>Last Updated: <strong>{{ recipe.date_updated }}</strong></p>
+            <!--<p>Views: {{ recipe.views }}</p>-->
+            <div class="card-content">
+                {% for allergen in recipe.allergens %}
+                <div class="chip red lighten-3 black-text">
+                    <img src="{{ url_for('static', filename='img/allergens/'+allergen|lower+'.png') }}"
+                        alt="Allergen">{{ allergen }}</div>
+                {% endfor %}
+            </div>
+        </div>
     </div>
+
+
+    <!-- INGREDIENTS | DIRECTIONS-->
+    <div class="row card z-depth-2" id="recipe-card">
+        <!-- Ingredients -->
+        <div class="col s12 m4">
+            <p>Ingredients</p>
+            <ul>
+                {% for amount,measurement,ingredient in full_ingredient %}
+                {% set unit_loop = loop %}
+                <li>
+                    {{ amount }}
+
+                    {% if measurement == "not applicable" %}
+                    {% else %}
+                    <strong class="tooltipped" data-position="right"
+                        data-tooltip="{{ units[unit_loop.index-1] }}">{{ measurement }}</strong> of
+                    {% endif %}
+
+                    {{ ingredient }}
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <!-- Directions -->
+        <div class="col s12 m8">
+            <p>Directions</p>
+            <ol>
+                {% for direction in recipe.directions %}
+                <hr>
+                <li>{{ direction }}</li>
+                {% endfor %}
+            </ol>
+        </div>
+    </div>
+
 </div>
-{% endif %}
 
 {% endblock %}
