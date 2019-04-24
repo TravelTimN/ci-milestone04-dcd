@@ -125,7 +125,7 @@ def profile(username):
 def logout():
         # remove user from 'session' cookies
         session.pop("user")
-        return redirect(url_for("home"))
+        return redirect(url_for("login"))
 
 
 

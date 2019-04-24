@@ -9,7 +9,7 @@
                 <li><a class="btn green tooltipped" data-position="bottom" data-tooltip="My Profile" href="{{ url_for('profile', username=session['user']) }}"><i class="fas fa-user-circle material-icons left"></i>{{ session['user']|upper }}</a></li>
                 <li><a class="btn red" href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt material-icons left white-text"></i>LOG OUT</a></li>
             {% else %}
-                <li><a class="btn purple tooltipped" data-position="bottom" data-tooltip="Log In or Register" href="{{ url_for('register') }}"><i class="fas fa-sign-in-alt material-icons left"></i>LOG IN | REGISTER</a></li>
+                <li><a class="btn purple tooltipped" data-position="bottom" data-tooltip="Log In or Register" href="{{ url_for('login') }}"><i class="fas fa-sign-in-alt material-icons left"></i>LOG IN | REGISTER</a></li>
             {% endif %}
         </ul>
     </div>
