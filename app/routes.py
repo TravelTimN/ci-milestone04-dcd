@@ -50,24 +50,24 @@ def register():
                 # check if username already taken
                 existing_user = users_collection.find_one({"username_lower": request.form.get("username").lower()})
                 if existing_user:
-                        flash(Markup(f"<span class='pink-text text-accent-2'>{request.form.get('username')}</span> is an excellent choice! (but it's already taken)"))
+                        flash(Markup(f"<span class='pink-text text-lighten-2'>{request.form.get('username')}</span> is an excellent choice! (but it's already taken)"))
                         return redirect(url_for("register"))
                 
                 # check if username is alphanumeric or contains 'test'
                 username_input = request.form.get("username").lower()
                 username_check = re.search(r"(?!\-)[\W]|(t|T)+(e|E)+(s|S)+(t|T)+", username_input)
                 if username_check:
-                        flash(Markup(f"Usernames containing <span class='pink-text text-accent-2'>{username_check.group(0).upper()}</span> are not permitted."))
+                        flash(Markup(f"Usernames containing <span class='pink-text text-lighten-2'>{username_check.group(0).upper()}</span> are not permitted."))
                         return redirect(url_for("register"))
                 
                 # username should be 3-5 alphanumeric
                 if len(request.form.get("username")) < 3 or len(request.form.get("username")) > 15:
-                        flash(Markup(f"Usernames should be <span class='pink-text text-accent-2'>3-15 characters</span> long."))
+                        flash(Markup(f"Usernames should be <span class='pink-text text-lighten-2'>3-15 characters</span> long."))
                         return redirect(url_for("register"))
                 
                 # password should be 5-15 characters
                 if len(request.form.get("password")) < 5 or len(request.form.get("password")) > 15:
-                        flash(Markup(f"Passwords should be <span class='pink-text text-accent-2'>5-15 characters</span> long."))
+                        flash(Markup(f"Passwords should be <span class='pink-text text-lighten-2'>5-15 characters</span> long."))
                         return redirect(url_for("register"))
                 
                 # add successful user to database
@@ -104,11 +104,11 @@ def login():
                                 return redirect(url_for("profile", username=session["user"]))
                         else:
                                 # invalid password match
-                                flash(Markup(f"Whoops! <span class='pink-text text-accent-2'>{request.form.get('username')}</span> it looks like your password is incorrect."))
+                                flash(Markup(f"Whoops! <span class='pink-text text-lighten-2'>{request.form.get('username')}</span> it looks like your password is incorrect."))
                                 return redirect(url_for("login"))
                 else:
                         # username doesn't exist
-                        flash(Markup(f"Hmm... username <span class='pink-text text-accent-2'>{request.form.get('username')}</span> doesn't seem to exist."))
+                        flash(Markup(f"Hmm... username <span class='pink-text text-lighten-2'>{request.form.get('username')}</span> doesn't seem to exist."))
                         return redirect(url_for("login"))
         
         return render_template("log_reg.html")

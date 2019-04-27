@@ -133,8 +133,8 @@ i {
 }
 
 .card .all-cards {
-    border-top: 1px solid #ff4081;
-    border-bottom: 1px solid #ff4081;
+    border-top: 1px solid#f06292;
+    border-bottom: 1px solid#f06292;
 }
 
 .card-action {
@@ -167,7 +167,7 @@ i {
 
 #ingredients li {
     padding: 1em 0;
-    border-top: 1px solid #ff4081;
+    border-top: 1px solid#f06292;
     cursor: pointer;
 }
 
@@ -189,7 +189,7 @@ i {
     counter-increment: directions-counter;
     text-align: justify;
     padding: 1em 0;
-    border-top: 1px solid #ff4081;
+    border-top: 1px solid#f06292;
     cursor: pointer;
 }
 
