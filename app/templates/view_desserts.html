@@ -9,7 +9,7 @@
 
         <!-- for each recipe, create Materialize Card -->
         {% for recipe in recipes %}
-        <div class="col s12 m6 l3">
+        <div class="col s12 m6 l4">
             <div class="card sticky-action">
 
                 <!-- Card Image -->
@@ -19,16 +19,11 @@
                     {% else %}
                     <img src="{{ url_for('static', filename='img/no-img.png') }}" alt="Dessert" class="activator">
                     {% endif %}
-                    <span
-                        class="card-title purple-text center-align bold font-rye activator">{{ recipe.dessert_type }}</span>
-                </div>
-
-                <!-- Card Content (category) -->
-                <div class="card-content purple lighten-4 all-cards">
-                    <span class="card-title center-align">
-                        <a href="{{ url_for('view_dessert', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}"
-                            class="purple-text bold">{{ recipe.recipe_name }}</a>
-                    </span>
+                    <a href="{{ url_for('view_dessert', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}">
+                        <span class="card-title center-align purple-text font-emilys-candy">
+                            {{ recipe.recipe_name }}
+                        </span>
+                    </a>
                 </div>
 
                 <!-- Card Action (stats) -->
@@ -45,12 +40,12 @@
 
                 <!-- Card Reveal (hidden until clicked) -->
                 <div class="card-reveal">
-                    <p class="card-title"><i class="material-icons right">close</i></p>
                     <p class="card-title">
+                        <i class="material-icons right">close</i>
                         <a href="{{ url_for('view_dessert', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}"
-                            class="purple-text bold">{{ recipe.recipe_name }}</a>
+                            class="purple-text bold font-emilys-candy">{{ recipe.recipe_name }}</a>
                     </p>
-                    <p class="pink-text bold">{{ recipe.dessert_type }}</p>
+                    <p class="pink-text font-rye bold">{{ recipe.dessert_type }}</p>
                     <q>{{ recipe.description }}</q>
                 </div>
             </div>
