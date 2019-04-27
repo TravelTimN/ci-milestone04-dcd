@@ -1,5 +1,14 @@
 $(document).ready(function () {
 
+    // custom Flash Toast
+    function flashToast() {
+        $("#flashToast").addClass("show");
+        setTimeout(function() {
+            $("#flashToast").removeClass("show");
+        }, 4000);
+    };
+    flashToast();
+
     // initialize tabs
     $(".tabs").tabs();
 
@@ -56,6 +65,17 @@ $(document).ready(function () {
             // ensure original direction line never gets deleted
             directionCount -= 1;
         }
+    });
+
+
+    // Toggle Classes for Ingredients + Directions once user 
+    $(".ingredient-item").on("click", function () {
+        $(this).children("i").toggleClass("fa-circle fa-check-circle green-text");
+        $(this).closest("li").find("span").toggleClass("grey-text strike");
+    });
+    $(".direction-item").on("click", function () {
+        $(this).toggleClass("grey-text strike");
+        $(this).toggleClass("completed");
     });
 
 });

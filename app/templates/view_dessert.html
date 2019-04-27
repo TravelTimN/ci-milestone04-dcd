@@ -2,69 +2,70 @@
 
 {% block content %}
 
-<h1>
-    {% with messages = get_flashed_messages() %}
-    {% if messages %}
-    {% for message in messages %}
-    {{ message }}
-    {% endfor %}
-    {% endif %}
-    {% endwith %}
-</h1>
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+{% for message in messages %}
+<span id="flashToast" class="white-text grey darken-4 center-align bold">{{ message }}</span>
+{% endfor %}
+{% endif %}
+{% endwith %}
 
-
-<div class="container">
-
-    {% if session.user|lower == author|lower or session.user|lower == "admin"|lower %}
-    <!-- UPDATE and DELETE buttons -->
-    <div class="row center-align section">
-        <div class="col s12 m6">
-            <!-- Update Button -->
-            <a class="waves-effect waves-light btn"
-                href="{{ url_for('update_dessert', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}">UPDATE
-                RECIPE</a>
-        </div>
-
-        <div class="col s12 m6">
-            <!-- Delete Button -->
-            <a class="waves-effect waves-light btn modal-trigger red" href="#modal-delete-recipe">DELETE RECIPE</a>
-            <div id="modal-delete-recipe" class="modal">
-                <div class="modal-content">
-                    <h4>CONFIRM DELETION</h4>
-                    <h5>Your recipe will be deleted!</h5>
-                    <h6>This action cannot be undone.</h6>
-                </div>
-                <div class="modal-footer">
-                    <a class="waves-effect waves-light red btn "
-                        href="{{ url_for('delete_dessert', recipe_id=recipe._id) }}">Delete
-                        Recipe</a>
-                    <a href="#!" class="modal-close waves-effect waves-light btn">Cancel</a>
-                </div>
-            </div>
-        </div>
-    </div>
-    {% endif %}
-
+<div class="container-90">
 
     <!-- THE RECIPE -->
     <div class="row card z-depth-2" id="recipe-card">
         <!-- Recipe Image -->
-        <div class="col s12 m6 center-align card-image">
+        <div class="col s12 l6 center-align card-image">
             {% if recipe.img_src %}
             <img src="{{ recipe.img_src }}" class="responsive-img" alt="Dessert">
             {% else %}
             <img src="{{ url_for('static', filename='img/no-img.png') }}" class="responsive-img" alt="Dessert">
             {% endif %}
-            <span class="card-title purple-text">{{ recipe.dessert_type }}</span>
+
+
+            {% if session.user|lower == author|lower or session.user|lower == "admin"|lower %}
+            <!-- UPDATE and DELETE buttons -->
+            <div class="card-content row user-buttons">
+                <div class="col s6">
+                    <!-- Update Button -->
+                    <a class="waves-effect waves-light btn bold upper green text-shadow"
+                        href="{{ url_for('update_dessert', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}">Update
+                        <i class="fas fa-pencil-alt material-icons right hide-on-small-only"></i>
+                    </a>
+                </div>
+
+                <div class="col s6">
+                    <!-- Delete Button -->
+                    <a class="waves-effect waves-light btn bold upper modal-trigger red text-shadow"
+                        href="#modal-delete-recipe">Delete
+                        <i class="far fa-trash-alt material-icons right hide-on-small-only"></i></a>
+                    <div id="modal-delete-recipe" class="modal">
+                        <div class="modal-content">
+                            <h4 class="red-text bold upper">Confirm Deletion</h4>
+                            <h5 class="bold">Are you sure you want to delete this recipe?</h5>
+                            <p class="grey-text bold">This action cannot be undone.</p>
+                        </div>
+                        <div class="modal-footer center-align">
+                            <a class="waves-effect waves-light red btn text-shadow upper"
+                                href="{{ url_for('delete_dessert', recipe_id=recipe._id) }}"><i
+                                    class="far fa-trash-alt material-icons right"></i>Yes</a>
+                            <a href="#" class="modal-close waves-effect waves-light green btn text-shadow upper">
+                                <i class="fas fa-reply material-icons right"></i>No</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
         </div>
 
         <!-- Recipe Details -->
-        <div class="col s12 m6 center-align">
-            <h4><strong>{{ recipe.recipe_name }}</strong></h4>
-            <p>Recipe by: <strong class="purple-text">{{ author }}</strong></p>
+        <div class="col s12 l6 center-align">
+            <h4><span class="font-emilys-candy bold text-shadow">{{ recipe.recipe_name }}</span></h4>
+            <p>Recipe by: <span class="purple-text bold">{{ author }}</span></p>
             <q>{{ recipe.description }}</q>
-            <p>Total Time:
-                <strong>
+            <p><i class="fas fa-clock"></i>
+                <span class="bold">
                     {% if recipe.total_hrs %}
                     {{ recipe.total_hrs }}h
                     {% endif %}
@@ -72,9 +73,9 @@
                     {% if recipe.total_mins %}
                     {{ recipe.total_mins }}m
                     {% endif %}
-                </strong>
+                </span>
             </p>
-            <p>Last Updated: <strong>{{ recipe.date_updated }}</strong></p>
+            <p><i class="fas fa-calendar-alt"></i> <span class="bold">{{ recipe.date_added }}</span></p>
             <!--<p>Views: {{ recipe.views }}</p>-->
             <div class="card-content">
                 {% for allergen in recipe.allergens %}
@@ -90,36 +91,44 @@
     <!-- INGREDIENTS | DIRECTIONS-->
     <div class="row card z-depth-2" id="recipe-card">
         <!-- Ingredients -->
-        <div class="col s12 m4">
-            <p>Ingredients</p>
-            <ul>
+        <div class="col s12 m4 ing-dir">
+            <h5 class="font-special bold upper text-shadow center-align">Ingredients</h5>
+            <ul id="ingredients">
                 {% for amount,measurement,ingredient in full_ingredient %}
                 {% set unit_loop = loop %}
-                <li>
-                    {{ amount }}
+                <li class="ingredient-item"><i class="fas fa-circle purple-text"></i>
+                    <span class="ingredient">
+                        {{ amount }}
 
-                    {% if measurement == "not applicable" %}
-                    {% else %}
-                    <strong class="tooltipped" data-position="right"
-                        data-tooltip="{{ units[unit_loop.index-1] }}">{{ measurement }}</strong> of
-                    {% endif %}
+                        {% if measurement == "not applicable" %}
+                        {% else %}
+                        <span class="bold tooltipped" data-position="right"
+                            data-tooltip="{{ units[unit_loop.index-1] }}">{{ measurement }}</span> of
+                        {% endif %}
 
-                    {{ ingredient }}
+                        {{ ingredient }}
+                    </span>
                 </li>
                 {% endfor %}
             </ul>
         </div>
 
         <!-- Directions -->
-        <div class="col s12 m8">
-            <p>Directions</p>
-            <ol>
+        <div class="col s12 m8 ing-dir">
+            <h5 class="font-special bold upper text-shadow center-align">Directions</h5>
+            <ol id="directions">
                 {% for direction in recipe.directions %}
-                <hr>
-                <li>{{ direction }}</li>
+                <li class="direction-item">
+                    <span class="direction">{{ direction }}</span>
+                </li>
                 {% endfor %}
             </ol>
         </div>
+    </div>
+
+    <div class="row center-align">
+        <button type="reset" class="waves-effect waves-light btn btn-large pink accent-2 bold" onclick="history.go(-1)"><i
+                class="fas fa-arrow-alt-circle-left material-icons left"></i> Back</button>
     </div>
 
 </div>
