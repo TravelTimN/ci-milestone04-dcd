@@ -1,115 +1,187 @@
 {% extends "base.html" %}
-{% block content %}
 
-<br><br>
+{% block content %}
 
 <form action="{{ url_for('add_dessert_toDB') }}" method="POST">
 
-    <label for="recipe_name">Recipe Name</label>
-    <br>
-    <input id="recipe_name" name="recipe_name" type="text" class="validate" autocomplete="off" placeholder="Mary's Pumpkin Pie" required>
-    <br>
-    <br>
+    <div class="container">
+
+        <!-- RECIPE DETAILS -->
+        <div class="row card z-depth-2 recipe-card">
+
+            <h4 class="font-special bold upper text-shadow center-align">Recipe</h4>
+
+            <!-- recipe name -->
+            <div class="input-field col s12">
+                <i class="far fa-file-alt purple-text material-icons prefix"></i>
+                <input id="recipe_name" name="recipe_name" type="text" class="form-control validate" autocomplete="off"
+                    autofocus required>
+                <label for="recipe_name">* Recipe Name</label>
+            </div>
+
+            <!-- recipe description -->
+            <div class="input-field col s12">
+                <i class="fas fa-align-left purple-text material-icons prefix"></i>
+                <input id="description" name="description" type="text" class="form-control validate" autocomplete="off"
+                    required>
+                <label for="description">* Description of your Recipe</label>
+            </div>
+
+            <!-- dessert type -->
+            <div class="input-field col s12">
+                <i class="fas fa-ice-cream purple-text material-icons prefix"></i>
+                <select id="dessert_type" name="dessert_type" class="form-control validate" required>
+                    <option value="" disabled selected></option>
+                    {% for dessert in desserts %}
+                    <option value="{{ dessert }}">{{ dessert }}</option>
+                    {% endfor %}
+                </select>
+                <label for="dessert_type">* Dessert Category</label>
+            </div>
+
+            <!-- total hours -->
+            <div class="input-field col s6">
+                <i class="fas fa-hourglass-half purple-text material-icons prefix"></i>
+                <input id="total_hrs" name="total_hrs" type="number" min="0" max="99" autocomplete="off">
+                <label for="total_hrs">Hours</label>
+            </div>
+
+            <!-- total minutes -->
+            <div class="input-field col s6">
+                <i class="fas fa-stopwatch purple-text material-icons prefix"></i>
+                <input id="total_mins" name="total_mins" type="number" min="0" max="59" autocomplete="off"
+                    class="form-control validate" required>
+                <label for="total_mins">* Minutes</label>
+            </div>
+
+            <!-- recipe allergens -->
+            <div class="input-field col s12">
+                <i class="fas fa-exclamation-triangle purple-text material-icons prefix"></i>
+                <select id="allergens" name="allergens" multiple>
+                    {% for allergen in allergens %}
+                    <option value="{{ allergen }}"
+                        data-icon="{{ url_for('static', filename='img/allergens/'+allergen|lower+'.png') }}">
+                        {{ allergen }}</option>
+                    {% endfor %}
+                </select>
+                <label for="allergens">Possible Allergens</label>
+            </div>
+
+            <!-- recipe photo -->
+            <div class="input-field col s12">
+                <i class="fas fa-image purple-text material-icons prefix"></i>
+                <input id="img_src" name="img_src" type="text" autocomplete="off">
+                <label for="img_src">Recipe Photo</label>
+            </div>
+
+        </div>
 
 
-    <label for="description">Brief Description of your Recipe</label>
-    <br>
-    <textarea name="description" id="description" class="validate" cols="50" rows="5" autocomplete="off" placeholder="This is probably the easiest pie you'll ever make, and it's super moist and delicious!" required></textarea>
-    <br><br>
+        <!-- Ingredients -->
+        <div class="row card z-depth-2 recipe-card">
+
+            <h4 class="font-special bold upper text-shadow center-align">Ingredients</h4>
+
+            <div class="new-ingredient ingredient row">
+                <!-- ingredient amount / quantity -->
+                <div class="input-field col s12 m2">
+                    <i class="fas fa-hashtag purple-text material-icons prefix"></i>
+                    <input id="ingredient_amount" name="ingredient_amount" type="text"
+                        class="ingredient_amount validate" autocomplete="off" placeholder="1/2" pattern="^[0-9/-.]+$"
+                        required>
+                    <label for="ingredient_amount"></label>
+                </div>
+
+                <!-- ingredient measurement / volume-->
+                <div class="input-field col s12 m4">
+                    <i class="fas fa-utensil-spoon purple-text material-icons prefix"></i>
+                    <label for="ingredient_measurement"></label>
+                    <select id="ingredient_measurement" name="ingredient_measurement" class="validate" required>
+                        <option value="" disabled selected></option>
+                        <optgroup label="not applicable">
+                            {% for measurement in measurements %}
+                            {% if loop.index == 1 %}
+                            <option value="{{ measurement }}">{{ measurement }}</option>
+                            {% endif %}
+                            {% endfor %}
+                        </optgroup>
+                        <optgroup label="METRIC">
+                            {% for measurement in measurements %}
+                            {% if loop.index > 1 and loop.index < 6 %}
+                            <option value="{{ measurement }}">{{ measurement }}</option>
+                            {% endif %}
+                            {% endfor %}
+                        </optgroup>
+                        <optgroup label="IMPERIAL">
+                            {% for measurement in measurements %}
+                            {% if loop.index > 5 %}
+                            <option value="{{ measurement }}">{{ measurement }}</option>
+                            {% endif %}
+                            {% endfor %}
+                        </optgroup>
+                    </select>
+                </div>
+
+                <!-- ingredient -->
+                <div class="input-field col s12 m6">
+                    <i class="fas fa-egg purple-text material-icons prefix"></i>
+                    <label for="ingredient_name"></label>
+                    <input id="ingredient_name" name="ingredient_name" type="text" class="ingredient_name validate"
+                        autocomplete="off" placeholder="packed brown sugar" required>
+                </div>
+
+            </div>
+
+            <!-- add another ingredient -->
+            <button type="button" class="add-ingredient btn purple text-shadow">
+                <i class="fas fa-plus material-icons"></i>
+            </button>
+
+            <!-- remove last ingredient -->
+            <button type="button" class="remove-ingredient btn pink lighten-2 text-shadow">
+                <i class="fas fa-minus material-icons"></i>
+            </button>
+
+        </div>
 
 
-    <label for="dessert_type">Dessert Type</label>
-    <br>
-    <select id="dessert_type" name="dessert_type" class="validate" required>
-        <option value="" disabled selected>Dessert Type</option>
-        {% for dessert in desserts %}
-        <option value="{{ dessert }}">{{ dessert }}</option>
-        {% endfor %}
-    </select>
-    <br>
-    <br>
+        <!-- Directions -->
+        <div class="row card z-depth-2 recipe-card">
+
+            <h4 class="font-special bold upper text-shadow center-align">Directions</h4>
+
+            <div class="new-direction direction row">
+                <!-- direction -->
+                <div class="input-field col s12">
+                    <i class="fas fa-list-ol purple-text material-icons prefix"></i>
+                    <input id="directions" name="directions" type="text" class="directions validate" autocomplete="off" placeholder="list each step per line" required>
+                    <label for="directions"></label>
+                </div>
+
+            </div>
+
+            <!-- add another direction -->
+            <button type="button" class="add-direction btn purple text-shadow">
+                <i class="fas fa-plus material-icons"></i>
+            </button>
+
+            <!-- remove last direction -->
+            <button type="button" class="remove-direction btn pink lighten-2 text-shadow">
+                <i class="fas fa-minus material-icons"></i>
+            </button>
+
+        </div>
 
 
-    <label for="ingredient_amount">Ingredients (quantity, unit, ingredient)</label>
-    <br>
-    <div class="new-ingredient ingredient browser-default">
-        <input id="ingredient_amount" name="ingredient_amount" type="text" class="ingredient_amount validate" autocomplete="off" placeholder="1/2" required>
+        <div class="row center-align">
+            <button type="submit" class="waves-effect waves-light btn btn-large purple bold text-shadow">Add <i
+                    class="fas fa-plus-circle material-icons right hide-on-small-only"></i></button>
+            <button type="reset" class="waves-effect waves-light btn btn-large pink lighten-2 bold text-shadow"
+                onclick="history.go(-1)">Cancel
+                <i class="fas fa-times-circle material-icons right hide-on-small-only"></i></button>
+        </div>
 
-        <label for="ingredient_measurement"></label>
-        <select id="ingredient_measurement" name="ingredient_measurement" class="validate" required>
-            <option value="" disabled selected>select</option>
-            <optgroup label="not applicable">
-                {% for measurement in measurements %}
-                    {% if loop.index == 1 %}
-                        <option value="{{ measurement }}">{{ measurement }}</option>
-                    {% endif %}
-                {% endfor %}
-            </optgroup>
-            <optgroup label="METRIC">
-                {% for measurement in measurements %}
-                    {% if loop.index > 1 and loop.index < 6 %}
-                        <option value="{{ measurement }}">{{ measurement }}</option>
-                    {% endif %}
-                {% endfor %}
-            </optgroup>
-            <optgroup label="IMPERIAL">
-                {% for measurement in measurements %}
-                    {% if loop.index > 5 %}
-                        <option value="{{ measurement }}">{{ measurement }}</option>
-                    {% endif %}
-                {% endfor %}
-            </optgroup>
-        </select>
-
-        <label for="ingredient_name"></label>
-        <input id="ingredient_name" name="ingredient_name" type="text" class="ingredient_name validate" autocomplete="off" placeholder="packed brown sugar" required>
     </div>
-    <button type="button" class="add-ingredient">+</button>
-    <button type="button" class="remove-ingredient">-</button>
-    <br>
-    <br>
-
-
-    <label for="directions">Directions</label>
-    <br>
-    <div class="new-direction direction">
-        <input id="directions" name="directions" type="text" class="directions validate" autocomplete="off" placeholder="list each step per line" required>
-    </div>
-    <button type="button" class="add-direction">+</button>
-    <button type="button" class="remove-direction">-</button>
-    <br>
-    <br>
-
-
-    <label for="total_hrs">Total Time Required</label>
-    <br>
-    <input id="total_hrs" name="total_hrs" type="number" min="0" max="99" autocomplete="off" placeholder="2"> hrs
-    <br>
-    <label for="total_mins"></label>
-    <input id="total_mins" name="total_mins" type="number" min="0" max="59" autocomplete="off" class="validate" placeholder="45" required> mins
-    <br>
-    <br>
-
-
-    <label for="allergens">Possible Allergens</label>
-    <br>
-    <select id="allergens" name="allergens" multiple>
-        {% for allergen in allergens %}
-        <option value="{{ allergen }}">{{ allergen }}</option>
-        {% endfor %}
-    </select>
-    <br>
-    <br>
-
-
-    <label for="img_src">Recipe Photo</label>
-    <br>
-    <input id="img_src" name="img_src" type="text" autocomplete="off" placeholder="http://lorempixel.com/400/200/food/7">
-    <br>
-    <br>
-
-    <button type="submit" name="action" class="waves-effect waves-light btn">Add Recipe!</button>
-    <button type="reset" class="waves-effect waves-light btn red" onclick="history.go(-1)">Cancel</button>
 
 </form>
 

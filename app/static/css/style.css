@@ -50,6 +50,10 @@ i {
     text-transform: uppercase;
 }
 
+.container {
+    margin: 40px auto;
+}
+
 .container-95 {
     width: 95vw;
     margin: 40px auto;
@@ -135,6 +139,7 @@ i {
 .card .all-cards {
     border-top: 1px solid#f06292;
     border-bottom: 1px solid#f06292;
+    padding-top: 10px;
 }
 
 .card-action {
@@ -148,7 +153,7 @@ i {
 
 
 /*----- Recipe Cards -----*/
-#recipe-card {
+.recipe-card {
     padding: 15px;
     border: 3px dashed rgba(156, 39, 176, 0.5);
     border-radius: 0.5vw;
@@ -173,6 +178,21 @@ i {
 
 .ingredient {
     font-size: 1.25em;
+}
+
+.new-ingredient,
+.new-direction {
+    border-radius: 8px;
+}
+
+.new-ingredient:nth-child(odd),
+.new-direction:nth-child(odd) {
+    background-color: rgba(252, 228, 236, 0.75);
+}
+
+.new-ingredient:nth-child(even),
+.new-direction:nth-child(even) {
+    background-color: rgba(243, 229, 245, 0.75);
 }
 
 #directions {
