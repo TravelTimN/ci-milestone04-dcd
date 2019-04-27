@@ -173,7 +173,8 @@ def add_dessert_toDB():
         today = datetime.now().strftime("%d %B, %Y")
 
         # get user_id
-        user_id = users_collection.find_one({"username": session["user"]})["_id"]
+        session_user = users_collection.find_one({"username_lower": session["user"].lower()})["username"]
+        author = users_collection.find_one({"username": session_user})["_id"]
         
         submit = {
                 "recipe_name": request.form.get("recipe_name"),
@@ -188,7 +189,7 @@ def add_dessert_toDB():
                 "total_mins": request.form.get("total_mins"),
                 "allergens": request.form.getlist("allergens"),
                 "img_src": request.form.get("img_src"),
-                "author": user_id,
+                "author": author,
                 "date_added": today,
                 "date_updated": today,
                 "views": 0,
