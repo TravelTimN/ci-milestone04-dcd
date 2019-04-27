@@ -94,13 +94,13 @@ i {
 
 /*----- Login | Register -----*/
 .login-register {
-    margin-top: 15px;
+    margin: 25px auto;
     border-radius: 10px;
 }
 
 .login-form-container,
 .register-form-container {
-    padding: 10px 50px;
+    padding: 10px 25px;
 }
 
 
@@ -218,6 +218,11 @@ i {
 
 /*----- >600px Materialize Tablet size (.m) -----*/
 @media (min-width: 600px) {
+    .login-form-container,
+    .register-form-container {
+        padding: 10px 50px;
+    }
+
     .card-image img {
         height: 50vh;
     }
