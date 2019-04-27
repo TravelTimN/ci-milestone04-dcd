@@ -38,10 +38,6 @@ body {
     background-color: rgba(243, 229, 245, 0.5);
 }
 
-i {
-    vertical-align: top;
-}
-
 .bold {
     font-weight: bold;
 }
@@ -82,14 +78,23 @@ main {
     margin-top: 150px;
 }
 
+.dropdown-content {
+    z-index: 25;
+}
+
 
 /*----- Custom Flash Toasts -----*/
+.modal {
+    margin-top: 100px;
+    border-radius: 8px;
+}
+
 #flashToast {
     visibility: hidden;
     width: 100%;
     padding: 2em 1em;
     position: fixed;
-    z-index: 50;
+    z-index: 100;
     top: 80px;
     font-size: 1.5em;
 }
@@ -161,6 +166,10 @@ main {
     border-bottom-right-radius: 8px;
 }
 
+.card-action i {
+    vertical-align: top;
+}
+
 
 /*----- Recipe Cards -----*/
 .recipe-card {
@@ -168,6 +177,12 @@ main {
     border: 3px dashed rgba(156, 39, 176, 0.5);
     border-radius: 0.5vw;
     box-shadow: 0 0 0 4px #f8bbd0, 2px 1px 6px 4px rgba(10, 10, 0, 0.5);
+}
+
+#recipe-img-small {
+    height: 150px;
+    max-width: 300px;
+    margin: 0 auto;
 }
 
 
@@ -180,10 +195,6 @@ main {
     padding: 1em 0;
     border-top: 1px solid#f06292;
     cursor: pointer;
-}
-
-#ingredients i {
-    vertical-align: inherit;
 }
 
 .ingredient {
@@ -221,7 +232,6 @@ main {
 
 #directions li {
     counter-increment: directions-counter;
-    text-align: justify;
     padding: 1em 0;
     border-top: 1px solid#f06292;
     cursor: pointer;
@@ -272,7 +282,6 @@ main {
 
     .modal {
         padding: 25px;
-        border-radius: 8px;
     }
 }
 

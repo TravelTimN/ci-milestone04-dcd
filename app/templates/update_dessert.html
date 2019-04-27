@@ -1,192 +1,286 @@
 {% extends "base.html" %}
+
 {% block content %}
-
-<h1>
-    {% with messages = get_flashed_messages() %}
-    {% if messages %}
-    {% for message in messages %}
-    {{ message }}
-    {% endfor %}
-    {% endif %}
-    {% endwith %}
-</h1>
-
-{% if recipe.img_src %}
-<div id="recipe-img" style="background: url('{{ recipe.img_src }}') center/cover no-repeat;" alt="Dessert"></div>
-{% else %}
-<div id="recipe-img" style="background: url('/static/img/no-img.png') center/cover no-repeat;" alt="No Image Available">
-</div>
-{% endif %}
-<br><br>
-
 
 <form action="{{ url_for('update_dessert_toDB', recipe_id=recipe._id) }}" method="POST">
 
-    <label for="recipe_name">Recipe Name</label>
-    <br>
-    <input id="recipe_name" name="recipe_name" type="text" class="validate" autocomplete="off" placeholder="Mary's Pumpkin Pie" value="{{ recipe.recipe_name }}" required>
-    <br>
-    <br>
+    <div class="container">
 
+        <!-- RECIPE DETAILS -->
+        <div class="row card z-depth-2 recipe-card">
 
-    <label for="description">Brief Description of your Recipe</label>
-    <br>
-    <textarea name="description" id="description" class="validate" cols="50" rows="5" autocomplete="off" placeholder="This is probably the easiest pie you'll ever make, and it's super moist and delicious!" required>{{ recipe.description }}</textarea>
-    <br><br>
-    
+            <h4 class="font-special bold upper text-shadow center-align">Update Recipe</h4>
 
-    <label for="dessert_type">Dessert Type</label>
-    <br>
-    <select id="dessert_type" name="dessert_type" class="validate" required>
-        <option value="" disabled selected>Dessert Type</option>
-        {% for dessert in desserts %}
-            {% if dessert == recipe.dessert_type %}
-            <option value="{{ dessert }}" selected>{{ dessert }}</option>
-            {% else %}
-            <option value="{{ dessert }}">{{ dessert }}</option>
-            {% endif %}
-        {% endfor %}
-    </select>
-    <br>
-    <br>
-
-
-    <label for="ingredient_amount">Ingredients (quantity, unit, ingredient)</label>
-    <br>
-
-    {% for amount_list,unit_list,ingredient_list in ingredients %}
-        {% if amount_list.0 or unit_list.0 or ingredient_list.0 %}
-            <div class="new-ingredient ingredient">
-            <input id="ingredient_amount" name="ingredient_amount" type="text" class="ingredient_amount validate" autocomplete="off" placeholder="1/2" value="{{ amount_list }}" required>
-            
-            <label for="ingredient_measurement"></label>
-            <select id="ingredient_measurement" name="ingredient_measurement" class="validate" required>
-                <option value="" disabled selected>unit</option>
-                <optgroup label="not applicable">
-                        {% for measurement in measurements %}
-                            {% if loop.index == 1 %}
-                                {% if measurement == unit_list %}
-                                    <option value="{{ measurement }}" selected>{{ unit_list }}</option>
-                                {% else %}
-                                    <option value="{{ measurement }}">{{ measurement }}</option>
-                                {% endif %}
-                            {% endif %}
-                        {% endfor %}
-                    </optgroup>
-                    <optgroup label="METRIC">
-                        {% for measurement in measurements %}
-                            {% if loop.index > 1 and loop.index < 6 %}
-                                {% if measurement == unit_list %}
-                                    <option value="{{ measurement }}" selected>{{ unit_list }}</option>
-                                {% else %}
-                                    <option value="{{ measurement }}">{{ measurement }}</option>
-                                {% endif %}
-                            {% endif %}
-                        {% endfor %}
-                    </optgroup>
-                    <optgroup label="IMPERIAL">
-                        {% for measurement in measurements %}
-                            {% if loop.index > 5 %}
-                                {% if measurement == unit_list %}
-                                    <option value="{{ measurement }}" selected>{{ unit_list }}</option>
-                                {% else %}
-                                    <option value="{{ measurement }}">{{ measurement }}</option>
-                                {% endif %}
-                            {% endif %}
-                        {% endfor %}
-                    </optgroup>
-            </select>
-            
-            <label for="ingredient_name"></label>
-            <input id="ingredient_name" name="ingredient_name" type="text" class="ingredient_name validate" autocomplete="off" placeholder="packed brown sugar" value="{{ ingredient_list }}" required>
+            <!-- recipe name -->
+            <div class="input-field col s12">
+                <i class="far fa-file-alt purple-text material-icons prefix"></i>
+                <input id="recipe_name" name="recipe_name" type="text" class="form-control validate" autocomplete="off"
+                    value="{{ recipe.recipe_name }}" required>
+                <label for="recipe_name">* Recipe Name</label>
             </div>
-            
-        {% else %}
-        
-            <input id="ingredient_amount" name="ingredient_amount" type="text" class="ingredient_amount validate" autocomplete="off" placeholder="1/2" value="{{ amount_list }}" required>
-            
-            <label for="ingredient_measurement"></label>
-            <select id="ingredient_measurement" name="ingredient_measurement" class="validate" required>
-                <option value="" disabled selected>unit</option>
-                {% for measurement in measurements %}
-                    {% if measurement == unit_list %}
-                        <option value="{{ measurement }}" selected>{{ unit_list }}</option>
+
+            <!-- recipe description -->
+            <div class="input-field col s12">
+                <i class="fas fa-align-left purple-text material-icons prefix"></i>
+                <input id="description" name="description" type="text" class="form-control validate"
+                    value="{{ recipe.description }}" autocomplete="off" required>
+                <label for="description">* Description of your Recipe</label>
+            </div>
+
+            <!-- dessert type -->
+            <div class="input-field col s12">
+                <i class="fas fa-ice-cream purple-text material-icons prefix"></i>
+                <select id="dessert_type" name="dessert_type" class="form-control validate" required>
+                    <option value="" disabled selected></option>
+                    {% for dessert in desserts %}
+                    {% if dessert == recipe.dessert_type %}
+                    <option value="{{ dessert }}" selected>{{ dessert }}</option>
                     {% else %}
-                        <option value="{{ measurement }}">{{ measurement }}</option>
+                    <option value="{{ dessert }}">{{ dessert }}</option>
                     {% endif %}
-                {% endfor %}
-            </select>
-            
-            <label for="ingredient_name"></label>
-            <input id="ingredient_name" name="ingredient_name" type="text" class="ingredient_name validate" autocomplete="off" placeholder="packed brown sugar" value="{{ ingredient_list }}" required>
-        {% endif %}
-    {% endfor %}
-
-    <button type="button" class="add-ingredient">+</button>
-    <button type="button" class="remove-ingredient">-</button>
-    <br>
-    <br>
-
-
-    <label for="directions">Directions</label>
-    <br>
-    {% for direction in recipe.directions %}
-        {% if direction.0 %}
-            <div class="new-direction direction">
-                <input id="directions" name="directions" type="text" class="directions validate" autocomplete="off" placeholder="list each step per line" value="{{ direction }}" required>
+                    {% endfor %}
+                </select>
+                <label for="dessert_type">* Dessert Category</label>
             </div>
-        {% else %}
-            <input id="directions" name="directions" type="text" class="directions validate" autocomplete="off" placeholder="list each step per line" required>
-        {% endif %}
-    {% endfor %}
-    <button type="button" class="add-direction">+</button>
-    <button type="button" class="remove-direction">-</button>
-    <br>
-    <br>
+
+            <!-- total hours -->
+            <div class="input-field col s6">
+                <i class="fas fa-hourglass-half purple-text material-icons prefix"></i>
+                <input id="total_hrs" name="total_hrs" type="number" min="0" max="99" value="{{ recipe.total_hrs }}"
+                    autocomplete="off">
+                <label for="total_hrs">Hours</label>
+            </div>
+
+            <!-- total minutes -->
+            <div class="input-field col s6">
+                <i class="fas fa-stopwatch purple-text material-icons prefix"></i>
+                <input id="total_mins" name="total_mins" type="number" min="0" max="59" value="{{ recipe.total_mins }}"
+                    autocomplete="off" class="form-control validate" required>
+                <label for="total_mins">* Minutes</label>
+            </div>
+
+            <!-- recipe allergens -->
+            <div class="input-field col s12">
+                <i class="fas fa-exclamation-triangle purple-text material-icons prefix"></i>
+                <select id="allergens" name="allergens" multiple>
+                    {% for allergen in allergens %}
+                    {% if allergen in recipe.allergens %}
+                    <option value="{{ allergen }}"
+                        data-icon="{{ url_for('static', filename='img/allergens/'+allergen|lower+'.png') }}" selected>
+                        {{ allergen }}</option>
+                    {% else %}
+                    <option value="{{ allergen }}"
+                        data-icon="{{ url_for('static', filename='img/allergens/'+allergen|lower+'.png') }}">
+                        {{ allergen }}</option>
+                    {% endif %}
+                    {% endfor %}
+                </select>
+                <label for="allergens">Possible Allergens</label>
+            </div>
+
+            <!-- recipe photo -->
+            <div class="input-field col s12">
+                <i class="fas fa-image purple-text material-icons prefix"></i>
+                {% if recipe.img_src %}
+                <input id="img_src" name="img_src" type="text" autocomplete="off" value="{{ recipe.img_src }}">
+                {% else %}
+                <input id="img_src" name="img_src" type="text" autocomplete="off">
+                {% endif %}
+                <label for="img_src">Recipe Photo</label>
+            </div>
+
+            <div class="col s12">
+                {% if recipe.img_src %}
+                <div id="recipe-img-small" style="background: url('{{ recipe.img_src }}') center/cover no-repeat;"
+                    alt="Dessert"></div>
+                {% else %}
+                <div id="recipe-img-small" style="background: url('/static/img/no-img.png') center/cover no-repeat;"
+                    alt="No Images Available"></div>
+                {% endif %}
+            </div>
+
+        </div>
 
 
-    <label for="total_hrs">Total Time Required</label>
-    <br>
-    {% if recipe.total_hrs %}
-        <input id="total_hrs" name="total_hrs" type="number" min="0" max="99" autocomplete="off" placeholder="2" value="{{ recipe.total_hrs }}"> hrs
-    {% else %}
-        <input id="total_hrs" name="total_hrs" type="number" min="0" max="99" autocomplete="off" placeholder="2"> hrs
-    {% endif %}
-    <br>
-    <label for="total_mins"></label>
-    <input id="total_mins" name="total_mins" type="number" min="0" max="59" autocomplete="off" class="validate" placeholder="45" value="{{ recipe.total_mins }}" required> mins
-    <br>
-    <br>
+        <!-- Ingredients -->
+        <div class="row card z-depth-2 recipe-card">
 
+            <h4 class="font-special bold upper text-shadow center-align">Ingredients</h4>
 
-    <label for="allergens">Possible Allergens</label>
-    <br>
-    <select id="allergens" name="allergens" multiple>
-        {% for allergen in allergens %}
-            {% if allergen in recipe.allergens %}
-                <option value="{{ allergen }}" selected>{{ allergen }}</option>
+            {% for amount_list,unit_list,ingredient_list in ingredients %}
+            {% if amount_list.0 or unit_list.0 or ingredient_list.0 %}
+            <div class="new-ingredient ingredient row">
+                <!-- ingredient amount / quantity -->
+                <div class="input-field col s12 m2">
+                    <i class="fas fa-hashtag purple-text material-icons prefix"></i>
+                    <input id="ingredient_amount" name="ingredient_amount" type="text"
+                        class="ingredient_amount validate" autocomplete="off" placeholder="1/2" pattern="^[0-9/-.]+$"
+                        value="{{ amount_list }}" required>
+                    <label for="ingredient_amount"></label>
+                </div>
+
+                <!-- ingredient measurement / volume-->
+                <div class="input-field col s12 m4">
+                    <i class="fas fa-utensil-spoon purple-text material-icons prefix"></i>
+                    <label for="ingredient_measurement"></label>
+                    <select id="ingredient_measurement" name="ingredient_measurement" class="validate" required>
+                        <option value="" disabled selected></option>
+                        <optgroup label="not applicable">
+                            {% for measurement in measurements %}
+                            {% if loop.index == 1 %}
+                            {% if measurement == unit_list %}
+                            <option value="{{ measurement }}" selected>{{ unit_list }}</option>
+                            {% else %}
+                            <option value="{{ measurement }}">{{ measurement }}</option>
+                            {% endif %}
+                            {% endif %}
+                            {% endfor %}
+                        </optgroup>
+                        <optgroup label="METRIC">
+                            {% for measurement in measurements %}
+                            {% if loop.index > 1 and loop.index < 6 %}
+                            {% if measurement == unit_list %}
+                            <option value="{{ measurement }}" selected>{{ unit_list }}</option>
+                            {% else %}
+                            <option value="{{ measurement }}">{{ measurement }}</option>
+                            {% endif %}
+                            {% endif %}
+                            {% endfor %}
+                        </optgroup>
+                        <optgroup label="IMPERIAL">
+                            {% for measurement in measurements %}
+                            {% if loop.index > 5 %}
+                            {% if measurement == unit_list %}
+                            <option value="{{ measurement }}" selected>{{ unit_list }}</option>
+                            {% else %}
+                            <option value="{{ measurement }}">{{ measurement }}</option>
+                            {% endif %}
+                            {% endif %}
+                            {% endfor %}
+                        </optgroup>
+                    </select>
+                </div>
+
+                <!-- ingredient -->
+                <div class="input-field col s12 m6">
+                    <i class="fas fa-egg purple-text material-icons prefix"></i>
+                    <label for="ingredient_name"></label>
+                    <input id="ingredient_name" name="ingredient_name" type="text" class="ingredient_name validate"
+                        autocomplete="off" placeholder="packed brown sugar" value="{{ ingredient_list }}" required>
+                </div>
+
+            </div>
+
             {% else %}
-                <option value="{{ allergen }}">{{ allergen }}</option>
+
+            <div class="new-ingredient ingredient row">
+                <!-- ingredient amount / quantity -->
+                <div class="input-field col s12 m2">
+                    <i class="fas fa-hashtag purple-text material-icons prefix"></i>
+                    <input id="ingredient_amount" name="ingredient_amount" type="text"
+                        class="ingredient_amount validate" autocomplete="off" placeholder="1/2" pattern="^[0-9/-.]+$"
+                        value="{{ amount_list }}" required>
+                    <label for="ingredient_amount"></label>
+                </div>
+
+                <!-- ingredient measurement / volume-->
+                <div class="input-field col s12 m4">
+                    <i class="fas fa-utensil-spoon purple-text material-icons prefix"></i>
+                    <label for="ingredient_measurement"></label>
+                    <select id="ingredient_measurement" name="ingredient_measurement" class="validate" required>
+                        <option value="" disabled selected>unit</option>
+                        {% for measurement in measurements %}
+                        {% if measurement == unit_list %}
+                        <option value="{{ measurement }}" selected>{{ unit_list }}</option>
+                        {% else %}
+                        <option value="{{ measurement }}">{{ measurement }}</option>
+                        {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- ingredient -->
+                <div class="input-field col s12 m6">
+                    <i class="fas fa-egg purple-text material-icons prefix"></i>
+                    <label for="ingredient_name"></label>
+                    <input id="ingredient_name" name="ingredient_name" type="text" class="ingredient_name validate"
+                        autocomplete="off" placeholder="packed brown sugar" value="{{ ingredient_list }}" required>
+                </div>
+
+            </div>
+
             {% endif %}
-        {% endfor %}
-    </select>
-    <br>
-    <br>
+            {% endfor %}
+
+            <!-- add another ingredient -->
+            <button type="button" class="add-ingredient btn purple text-shadow">
+                <i class="fas fa-plus material-icons"></i>
+            </button>
+
+            <!-- remove last ingredient -->
+            <button type="button" class="remove-ingredient btn pink lighten-2 text-shadow">
+                <i class="fas fa-minus material-icons"></i>
+            </button>
+
+        </div>
 
 
-    <label for="img_src">Recipe Photo</label>
-    <br>
-    {% if recipe.img_src %}
-        <input id="img_src" name="img_src" type="text" autocomplete="off" placeholder="http://lorempixel.com/400/200/food/7" value="{{ recipe.img_src }}">
-    {% else %}
-        <input id="img_src" name="img_src" type="text" autocomplete="off" placeholder="http://lorempixel.com/400/200/food/7">
-    {% endif %}
-    <br>
-    <br>
+        <!-- Directions -->
+        <div class="row card z-depth-2 recipe-card">
 
-    <input type="hidden" name="views" id="views" value="1">
-    <button type="submit" name="action" class="waves-effect waves-light btn">Update Recipe!</button>
-    <button type="reset" class="waves-effect waves-light btn red" onclick="history.go(-1)">Cancel</button>
+            <h4 class="font-special bold upper text-shadow center-align">Directions</h4>
+
+            {% for direction in recipe.directions %}
+            {% if direction.0 %}
+            <div class="new-direction direction row">
+                <!-- direction -->
+                <div class="input-field col s12">
+                    <i class="fas fa-list-ol purple-text material-icons prefix"></i>
+                    <input id="directions" name="directions" type="text" class="directions validate" autocomplete="off"
+                        placeholder="list each step per line" value="{{ direction }}" required>
+                    <label for="directions"></label>
+                </div>
+
+            </div>
+
+            {% else %}
+
+            <div class="new-direction direction row">
+                <!-- direction -->
+                <div class="input-field col s12">
+                    <i class="fas fa-list-ol purple-text material-icons prefix"></i>
+                    <input id="directions" name="directions" type="text" class="directions validate" autocomplete="off"
+                        placeholder="list each step per line" required>
+                    <label for="directions"></label>
+                </div>
+
+            </div>
+
+            {% endif %}
+            {% endfor %}
+
+            <!-- add another direction -->
+            <button type="button" class="add-direction btn purple text-shadow">
+                <i class="fas fa-plus material-icons"></i>
+            </button>
+
+            <!-- remove last direction -->
+            <button type="button" class="remove-direction btn pink lighten-2 text-shadow">
+                <i class="fas fa-minus material-icons"></i>
+            </button>
+
+        </div>
+
+
+        <div class="row center-align">
+            <button type="submit" class="waves-effect waves-light btn btn-large purple bold text-shadow">Update <i
+                    class="fas fa-check-circle material-icons right hide-on-small-only"></i></button>
+            <button type="reset" class="waves-effect waves-light btn btn-large pink lighten-2 bold text-shadow"
+                onclick="history.go(-1)">Cancel
+                <i class="fas fa-times-circle material-icons right hide-on-small-only"></i></button>
+        </div>
+
+    </div>
 
 </form>
 
