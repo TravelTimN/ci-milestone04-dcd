@@ -6,10 +6,10 @@
         <ul id="nav-mobile" class="right hide-on-med-and-down">
             <li><a class="btn black tooltipped" data-position="bottom" data-tooltip="Home" href="{{ url_for('home') }}"><i class="fas fa-home material-icons"></i></a></li>
             {% if session.user %}
-                <li><a class="btn green tooltipped" data-position="bottom" data-tooltip="My Profile" href="{{ url_for('profile', username=session['user']) }}"><i class="fas fa-user-circle material-icons left"></i>{{ session['user']|upper }}</a></li>
-                <li><a class="btn red" href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt material-icons left white-text"></i>LOG OUT</a></li>
+                <li><a class="btn green text-shadow tooltipped" data-position="bottom" data-tooltip="My Profile" href="{{ url_for('profile', username=session['user']) }}"><i class="fas fa-user-circle material-icons left"></i>{{ session['user']|upper }}</a></li>
+                <li><a class="btn red text-shadow" href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt material-icons left white-text"></i>LOG OUT</a></li>
             {% else %}
-                <li><a class="btn purple tooltipped" data-position="bottom" data-tooltip="Log In or Register" href="{{ url_for('login') }}"><i class="fas fa-sign-in-alt material-icons left"></i>LOG IN | REGISTER</a></li>
+                <li><a class="btn pink text-shadow tooltipped" data-position="bottom" data-tooltip="Log In or Register" href="{{ url_for('login') }}"><i class="fas fa-sign-in-alt material-icons left"></i>LOG IN | REGISTER</a></li>
             {% endif %}
         </ul>
     </div>
@@ -18,10 +18,10 @@
     <!-- BOTTOM NAV -->
     <div class="nav-content purple">
         <ul class="tabs tabs-transparent">
-            <li class="tab"><a class="waves-effect waves-light tooltipped" data-position="bottom" data-tooltip="View All Desserts ({{ total_recipes() }})" href="{{ url_for('view_desserts') }}" target="_self">DESSERTS ({{ total_recipes() }})</a></li>
+            <li class="tab"><a class="waves-effect waves-light text-shadow tooltipped" data-position="bottom" data-tooltip="View All Desserts ({{ total_recipes() }})" href="{{ url_for('view_desserts') }}" target="_self">DESSERTS ({{ total_recipes() }})</a></li>
         </ul>
         {% if session.user %}
-            <a class="btn-floating btn-large halfway-fab tooltipped" data-position="left" data-tooltip="Add a Recipe" href="{{ url_for('add_dessert') }}"><i class="material-icons purple accent-3">add</i></a>
+            <a class="btn-floating btn-large halfway-fab text-shadow tooltipped" data-position="left" data-tooltip="Add a Recipe" href="{{ url_for('add_dessert') }}"><i class="material-icons pink accent-2">add</i></a>
         {% endif %}
     </div>
 </nav>
@@ -29,13 +29,13 @@
 
 <!-- MOBILE SIDE NAV -->
 <ul class="sidenav" id="mobile-demo">
-    <li><a class="waves-effect waves-light btn purple hoverable" href="{{ url_for('home') }}"><i class="fas fa-home material-icons left white-text"></i>HOME</a></li>
-    <li><a class="waves-effect waves-light btn purple hoverable" href="{{ url_for('view_desserts') }}"><i class="fas fa-utensils material-icons left white-text"></i>DESSERTS</a></li>
+    <li><a class="waves-effect waves-light btn purple text-shadow hoverable" href="{{ url_for('home') }}"><i class="fas fa-home material-icons left white-text"></i>HOME</a></li>
+    <li><a class="waves-effect waves-light btn purple text-shadow hoverable" href="{{ url_for('view_desserts') }}"><i class="fas fa-utensils material-icons left white-text"></i>DESSERTS</a></li>
     {% if session.user %}
-        <li><a class="waves-effect waves-light btn green hoverable" href="{{ url_for('profile', username=session['user']) }}"><i class="fas fa-user-circle material-icons left white-text"></i>{{ session['user']|upper }}</a></li>
-        <li><a class="waves-effect waves-light btn red hoverable" href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt material-icons left white-text"></i>LOG OUT</a></li>
+        <li><a class="waves-effect waves-light btn green text-shadow hoverable" href="{{ url_for('profile', username=session['user']) }}"><i class="fas fa-user-circle material-icons left white-text"></i>{{ session['user']|upper }}</a></li>
+        <li><a class="waves-effect waves-light btn red text-shadow hoverable" href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt material-icons left white-text"></i>LOG OUT</a></li>
     {% else %}
-        <li><a class="waves-effect waves-light btn green hoverable" href="{{ url_for('register') }}"><i class="fas fa-user-plus material-icons left white-text"></i>REGISTER</a></li>
-        <li><a class="waves-effect waves-light btn blue hoverable" href="{{ url_for('login') }}"><i class="fas fa-sign-in-alt material-icons left white-text"></i>LOG IN</a></li>
+        <li><a class="waves-effect waves-light btn green text-shadow hoverable" href="{{ url_for('register') }}"><i class="fas fa-user-plus material-icons left white-text"></i>REGISTER</a></li>
+        <li><a class="waves-effect waves-light btn blue text-shadow hoverable" href="{{ url_for('login') }}"><i class="fas fa-sign-in-alt material-icons left white-text"></i>LOG IN</a></li>
     {% endif %}
 </ul>
