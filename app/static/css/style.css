@@ -36,6 +36,9 @@
 /*----- Global Settings -----*/
 body {
     background-color: rgba(243, 229, 245, 0.5);
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
 }
 
 .bold {
@@ -76,10 +79,20 @@ nav {
 /*----- Main -----*/
 main {
     margin-top: 150px;
+    margin-bottom: 50px;
+    flex: 1 0 auto;
 }
 
-.dropdown-content {
+/*.dropdown-content {
     z-index: 25;
+}*/
+
+
+/*----- Footer -----*/
+footer {
+    font-size: 1.5em;
+    line-height: 2em;
+    padding-top: 15px;
 }
 
 

@@ -1,13 +1,6 @@
 $(document).ready(function () {
 
-    // custom Flash Toast
-    function flashToast() {
-        $("#flashToast").addClass("show");
-        setTimeout(function() {
-            $("#flashToast").removeClass("show");
-        }, 4000);
-    };
-    flashToast();
+    /*----- MATERIALIZE -----*/
 
     // initialize tabs
     $(".tabs").tabs();
@@ -26,6 +19,20 @@ $(document).ready(function () {
     $("select").formSelect();
     // solution to dropdowns not enforcing validation: https://stackoverflow.com/questions/34248898/how-to-validate-select-option-for-a-materialize-dropdown
     $("select[required]").css({display: "block", height: 0, padding: 0, width: 0, position: "absolute"});
+
+    
+
+    /*----- CUSTOMIZATION -----*/
+
+    // custom Flash Toast
+    function flashToast() {
+        $("#flashToast").addClass("show");
+        setTimeout(function() {
+            $("#flashToast").removeClass("show");
+        }, 4000);
+    };
+    flashToast();
+
 
     // Add new ingredient item if clicked
     let ingredientCount = $(".ingredient").length;
@@ -77,5 +84,9 @@ $(document).ready(function () {
         $(this).toggleClass("grey-text strike");
         $(this).toggleClass("completed");
     });
+
+
+    // get current year for Copyright
+    $("#year").html(new Date().getFullYear());
 
 });
