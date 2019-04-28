@@ -22,7 +22,6 @@
             <img src="{{ url_for('static', filename='img/no-img.png') }}" class="responsive-img" alt="Dessert">
             {% endif %}
 
-
             {% if session.user|lower == author|lower or session.user|lower == "admin"|lower %}
             <!-- UPDATE and DELETE buttons -->
             <div class="card-content row user-buttons">
@@ -83,6 +82,15 @@
                         alt="Allergen">{{ allergen }}</div>
                 {% endfor %}
             </div>
+            {% if session.user %}
+            <div class="card-content row">
+                {% if recipe._id in user_favs %}
+                <a class="btn white purple-text bold upper waves-effect waves-purple" href="{{ url_for('delete_favorite', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}">You love it! <i class="fas fa-heart material-icons pink-text text-lighten-2 text-shadow"></i></a>
+                {% else %}
+                <a class="btn white purple-text bold upper waves-effect waves-purple" href="{{ url_for('add_favorite', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}">Love it? <i class="far fa-heart material-icons pink-text text-lighten-2 text-shadow"></i></a>
+                {% endif %}
+            </div>
+            {% endif %}
         </div>
     </div>
 

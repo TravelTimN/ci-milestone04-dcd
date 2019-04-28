@@ -199,6 +199,9 @@ def add_dessert_toDB():
         # get the new _id being created on submit
         newID = recipes_collection.insert_one(submit)
 
+        # add recipe _id to user's recipe list
+        users_collection.update_one({"_id": ObjectId(author)}, {"$push": {"user_recipes": newID.inserted_id}})
+
         # slugify url to be user-friendly
         slugUrl = slugify(request.form.get("recipe_name"))
         flash("Sounds delicious! Thanks for adding this recipe!")
@@ -225,6 +228,7 @@ def view_desserts():
 def view_dessert(recipe_id, slugUrl):
         recipe = recipes_collection.find_one({"_id": ObjectId(recipe_id)})
         author = users_collection.find_one({"_id": ObjectId(recipe.get("author"))})["username"]
+        user_favs = users_collection.find_one({"_id": ObjectId(recipe.get("author"))})["user_favs"]
         amounts = recipe.get("ingredient_amount")
         measurements = recipe.get("ingredient_measurement")
         ingredients = recipe.get("ingredient_name")
@@ -254,12 +258,13 @@ def view_dessert(recipe_id, slugUrl):
         full_ingredient = zip(amount, measurement, ingredients)
 
         # increment number of views by 1
-        recipes_collection.update({"_id": ObjectId(recipe_id)}, {"$inc": {"views": 1}})
+        recipes_collection.update_one({"_id": ObjectId(recipe_id)}, {"$inc": {"views": 1}})
         return render_template("view_dessert.html",
                                 recipe=recipe,
                                 full_ingredient=full_ingredient,
                                 units=units,
-                                author=author)
+                                author=author,
+                                user_favs=user_favs)
 
 
 # (crUd) ----- UPDATE a recipe -----#
@@ -335,7 +340,7 @@ def update_dessert_toDB(recipe_id):
         get_user_favs = recipe.get("user_favs")
 
         # find recipe to be updated, then push updates
-        recipes_collection.update( {"_id": ObjectId(recipe_id)},
+        recipes_collection.update_one( {"_id": ObjectId(recipe_id)},
         {
                 "recipe_name": request.form.get("recipe_name"),
                 "recipe_slug": slugify(request.form.get("recipe_name")),
@@ -366,4 +371,35 @@ def update_dessert_toDB(recipe_id):
 @app.route("/delete/<recipe_id>")
 def delete_dessert(recipe_id):
         recipes_collection.remove({"_id": ObjectId(recipe_id)})
+
+        # pull deleted recipe from user's recipe list
+        author = users_collection.find_one({"username_lower": session["user"].lower()})["_id"]
+        users_collection.update_one({"_id": ObjectId(author)}, {"$pull": {"user_recipes": ObjectId(recipe_id)}})
+
         return redirect(url_for("view_desserts"))
+
+
+
+#---------- USER ACTIONS ----------#
+
+#----- Add Favorites ----- #
+@app.route("/add_favorite/<recipe_id>/<slugUrl>")
+def add_favorite(recipe_id, slugUrl):
+        user = users_collection.find_one({"username_lower": session["user"].lower()})["_id"]
+        users_collection.update_one({"_id": ObjectId(user)}, {"$push": {"user_favs": ObjectId(recipe_id)}})
+        recipes_collection.update_one({"_id": ObjectId(recipe_id)}, {"$inc": {"user_favs": 1}})
+        recipes_collection.update_one({"_id": ObjectId(recipe_id)}, {"$inc": {"views": -1}})
+        return redirect(url_for("view_dessert",
+                                recipe_id=recipe_id,
+                                slugUrl=slugUrl))
+
+#----- Delete Favorites ----- #
+@app.route("/delete_favorite/<recipe_id>/<slugUrl>")
+def delete_favorite(recipe_id, slugUrl):
+        user = users_collection.find_one({"username_lower": session["user"].lower()})["_id"]
+        users_collection.update_one({"_id": ObjectId(user)}, {"$pull": {"user_favs": ObjectId(recipe_id)}})
+        recipes_collection.update_one({"_id": ObjectId(recipe_id)}, {"$inc": {"user_favs": -1}})
+        recipes_collection.update_one({"_id": ObjectId(recipe_id)}, {"$inc": {"views": -1}})
+        return redirect(url_for("view_dessert",
+                                recipe_id=recipe_id,
+                                slugUrl=slugUrl))
