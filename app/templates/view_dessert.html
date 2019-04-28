@@ -78,7 +78,7 @@
             <p><i class="fas fa-calendar-alt"></i> <span class="bold">{{ recipe.date_added }}</span></p>
             <div class="card-content">
                 {% for allergen in recipe.allergens %}
-                <div class="chip red lighten-3 black-text">
+                <div class="chip pink lighten-4 black-text">
                     <img src="{{ url_for('static', filename='img/allergens/'+allergen|lower+'.png') }}"
                         alt="Allergen">{{ allergen }}</div>
                 {% endfor %}
