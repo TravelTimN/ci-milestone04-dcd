@@ -2,6 +2,66 @@
 
 {% block content %}
 
-Profile page!
+<div class="container">
+
+    <!-- USER'S OWN RECIPES -->
+    <ul class="collapsible" data-collapsible="accordion">
+        <li class="recipe-card">
+            <div class="collapsible-header purple white-text text-shadow">
+                <i class="fas fa-user-plus material-icons"></i>
+                <h5 class="bold font-amatic">My Desserts</h5>
+            </div>
+
+            <div class="collapsible-body collection collapsible-collection">
+                <ul class="collection">
+                    {% for user_recipe in user_recipes %}
+                    <li class="collection-item avatar">
+                        <a href="{{ url_for('view_dessert', recipe_id=user_recipe._id, slugUrl=user_recipe.recipe_slug) }}">
+                            {% if user_recipe.img_src %}
+                            <img src="{{ user_recipe.img_src }}" alt="Dessert Image" class="circle">
+                            {% else %}
+                            <img src="{{ url_for('static', filename='img/no-img.png') }}" alt="Dessert Image" class="circle">
+                            {% endif %}
+                            <span class="title font-special bold purple-text">{{ user_recipe.recipe_name }}</span>
+                            <p class="truncate pink-text text-lighten-2">{{ user_recipe.description }}</p>
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </li>
+    </ul>
+
+
+    <!-- USER'S FAVORITE RECIPES -->
+    <ul class="collapsible" data-collapsible="accordion">
+        <li class="recipe-card">
+            <div class="collapsible-header pink lighten-2 white-text text-shadow">
+                <i class="fas fa-heart material-icons"></i>
+                <h5 class="bold font-amatic">Saved Desserts</h5>
+            </div>
+
+            <div class="collapsible-body collection collapsible-collection">
+                <ul class="collection">
+                    {% for user_fav in user_favs %}
+                    <li class="collection-item avatar">
+                        <a href="{{ url_for('view_dessert', recipe_id=user_fav._id, slugUrl=user_fav.recipe_slug) }}">
+                            {% if user_fav.img_src %}
+                            <img src="{{ user_fav.img_src }}" alt="Dessert Image" class="circle">
+                            {% else %}
+                            <img src="{{ url_for('static', filename='img/no-img.png') }}" alt="Dessert Image" class="circle">
+                            {% endif %}
+                            <span class="title font-special bold purple-text">{{ user_fav.recipe_name }}</span>
+                            <p class="truncate pink-text text-lighten-2">{{ user_fav.description }}</p>
+                            <i class="fas fa-heart material-icons pink-text text-lighten-2 text-shadow secondary-content"></i>
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </li>
+    </ul>
+
+</div>
 
 {% endblock content %}

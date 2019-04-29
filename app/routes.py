@@ -117,7 +117,15 @@ def login():
 #----- PROFILE -----#
 @app.route("/<username>")
 def profile(username):
-        return render_template("profile.html", username=session["user"])
+        # find all recipes belonging to user
+        user = users_collection.find_one({"username_lower": session["user"].lower()})["_id"]
+        user_recipes = recipes_collection.find({"author": user}).sort([("recipe_name", 1)])
+
+        # find all recipes that the user loves
+        user_favs_list = users_collection.find_one({"username_lower": session["user"].lower()})["user_favs"]
+        user_favs = recipes_collection.find({"_id": {"$in": user_favs_list}}).sort([("recipe_name", 1)])
+
+        return render_template("profile.html", username=session["user"], user_recipes=user_recipes, user_favs=user_favs)
 
 
 #----- LOGOUT -----#
@@ -193,7 +201,7 @@ def add_dessert_toDB():
                 "date_added": today,
                 "date_updated": today,
                 "views": 0,
-                "user_favs": []
+                "user_favs": 0
         }
 
         # get the new _id being created on submit
@@ -340,7 +348,7 @@ def update_dessert_toDB(recipe_id):
         get_user_favs = recipe.get("user_favs")
 
         # find recipe to be updated, then push updates
-        recipes_collection.update_one( {"_id": ObjectId(recipe_id)},
+        recipes_collection.update( {"_id": ObjectId(recipe_id)},
         {
                 "recipe_name": request.form.get("recipe_name"),
                 "recipe_slug": slugify(request.form.get("recipe_name")),
@@ -376,7 +384,11 @@ def delete_dessert(recipe_id):
         author = users_collection.find_one({"username_lower": session["user"].lower()})["_id"]
         users_collection.update_one({"_id": ObjectId(author)}, {"$pull": {"user_recipes": ObjectId(recipe_id)}})
 
+        # pull recipe from all users user_favs
+        users_collection.update_many({}, {"$pull": {"user_favs": ObjectId(recipe_id)}})
+
         return redirect(url_for("view_desserts"))
+
 
 
 
@@ -385,20 +397,29 @@ def delete_dessert(recipe_id):
 #----- Add Favorites ----- #
 @app.route("/add_favorite/<recipe_id>/<slugUrl>")
 def add_favorite(recipe_id, slugUrl):
+        # get user id
         user = users_collection.find_one({"username_lower": session["user"].lower()})["_id"]
+        # push recipe to user_favs
         users_collection.update_one({"_id": ObjectId(user)}, {"$push": {"user_favs": ObjectId(recipe_id)}})
+        # increase number of favorites on this recipe
         recipes_collection.update_one({"_id": ObjectId(recipe_id)}, {"$inc": {"user_favs": 1}})
+        # retain the original view-count by decrementing -1
         recipes_collection.update_one({"_id": ObjectId(recipe_id)}, {"$inc": {"views": -1}})
         return redirect(url_for("view_dessert",
                                 recipe_id=recipe_id,
                                 slugUrl=slugUrl))
 
+
 #----- Delete Favorites ----- #
 @app.route("/delete_favorite/<recipe_id>/<slugUrl>")
 def delete_favorite(recipe_id, slugUrl):
+        # get user id
         user = users_collection.find_one({"username_lower": session["user"].lower()})["_id"]
+        # pull recipe from user_favs
         users_collection.update_one({"_id": ObjectId(user)}, {"$pull": {"user_favs": ObjectId(recipe_id)}})
+        # decrease number of favorites on this recipe
         recipes_collection.update_one({"_id": ObjectId(recipe_id)}, {"$inc": {"user_favs": -1}})
+        # retain the original view-count by decrementing -1
         recipes_collection.update_one({"_id": ObjectId(recipe_id)}, {"$inc": {"views": -1}})
         return redirect(url_for("view_dessert",
                                 recipe_id=recipe_id,

@@ -2,6 +2,9 @@ $(document).ready(function () {
 
     /*----- MATERIALIZE -----*/
 
+    // initialize collapsibles
+    $(".collapsible").collapsible();
+
     // initialize tabs
     $(".tabs").tabs();
 

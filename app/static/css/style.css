@@ -268,6 +268,61 @@ footer {
 }
 
 
+
+/*----- User Profile Page -----*/
+.collapsible-collection {
+    padding: 0;
+}
+
+.collapsible-collection li:nth-child(odd) {
+    background-color: rgba(243, 229, 245, 0.75);
+}
+
+.collapsible-collection li:nth-child(even) {
+    background-color: rgba(252, 228, 236, 0.75);
+}
+
+.collapsible-header h5 {
+    font-size: 3em;
+    margin: 0;
+    padding: 15px 0;
+}
+
+.collapsible-header {
+    border-bottom: 0;
+    padding: 0;
+    align-items: center;
+    justify-content: center;
+}
+
+.collapsible-header i {
+    justify-content: center;
+    vertical-align: middle;
+}
+
+.collapsible .recipe-card {
+    padding: 5px;
+}
+
+.collection .collection-item.avatar {
+    padding-right: 50px;
+    min-height: 60px;
+}
+
+.collection .collection-item.avatar .circle {
+    border-radius: 0;
+}
+
+.collection .collection-item.avatar .title {
+    font-size: 1.5em;
+}
+
+ul.collapsible {
+    margin: 25px auto;
+}
+
+
+
 /*-------------------- @media queries --------------------*/
 
 /*----- >600px Materialize Tablet size (.m) -----*/
