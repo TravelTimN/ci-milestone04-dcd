@@ -170,11 +170,8 @@ footer {
     padding: 5px;
 }
 
-.card-action {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    justify-items: center;
-    align-items: center;
+.card .card-action {
+    padding: 5px 5px 0px 5px;
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
 }

@@ -228,7 +228,7 @@ def view_desserts():
 def view_dessert(recipe_id, slugUrl):
         recipe = recipes_collection.find_one({"_id": ObjectId(recipe_id)})
         author = users_collection.find_one({"_id": ObjectId(recipe.get("author"))})["username"]
-        user_favs = users_collection.find_one({"_id": ObjectId(recipe.get("author"))})["user_favs"]
+        user_favs = users_collection.find_one({"username_lower": session["user"].lower()})["user_favs"]
         amounts = recipe.get("ingredient_amount")
         measurements = recipe.get("ingredient_measurement")
         ingredients = recipe.get("ingredient_name")

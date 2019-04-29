@@ -28,14 +28,20 @@
 
                 <!-- Card Action (stats) -->
                 <div class="card-action purple lighten-3">
-                    <span class="tooltipped" data-position="top"
-                        data-tooltip="Total Time: {% if recipe.total_hrs %}{{ recipe.total_hrs }}h{% endif %} {{ recipe.total_mins }}m">
-                        <i class="far fa-clock material-icons"></i>
-                        {% if recipe.total_hrs %}{{ recipe.total_hrs }}h{% endif %} {{ recipe.total_mins }}m
-                    </span>
-                    <span class="tooltipped" data-position="top" data-tooltip="Total Views: {{ recipe.views }}">
-                        <i class="far fa-eye material-icons"></i> {{ recipe.views }}
-                    </span>
+                    <div class="row">
+                        <div class="col s4 center-align tooltipped" data-position="top" data-tooltip="Total Time: {% if recipe.total_hrs %}{{ recipe.total_hrs }}h{% endif %} {{ recipe.total_mins }}m">
+                            <i class="far fa-clock material-icons purple-text"></i><br>
+                            {% if recipe.total_hrs %}{{ recipe.total_hrs }}h{% endif %} {{ recipe.total_mins }}m
+                        </div>
+                        <div class="col s4 center-align tooltipped" data-position="top" data-tooltip="Total Views: {{ recipe.views }}">
+                            <i class="far fa-eye material-icons purple-text"></i><br>
+                            {{ recipe.views }}
+                        </div>
+                        <div class="col s4 center-align tooltipped" data-position="top" data-tooltip="Total Likes: {{ recipe.user_favs }}">
+                            <i class="far fa-heart material-icons purple-text"></i><br>
+                            {{ recipe.user_favs }}
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Card Reveal (hidden until clicked) -->
