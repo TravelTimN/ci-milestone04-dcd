@@ -55,7 +55,7 @@ def register():
                 
                 # check if username is alphanumeric or contains 'test'
                 username_input = request.form.get("username").lower()
-                username_check = re.search(r"(?!\-)[\W]|(t|T)+(e|E)+(s|S)+(t|T)+", username_input)
+                username_check = re.search(r"(?!\-)[\W]|t+e+s+t+", username_input, re.I)
                 if username_check:
                         flash(Markup(f"Usernames containing <span class='pink-text text-lighten-2'>{username_check.group(0).upper()}</span> are not permitted."))
                         return redirect(url_for("register"))
@@ -236,20 +236,23 @@ def view_desserts():
 def view_dessert(recipe_id, slugUrl):
         recipe = recipes_collection.find_one({"_id": ObjectId(recipe_id)})
         author = users_collection.find_one({"_id": ObjectId(recipe.get("author"))})["username"]
-        user_favs = users_collection.find_one({"username_lower": session["user"].lower()})["user_favs"]
         amounts = recipe.get("ingredient_amount")
         measurements = recipe.get("ingredient_measurement")
         ingredients = recipe.get("ingredient_name")
         amount = []
         measurement = []
         units = []
+        fractions = ["1/2", "1/3", "1/4", "1/5", "1/6", "1/8", "2/3", "2/5", "3/4", "3/5", "3/8", "4/5", "5/6", "5/8", "7/8"]
 
-        # convert input 1/2 to &frac12; for display
+        # convert input 1/2 to &frac12; for display, only if in list of unicode fraction list
         for num in amounts:
                 if "/" in num:
-                        num = re.sub("/", "", num)
-                        num = "&frac" + num + ";"
-                        amount.append(html.unescape(num))
+                        if any(frac in num for frac in fractions):
+                                frac_match = re.match(r"^(.*?)(\d\/\d)(.*?)$", num)
+                                new_num = frac_match.group(1) + "&frac" + re.sub("/", "", frac_match.group(2)) + ";" + frac_match.group(3)
+                                amount.append(html.unescape(new_num))
+                        else:
+                                amount.append(num)
                 else:
                         amount.append(num)
         
@@ -264,6 +267,11 @@ def view_dessert(recipe_id, slugUrl):
 
         # zip Amount, Measurement, Ingredient into single full_ingredient
         full_ingredient = zip(amount, measurement, ingredients)
+
+        try:
+                user_favs = users_collection.find_one({"username_lower": session["user"].lower()})["user_favs"]
+        except:
+                user_favs = []
 
         # increment number of views by 1
         recipes_collection.update_one({"_id": ObjectId(recipe_id)}, {"$inc": {"views": 1}})
