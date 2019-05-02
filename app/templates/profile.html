@@ -20,10 +20,23 @@
                             {% if user_recipe.img_src %}
                             <img src="{{ user_recipe.img_src }}" alt="Dessert Image" class="circle">
                             {% else %}
-                            <img src="{{ url_for('static', filename='img/no-img.png') }}" alt="Dessert Image" class="circle">
+                            <img src="{{ url_for('static', filename='img/no-img.png') }}" alt="Dessert Image"
+                                class="circle">
                             {% endif %}
                             <span class="title font-special bold purple-text">{{ user_recipe.recipe_name }}</span>
                             <p class="truncate pink-text text-lighten-2">{{ user_recipe.description }}</p>
+                        </a>
+                    </li>
+                    {% else %}
+                    <li class="collection-item avatar">
+                        <span class="title font-special bold purple-text">
+                            Good things come to those who share recipes.
+                        </span>
+                        <p class="purple-text bold">
+                            You haven't shared anything yet. Click the icon on the right to add your first recipe.
+                        </p>
+                        <a href="{{ url_for('add_dessert') }}" title="Add a Recipe">
+                            <i class="fas fa-plus-circle material-icons small purple-text purple lighten-5 secondary-content"></i>
                         </a>
                     </li>
                     {% endfor %}
@@ -49,11 +62,24 @@
                             {% if user_fav.img_src %}
                             <img src="{{ user_fav.img_src }}" alt="Dessert Image" class="circle">
                             {% else %}
-                            <img src="{{ url_for('static', filename='img/no-img.png') }}" alt="Dessert Image" class="circle">
+                            <img src="{{ url_for('static', filename='img/no-img.png') }}" alt="Dessert Image"
+                                class="circle">
                             {% endif %}
                             <span class="title font-special bold purple-text">{{ user_fav.recipe_name }}</span>
                             <p class="truncate pink-text text-lighten-2">{{ user_fav.description }}</p>
                             <i class="fas fa-heart material-icons pink-text text-lighten-2 text-shadow secondary-content"></i>
+                        </a>
+                    </li>
+                    {% else %}
+                    <li class="collection-item avatar">
+                        <span class="title font-special bold pink-text text-lighten-2">
+                            Happiness rarely keeps company with an empty stomach.
+                        </span>
+                        <p class="pink-text text-lighten-2 bold">
+                            Click the magnifying glass on the right to find something delicious!
+                        </p>
+                        <a href="{{ url_for('view_desserts') }}" title="View all Desserts">
+                            <i class="fas fa-search-plus material-icons small pink-text text-lighten-2 purple lighten-5 secondary-content"></i>
                         </a>
                     </li>
                     {% endfor %}
