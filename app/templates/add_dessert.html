@@ -14,64 +14,86 @@
             <!-- recipe name -->
             <div class="input-field col s12">
                 <i class="far fa-file-alt purple-text material-icons prefix"></i>
-                <input id="recipe_name" name="recipe_name" type="text" class="form-control validate" autocomplete="off"
-                    autofocus required>
-                <label for="recipe_name">* Recipe Name</label>
+                <input id="recipe_name" name="recipe_name" type="text" class="form-control validate"
+                    autocomplete="off" pattern="^[\w '.-]{5,50}$" placeholder="Recipe Name" required>
+                <label for="recipe_name">
+                    <span class="red-text">*</span>
+                    required
+                    <i class="fas fa-question-circle tooltipped" data-position="right" data-tooltip="5-50 characters"></i>
+                </label>
             </div>
 
             <!-- recipe description -->
             <div class="input-field col s12">
                 <i class="fas fa-align-left purple-text material-icons prefix"></i>
-                <input id="description" name="description" type="text" class="form-control validate" autocomplete="off"
-                    required>
-                <label for="description">* Description of your Recipe</label>
+                <input id="description" name="description" type="text" class="form-control validate"
+                    autocomplete="off" pattern="^.{15,500}$" placeholder="Description of your Recipe" required>
+                <label for="description">
+                    <span class="red-text">*</span>
+                    required
+                    <i class="fas fa-question-circle tooltipped" data-position="right" data-tooltip="15-500 characters"></i>
+                </label>
             </div>
 
             <!-- dessert type -->
             <div class="input-field col s12">
                 <i class="fas fa-ice-cream purple-text material-icons prefix"></i>
                 <select id="dessert_type" name="dessert_type" class="form-control validate" required>
-                    <option value="" disabled selected></option>
+                    <option value="" disabled selected>Dessert Category</option>
                     {% for dessert in desserts %}
                     <option value="{{ dessert }}">{{ dessert }}</option>
                     {% endfor %}
                 </select>
-                <label for="dessert_type">* Dessert Category</label>
+                <label for="dessert_type">
+                    <span class="red-text">*</span>
+                    required
+                </label>
             </div>
 
             <!-- total hours -->
-            <div class="input-field col s6">
+            <div class="input-field col s6 m3">
                 <i class="fas fa-hourglass-half purple-text material-icons prefix"></i>
-                <input id="total_hrs" name="total_hrs" type="number" min="0" max="99" autocomplete="off">
-                <label for="total_hrs">Hours</label>
+                <input id="total_hrs" name="total_hrs" type="number" min="0" max="99" placeholder="Hours" autocomplete="off">
+                <label for="total_hrs">
+                    optional
+                    <i class="fas fa-question-circle hide-on-small-only tooltipped" data-position="right" data-tooltip="0 - 99"></i>
+                </label>
             </div>
 
             <!-- total minutes -->
-            <div class="input-field col s6">
+            <div class="input-field col s6 m3">
                 <i class="fas fa-stopwatch purple-text material-icons prefix"></i>
-                <input id="total_mins" name="total_mins" type="number" min="0" max="59" autocomplete="off"
-                    class="form-control validate" required>
-                <label for="total_mins">* Minutes</label>
+                <input id="total_mins" name="total_mins" type="number" min="0" max="59"
+                    placeholder="Minutes" autocomplete="off" class="form-control validate" required>
+                <label for="total_mins">
+                    <span class="red-text">*</span>
+                    required
+                    <i class="fas fa-question-circle hide-on-small-only tooltipped" data-position="right" data-tooltip="0 - 59"></i>
+                </label>
             </div>
 
             <!-- recipe allergens -->
-            <div class="input-field col s12">
+            <div class="input-field col s12 m6">
                 <i class="fas fa-exclamation-triangle purple-text material-icons prefix"></i>
                 <select id="allergens" name="allergens" multiple>
+                    <option value="" disabled>Possible Allergens</option>
                     {% for allergen in allergens %}
-                    <option value="{{ allergen }}"
-                        data-icon="{{ url_for('static', filename='img/allergens/'+allergen|lower+'.png') }}">
-                        {{ allergen }}</option>
+                    <!-- entire <option> must be on single line, not 'beautified' across multiple lines (causes whitespace) -->
+                    <option value="{{ allergen }}" data-icon="{{ url_for('static', filename='img/allergens/'+allergen|lower+'.png') }}">{{ allergen }}</option>
                     {% endfor %}
                 </select>
-                <label for="allergens">Possible Allergens</label>
+                <label for="allergens">optional
+                    <i class="fas fa-question-circle tooltipped" data-position="right" data-tooltip="select all that apply"></i>
+                </label>
             </div>
 
             <!-- recipe photo -->
             <div class="input-field col s12">
                 <i class="fas fa-image purple-text material-icons prefix"></i>
-                <input id="img_src" name="img_src" type="text" autocomplete="off">
-                <label for="img_src">Recipe Photo</label>
+                <input id="img_src" name="img_src" class="validate" type="url" placeholder="Recipe Photo URL" pattern="https?://.+" autocomplete="off">
+                <label for="img_src">optional
+                    <i class="fas fa-question-circle tooltipped" data-position="right" data-tooltip="link to your recipe photo online"></i>
+                </label>
             </div>
 
         </div>
@@ -82,22 +104,61 @@
 
             <h4 class="font-special bold upper text-shadow center-align">Ingredients</h4>
 
+            <!-- example ingredient rows -->
+            <h5 class="row grey-text upper bold">Examples:</h5>
+            <div class="row grey-text example">
+                <div class="input-field col s12 m3 l2">
+                    <i class="fas fa-hashtag material-icons prefix"></i>
+                    <input placeholder="1/2" disabled>
+                </div>
+                <div class="input-field col s12 m4">
+                    <i class="fas fa-utensil-spoon material-icons prefix"></i>
+                    <select disabled>
+                        <option disabled selected>cup (C)</option>
+                    </select>
+                </div>
+                <div class="input-field col s12 m5 l6">
+                    <i class="fas fa-egg material-icons prefix"></i>
+                    <input placeholder="packed brown sugar" disabled>
+                </div>
+            </div>
+
+            <div class="row grey-text example">
+                <div class="input-field col s12 m3 l2">
+                    <i class="fas fa-hashtag material-icons prefix"></i>
+                    <input placeholder="3" disabled>
+                </div>
+                <div class="input-field col s12 m4">
+                    <i class="fas fa-utensil-spoon material-icons prefix"></i>
+                    <select disabled>
+                        <option disabled selected>not applicable</option>
+                    </select>
+                </div>
+                <div class="input-field col s12 m5 l6">
+                    <i class="fas fa-egg material-icons prefix"></i>
+                    <input placeholder="large egg yolks" disabled>
+                </div>
+            </div>
+            <hr color="purple">
+
+
             <div class="new-ingredient ingredient row">
                 <!-- ingredient amount / quantity -->
-                <div class="input-field col s12 m2">
+                <div class="input-field col s12 m3 l2">
                     <i class="fas fa-hashtag purple-text material-icons prefix"></i>
-                    <input id="ingredient_amount" name="ingredient_amount" type="text"
-                        class="ingredient_amount validate" autocomplete="off" placeholder="1/2" pattern="^[0-9/-.]+$"
-                        required>
-                    <label for="ingredient_amount"></label>
+                    <input id="ingredient_amount" name="ingredient_amount" type="text" class="ingredient_amount validate"
+                        autocomplete="off" placeholder="Amount" pattern="^[\d\/\-\. ]{1,7}$" required>
+                    <label for="ingredient_amount">
+                        <span class="red-text">*</span>
+                        required
+                    </label>
                 </div>
 
                 <!-- ingredient measurement / volume-->
                 <div class="input-field col s12 m4">
                     <i class="fas fa-utensil-spoon purple-text material-icons prefix"></i>
-                    <label for="ingredient_measurement"></label>
                     <select id="ingredient_measurement" name="ingredient_measurement" class="validate" required>
-                        <option value="" disabled selected></option>
+                        <option value="" disabled selected>unit of measurement</option>
                         <optgroup label="not applicable">
                             {% for measurement in measurements %}
                             {% if loop.index == 1 %}
@@ -120,14 +181,21 @@
                             {% endfor %}
                         </optgroup>
                     </select>
+                    <label for="ingredient_measurement">
+                        <span class="red-text">*</span>
+                        required
+                    </label>
                 </div>
 
                 <!-- ingredient -->
-                <div class="input-field col s12 m6">
+                <div class="input-field col s12 m5 l6">
                     <i class="fas fa-egg purple-text material-icons prefix"></i>
-                    <label for="ingredient_name"></label>
                     <input id="ingredient_name" name="ingredient_name" type="text" class="ingredient_name validate"
-                        autocomplete="off" placeholder="packed brown sugar" required>
+                        autocomplete="off" pattern="^.{3,100}$" placeholder="Ingredient" required>
+                    <label for="ingredient_name">
+                        <span class="red-text">*</span>
+                        required
+                    </label>
                 </div>
 
             </div>
@@ -150,12 +218,27 @@
 
             <h4 class="font-special bold upper text-shadow center-align">Directions</h4>
 
+            <!-- example directions row -->
+            <h5 class="row grey-text upper bold">Example:</h5>
+            <div class="row grey-text example">
+                <div class="input-field col s12">
+                    <i class="fas fa-list-ol material-icons prefix"></i>
+                    <input placeholder="In a large bowl, cream together the butter, sugar, vanilla, and eggs using a wire whisk." disabled>
+                </div>
+            </div>
+            <hr color="purple">
+
+
             <div class="new-direction direction row">
                 <!-- direction -->
                 <div class="input-field col s12">
                     <i class="fas fa-list-ol purple-text material-icons prefix"></i>
-                    <input id="directions" name="directions" type="text" class="directions validate" autocomplete="off" placeholder="list each step per line" required>
-                    <label for="directions"></label>
+                    <input id="directions" name="directions" type="text" class="directions validate"
+                        autocomplete="off" pattern="^.{5,500}$" placeholder="list each direction one per line" required>
+                    <label for="directions">
+                        <span class="red-text">*</span>
+                        required
+                    </label>
                 </div>
 
             </div>
@@ -174,11 +257,15 @@
 
 
         <div class="row center-align">
-            <button type="submit" class="waves-effect waves-light btn btn-large purple bold text-shadow">Add <i
-                    class="fas fa-plus-circle material-icons right hide-on-small-only"></i></button>
-            <button type="reset" class="waves-effect waves-light btn btn-large pink lighten-2 bold text-shadow"
-                onclick="history.go(-1)">Cancel
-                <i class="fas fa-times-circle material-icons right hide-on-small-only"></i></button>
+            <button type="submit" class="waves-effect waves-red btn btn-large purple bold text-shadow">
+                Add
+                <i class="fas fa-plus-circle material-icons right hide-on-small-only"></i>
+            </button>
+
+            <button type="reset" class="waves-effect waves-purple btn btn-large pink lighten-2 bold text-shadow" onclick="history.go(-1)">
+                Cancel
+                <i class="fas fa-times-circle material-icons right hide-on-small-only"></i>
+            </button>
         </div>
 
     </div>

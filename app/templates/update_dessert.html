@@ -15,23 +15,31 @@
             <div class="input-field col s12">
                 <i class="far fa-file-alt purple-text material-icons prefix"></i>
                 <input id="recipe_name" name="recipe_name" type="text" class="form-control validate" autocomplete="off"
-                    value="{{ recipe.recipe_name }}" required>
-                <label for="recipe_name">* Recipe Name</label>
+                    value="{{ recipe.recipe_name }}" pattern="^[\w '.-]{5,50}$" placeholder="Recipe Name" required>
+                <label for="recipe_name">
+                    <span class="red-text">*</span>
+                    required
+                    <i class="fas fa-question-circle tooltipped" data-position="right" data-tooltip="5-50 characters"></i>
+                </label>
             </div>
 
             <!-- recipe description -->
             <div class="input-field col s12">
                 <i class="fas fa-align-left purple-text material-icons prefix"></i>
                 <input id="description" name="description" type="text" class="form-control validate"
-                    value="{{ recipe.description }}" autocomplete="off" required>
-                <label for="description">* Description of your Recipe</label>
+                    value="{{ recipe.description }}" autocomplete="off" pattern="^.{15,500}$" placeholder="Description of your Recipe" required>
+                <label for="description">
+                    <span class="red-text">*</span>
+                    required
+                    <i class="fas fa-question-circle tooltipped" data-position="right" data-tooltip="15-500 characters"></i>
+                </label>
             </div>
 
             <!-- dessert type -->
             <div class="input-field col s12">
                 <i class="fas fa-ice-cream purple-text material-icons prefix"></i>
                 <select id="dessert_type" name="dessert_type" class="form-control validate" required>
-                    <option value="" disabled selected></option>
+                    <option value="" disabled selected>Dessert Category</option>
                     {% for dessert in desserts %}
                     {% if dessert == recipe.dessert_type %}
                     <option value="{{ dessert }}" selected>{{ dessert }}</option>
@@ -40,62 +48,75 @@
                     {% endif %}
                     {% endfor %}
                 </select>
-                <label for="dessert_type">* Dessert Category</label>
+                <label for="dessert_type">
+                    <span class="red-text">*</span>
+                    required
+                </label>
             </div>
 
             <!-- total hours -->
-            <div class="input-field col s6">
+            <div class="input-field col s6 m3">
                 <i class="fas fa-hourglass-half purple-text material-icons prefix"></i>
-                <input id="total_hrs" name="total_hrs" type="number" min="0" max="99" value="{{ recipe.total_hrs }}"
-                    autocomplete="off">
-                <label for="total_hrs">Hours</label>
+                <input id="total_hrs" name="total_hrs" type="number" min="0" max="99"
+                    value="{{ recipe.total_hrs }}" placeholder="Hours" autocomplete="off">
+                <label for="total_hrs">
+                    optional
+                    <i class="fas fa-question-circle hide-on-small-only tooltipped" data-position="right" data-tooltip="0 - 99"></i>
+                </label>
             </div>
 
             <!-- total minutes -->
-            <div class="input-field col s6">
+            <div class="input-field col s6 m3">
                 <i class="fas fa-stopwatch purple-text material-icons prefix"></i>
                 <input id="total_mins" name="total_mins" type="number" min="0" max="59" value="{{ recipe.total_mins }}"
-                    autocomplete="off" class="form-control validate" required>
-                <label for="total_mins">* Minutes</label>
+                    placeholder="Minutes" autocomplete="off" class="form-control validate" required>
+                <label for="total_mins">
+                    <span class="red-text">*</span>
+                    required
+                    <i class="fas fa-question-circle hide-on-small-only tooltipped" data-position="right" data-tooltip="0 - 59"></i>
+                </label>
             </div>
 
             <!-- recipe allergens -->
-            <div class="input-field col s12">
+            <div class="input-field col s12 m6">
                 <i class="fas fa-exclamation-triangle purple-text material-icons prefix"></i>
                 <select id="allergens" name="allergens" multiple>
+                    <option value="" disabled>Possible Allergens</option>
                     {% for allergen in allergens %}
                     {% if allergen in recipe.allergens %}
-                    <option value="{{ allergen }}"
-                        data-icon="{{ url_for('static', filename='img/allergens/'+allergen|lower+'.png') }}" selected>
-                        {{ allergen }}</option>
+                    <!-- entire <option> must be on single line, not 'beautified' across multiple lines (causes whitespace) -->
+                    <option value="{{ allergen }}" data-icon="{{ url_for('static', filename='img/allergens/'+allergen|lower+'.png') }}" selected>{{ allergen }}</option>
                     {% else %}
-                    <option value="{{ allergen }}"
-                        data-icon="{{ url_for('static', filename='img/allergens/'+allergen|lower+'.png') }}">
-                        {{ allergen }}</option>
+                    <!-- entire <option> must be on single line, not 'beautified' across multiple lines (causes whitespace) -->
+                    <option value="{{ allergen }}" data-icon="{{ url_for('static', filename='img/allergens/'+allergen|lower+'.png') }}">{{ allergen }}</option>
                     {% endif %}
                     {% endfor %}
                 </select>
-                <label for="allergens">Possible Allergens</label>
+                <label for="allergens">optional
+                    <i class="fas fa-question-circle tooltipped" data-position="right" data-tooltip="select all that apply"></i>
+                </label>
             </div>
 
             <!-- recipe photo -->
             <div class="input-field col s12">
                 <i class="fas fa-image purple-text material-icons prefix"></i>
                 {% if recipe.img_src %}
-                <input id="img_src" name="img_src" type="text" autocomplete="off" value="{{ recipe.img_src }}">
+                <input id="img_src" name="img_src" class="validate" type="url" value="{{ recipe.img_src }}"
+                    placeholder="Recipe Photo URL" pattern="https?://.+" autocomplete="off">
                 {% else %}
-                <input id="img_src" name="img_src" type="text" autocomplete="off">
+                <input id="img_src" name="img_src" class="validate" type="url"
+                    placeholder="Recipe Photo URL" pattern="https?://.+" autocomplete="off">
                 {% endif %}
-                <label for="img_src">Recipe Photo</label>
+                <label for="img_src">optional
+                    <i class="fas fa-question-circle tooltipped" data-position="right" data-tooltip="link to your recipe photo online"></i>
+                </label>
             </div>
 
             <div class="col s12">
                 {% if recipe.img_src %}
-                <div id="recipe-img-small" style="background: url('{{ recipe.img_src }}') center/cover no-repeat;"
-                    alt="Dessert"></div>
+                <div id="recipe-img-small" style="background: url('{{ recipe.img_src }}') center/cover no-repeat;" alt="Dessert"></div>
                 {% else %}
-                <div id="recipe-img-small" style="background: url('/static/img/no-img.png') center/cover no-repeat;"
-                    alt="No Images Available"></div>
+                <div id="recipe-img-small" style="background: url('/static/img/no-img.png') center/cover no-repeat;" alt="No Images Available"></div>
                 {% endif %}
             </div>
 
@@ -111,20 +132,21 @@
             {% if amount_list.0 or unit_list.0 or ingredient_list.0 %}
             <div class="new-ingredient ingredient row">
                 <!-- ingredient amount / quantity -->
-                <div class="input-field col s12 m2">
+                <div class="input-field col s12 m3 l2">
                     <i class="fas fa-hashtag purple-text material-icons prefix"></i>
-                    <input id="ingredient_amount" name="ingredient_amount" type="text"
-                        class="ingredient_amount validate" autocomplete="off" placeholder="1/2" pattern="^[0-9/-.]+$"
-                        value="{{ amount_list }}" required>
-                    <label for="ingredient_amount"></label>
+                    <input id="ingredient_amount" name="ingredient_amount" type="text" class="ingredient_amount validate"
+                        autocomplete="off" placeholder="Amount" pattern="^[\d\/\-\. ]{1,7}$" value="{{ amount_list }}" required>
+                    <label for="ingredient_amount">
+                        <span class="red-text">*</span>
+                        required
+                    </label>
                 </div>
 
                 <!-- ingredient measurement / volume-->
                 <div class="input-field col s12 m4">
                     <i class="fas fa-utensil-spoon purple-text material-icons prefix"></i>
-                    <label for="ingredient_measurement"></label>
                     <select id="ingredient_measurement" name="ingredient_measurement" class="validate" required>
-                        <option value="" disabled selected></option>
+                        <option value="" disabled selected>unit of measurement</option>
                         <optgroup label="not applicable">
                             {% for measurement in measurements %}
                             {% if loop.index == 1 %}
@@ -159,14 +181,21 @@
                             {% endfor %}
                         </optgroup>
                     </select>
+                    <label for="ingredient_measurement">
+                        <span class="red-text">*</span>
+                        required
+                    </label>
                 </div>
 
                 <!-- ingredient -->
-                <div class="input-field col s12 m6">
+                <div class="input-field col s12 m5 l6">
                     <i class="fas fa-egg purple-text material-icons prefix"></i>
-                    <label for="ingredient_name"></label>
                     <input id="ingredient_name" name="ingredient_name" type="text" class="ingredient_name validate"
-                        autocomplete="off" placeholder="packed brown sugar" value="{{ ingredient_list }}" required>
+                        autocomplete="off" pattern="^.{3,100}$" value="{{ ingredient_list }}" placeholder="Ingredient" required>
+                    <label for="ingredient_name">
+                        <span class="red-text">*</span>
+                        required
+                    </label>
                 </div>
 
             </div>
@@ -175,12 +204,14 @@
 
             <div class="new-ingredient ingredient row">
                 <!-- ingredient amount / quantity -->
-                <div class="input-field col s12 m2">
+                <div class="input-field col s12 m3 l2">
                     <i class="fas fa-hashtag purple-text material-icons prefix"></i>
-                    <input id="ingredient_amount" name="ingredient_amount" type="text"
-                        class="ingredient_amount validate" autocomplete="off" placeholder="1/2" pattern="^[0-9/-.]+$"
-                        value="{{ amount_list }}" required>
-                    <label for="ingredient_amount"></label>
+                    <input id="ingredient_amount" name="ingredient_amount" type="text" class="ingredient_amount validate"
+                        autocomplete="off" placeholder="Amount" pattern="^[\d\/\-\. ]{1,7}$" value="{{ amount_list }}" required>
+                    <label for="ingredient_amount">
+                        <span class="red-text">*</span>
+                        required
+                    </label>
                 </div>
 
                 <!-- ingredient measurement / volume-->
@@ -188,7 +219,7 @@
                     <i class="fas fa-utensil-spoon purple-text material-icons prefix"></i>
                     <label for="ingredient_measurement"></label>
                     <select id="ingredient_measurement" name="ingredient_measurement" class="validate" required>
-                        <option value="" disabled selected>unit</option>
+                        <option value="" disabled selected>unit of measurement</option>
                         {% for measurement in measurements %}
                         {% if measurement == unit_list %}
                         <option value="{{ measurement }}" selected>{{ unit_list }}</option>
@@ -197,14 +228,21 @@
                         {% endif %}
                         {% endfor %}
                     </select>
+                    <label for="ingredient_measurement">
+                        <span class="red-text">*</span>
+                        required
+                    </label>
                 </div>
 
                 <!-- ingredient -->
-                <div class="input-field col s12 m6">
+                <div class="input-field col s12 m5 l6">
                     <i class="fas fa-egg purple-text material-icons prefix"></i>
-                    <label for="ingredient_name"></label>
                     <input id="ingredient_name" name="ingredient_name" type="text" class="ingredient_name validate"
-                        autocomplete="off" placeholder="packed brown sugar" value="{{ ingredient_list }}" required>
+                        autocomplete="off" pattern="^.{3,100}$" value="{{ ingredient_list }}" placeholder="Ingredient" required>
+                    <label for="ingredient_name">
+                        <span class="red-text">*</span>
+                        required
+                    </label>
                 </div>
 
             </div>
@@ -237,8 +275,11 @@
                 <div class="input-field col s12">
                     <i class="fas fa-list-ol purple-text material-icons prefix"></i>
                     <input id="directions" name="directions" type="text" class="directions validate" autocomplete="off"
-                        placeholder="list each step per line" value="{{ direction }}" required>
-                    <label for="directions"></label>
+                        pattern="^.{5,500}$" placeholder="list each direction one per line" value="{{ direction }}" required>
+                    <label for="directions">
+                        <span class="red-text">*</span>
+                        required
+                    </label>
                 </div>
 
             </div>
@@ -250,8 +291,11 @@
                 <div class="input-field col s12">
                     <i class="fas fa-list-ol purple-text material-icons prefix"></i>
                     <input id="directions" name="directions" type="text" class="directions validate" autocomplete="off"
-                        placeholder="list each step per line" required>
-                    <label for="directions"></label>
+                        pattern="^.{5,500}$" placeholder="list each direction one per line" required>
+                    <label for="directions">
+                        <span class="red-text">*</span>
+                        required
+                    </label>
                 </div>
 
             </div>
@@ -273,11 +317,15 @@
 
 
         <div class="row center-align">
-            <button type="submit" class="waves-effect waves-light btn btn-large purple bold text-shadow">Update <i
-                    class="fas fa-check-circle material-icons right hide-on-small-only"></i></button>
-            <button type="reset" class="waves-effect waves-light btn btn-large pink lighten-2 bold text-shadow"
-                onclick="history.go(-1)">Cancel
-                <i class="fas fa-times-circle material-icons right hide-on-small-only"></i></button>
+            <button type="submit" class="waves-effect waves-red btn btn-large purple bold text-shadow">
+                Update
+                <i class="fas fa-check-circle material-icons right hide-on-small-only"></i>
+            </button>
+
+            <button type="reset" class="waves-effect waves-purple btn btn-large pink lighten-2 bold text-shadow" onclick="history.go(-1)">
+                Cancel
+                <i class="fas fa-times-circle material-icons right hide-on-small-only"></i>
+            </button>
         </div>
 
     </div>

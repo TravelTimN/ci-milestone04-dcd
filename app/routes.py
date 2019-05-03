@@ -178,7 +178,7 @@ def add_dessert():
 @app.route("/add_dessert", methods=["POST"])
 def add_dessert_toDB():
         # input fields to be submitted to database
-        today = datetime.now().strftime("%d %B, %Y")
+        today = datetime.now().strftime("%B %Y")
 
         # get user_id
         session_user = users_collection.find_one({"username_lower": session["user"].lower()})["username"]
@@ -347,7 +347,7 @@ def update_dessert_toDB(recipe_id):
         recipe = recipes_collection.find_one({"_id": ObjectId(recipe_id)})
 
         # get today for date_updated
-        today = datetime.now().strftime("%d %B, %Y")
+        today = datetime.now().strftime("%B %Y")
 
         # get current hidden values
         get_author = recipe.get("author")
