@@ -1,4 +1,6 @@
-import re, html
+import html
+import random
+import re
 from app import app
 from datetime import datetime
 from flask_pymongo import PyMongo
@@ -70,11 +72,18 @@ def register():
                         flash(Markup(f"Passwords should be <span class='pink-text text-lighten-2'>5-15 characters</span> long."))
                         return redirect(url_for("register"))
                 
+                # assign random avatar to user
+                avatars = ["birthday-cake", "cherry-cake", "cherry-flan", "flan", "ice-lolly-bear", "ice-lolly-panda",
+                        "lemon-pie", "macaroon-blue", "macaroon-green", "macaroon-pink", "mousse-pie", "neapolitan-torte",
+                        "raspberry-cheesecake", "raspberry-chocolate-cream-cake", "strawberry-cream-pie", "tiramisu-mousse"]
+                user_avatar = random.choice(avatars)
+                
                 # add successful user to database
                 register = {
                         "username": request.form.get("username"),
                         "username_lower": request.form.get("username").lower(),
                         "user_password": generate_password_hash(request.form.get("password")),
+                        "user_avatar": user_avatar,
                         "user_recipes": [],
                         "user_favs": []
                 }
@@ -117,6 +126,9 @@ def login():
 #----- PROFILE -----#
 @app.route("/<username>")
 def profile(username):
+        # get proper username
+        username = users_collection.find_one({"username_lower": session["user"].lower()})["username"]
+
         # find all recipes belonging to user
         user = users_collection.find_one({"username_lower": session["user"].lower()})["_id"]
         user_recipes = recipes_collection.find({"author": user}).sort([("recipe_name", 1)])
@@ -125,7 +137,14 @@ def profile(username):
         user_favs_list = users_collection.find_one({"username_lower": session["user"].lower()})["user_favs"]
         user_favs = recipes_collection.find({"_id": {"$in": user_favs_list}}).sort([("recipe_name", 1)])
 
-        return render_template("profile.html", username=session["user"], user_recipes=user_recipes, user_favs=user_favs)
+        # get user avatar
+        user_avatar = users_collection.find_one({"username_lower": session["user"].lower()})["user_avatar"]
+
+        return render_template("profile.html",
+                                username=username,
+                                user_recipes=user_recipes,
+                                user_favs=user_favs,
+                                user_avatar=user_avatar)
 
 
 #----- LOGOUT -----#
@@ -236,6 +255,7 @@ def view_desserts():
 def view_dessert(recipe_id, slugUrl):
         recipe = recipes_collection.find_one({"_id": ObjectId(recipe_id)})
         author = users_collection.find_one({"_id": ObjectId(recipe.get("author"))})["username"]
+        user_avatar = users_collection.find_one({"_id": ObjectId(recipe.get("author"))})["user_avatar"]
         amounts = recipe.get("ingredient_amount")
         measurements = recipe.get("ingredient_measurement")
         ingredients = recipe.get("ingredient_name")
@@ -267,12 +287,13 @@ def view_dessert(recipe_id, slugUrl):
 
         # zip Amount, Measurement, Ingredient into single full_ingredient
         full_ingredient = zip(amount, measurement, ingredients)
-
+        
+        # get user favorites if available
         try:
                 user_favs = users_collection.find_one({"username_lower": session["user"].lower()})["user_favs"]
         except:
                 user_favs = []
-
+        
         # increment number of views by 1
         recipes_collection.update_one({"_id": ObjectId(recipe_id)}, {"$inc": {"views": 1}})
         return render_template("view_dessert.html",
@@ -280,7 +301,8 @@ def view_dessert(recipe_id, slugUrl):
                                 full_ingredient=full_ingredient,
                                 units=units,
                                 author=author,
-                                user_favs=user_favs)
+                                user_favs=user_favs,
+                                user_avatar=user_avatar)
 
 
 # (crUd) ----- UPDATE a recipe -----#

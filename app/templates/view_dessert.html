@@ -61,7 +61,11 @@
         <!-- Recipe Details -->
         <div class="col s12 l6 center-align">
             <h4><span class="font-emilys-candy bold text-shadow">{{ recipe.recipe_name }}</span></h4>
-            <p>Recipe by: <span class="purple-text bold">{{ author }}</span></p>
+            <p>
+                <img src="{{ url_for('static', filename='img/avatars/'+user_avatar+'.png') }}" alt="{{ author }} Avatar" id="avatar-small" class="center-align">
+                <br>
+                <span class="purple-text bold">{{ author }}</span>
+            </p>
             <q>{{ recipe.description }}</q>
             <p><i class="fas fa-clock"></i>
                 <span class="bold">

@@ -4,6 +4,16 @@
 
 <div class="container">
 
+    <!-- USER AVATAR -->
+    <div class="center-align">
+        <h2 class="purple-text purple lighten-5 font-fredericka">{{ username }}</h2>
+        <h5 class="pink-text text-lighten-2 font-special">dessert avatar</h5>
+        <img src="{{ url_for('static', filename='img/avatars/'+user_avatar+'.png') }}" alt="User Avatar" id="user-avatar" class="white">
+        <h5 class="blue-text font-rye">{{ user_avatar|title }}</h5>
+    </div>
+
+    <div class="divider"></div>
+
     <!-- USER'S OWN RECIPES -->
     <ul class="collapsible" data-collapsible="accordion">
         <li class="recipe-card">
