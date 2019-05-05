@@ -27,7 +27,7 @@
             <div class="card-content row user-buttons">
                 <div class="col s6">
                     <!-- Update Button -->
-                    <a class="waves-effect waves-light btn bold upper green text-shadow"
+                    <a class="waves-effect waves-light btn bold upper green text-shadow-2"
                         href="{{ url_for('update_dessert', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}">Update
                         <i class="fas fa-pencil-alt material-icons right hide-on-small-only"></i>
                     </a>
@@ -35,7 +35,7 @@
 
                 <div class="col s6">
                     <!-- Delete Button -->
-                    <a class="waves-effect waves-light btn bold upper modal-trigger red text-shadow"
+                    <a class="waves-effect waves-light btn bold upper modal-trigger red text-shadow-2"
                         href="#modal-delete-recipe">Delete
                         <i class="far fa-trash-alt material-icons right hide-on-small-only"></i></a>
                     <div id="modal-delete-recipe" class="modal">
@@ -45,10 +45,10 @@
                             <p class="grey-text bold">This action cannot be undone.</p>
                         </div>
                         <div class="modal-footer center-align">
-                            <a class="waves-effect waves-light red btn text-shadow upper"
+                            <a class="waves-effect waves-light red btn text-shadow-2 upper"
                                 href="{{ url_for('delete_dessert', recipe_id=recipe._id) }}"><i
                                     class="far fa-trash-alt material-icons right"></i>Yes</a>
-                            <a href="#" class="modal-close waves-effect waves-light green btn text-shadow upper">
+                            <a href="#" class="modal-close waves-effect waves-light green btn text-shadow-2 upper">
                                 <i class="fas fa-reply material-icons right"></i>No</a>
                         </div>
                     </div>
@@ -60,15 +60,16 @@
 
         <!-- Recipe Details -->
         <div class="col s12 l6 center-align">
-            <h4><span class="font-emilys-candy bold text-shadow">{{ recipe.recipe_name }}</span></h4>
+            <h4><span class="font-emilys-candy bold text-shadow-2">{{ recipe.recipe_name }}</span></h4>
             <p>
                 <img src="{{ url_for('static', filename='img/avatars/'+user_avatar+'.png') }}" alt="{{ author }} Avatar" id="avatar-small" class="center-align">
                 <br>
-                <span class="purple-text bold">{{ author }}</span>
+                by: <span class="purple-text bold">{{ author }}</span>
             </p>
             <q>{{ recipe.description }}</q>
             <p><i class="fas fa-clock"></i>
-                <span class="bold">
+                Total Time:
+                <span class="purple-text bold">
                     {% if recipe.total_hrs %}
                     {{ recipe.total_hrs }}h
                     {% endif %}
@@ -78,7 +79,10 @@
                     {% endif %}
                 </span>
             </p>
-            <p><i class="fas fa-calendar-alt"></i> <span class="bold">{{ recipe.date_added }}</span></p>
+            <p><i class="fas fa-calendar-plus"></i> Added: <span class="purple-text bold">{{ recipe.date_added }}</span>
+            {% if recipe.date_added != recipe.date_updated %}
+            <br><i class="fas fa-calendar-check"></i> Updated: <span class="purple-text bold">{{ recipe.date_updated }}</span></p>
+            {% endif %}
             <div class="card-content">
                 {% for allergen in recipe.allergens %}
                 <div class="chip pink lighten-4 black-text">
@@ -89,9 +93,9 @@
             {% if session.user %}
             <div class="card-content row">
                 {% if recipe._id in user_favs %}
-                <a class="btn white purple-text bold upper waves-effect waves-purple" href="{{ url_for('delete_favorite', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}">You love it! <i class="fas fa-heart material-icons pink-text text-lighten-2 text-shadow"></i></a>
+                <a class="btn white purple-text bold upper waves-effect waves-purple" href="{{ url_for('delete_favorite', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}">You love it! <i class="fas fa-heart material-icons pink-text text-lighten-2 text-shadow-2"></i></a>
                 {% else %}
-                <a class="btn white purple-text bold upper waves-effect waves-purple" href="{{ url_for('add_favorite', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}">Love it? <i class="far fa-heart material-icons pink-text text-lighten-2 text-shadow"></i></a>
+                <a class="btn white purple-text bold upper waves-effect waves-purple" href="{{ url_for('add_favorite', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}">Love it? <i class="far fa-heart material-icons pink-text text-lighten-2 text-shadow-2"></i></a>
                 {% endif %}
             </div>
             {% endif %}
@@ -103,7 +107,7 @@
     <div class="row card z-depth-2 recipe-card">
         <!-- Ingredients -->
         <div class="col s12 m4 ing-dir">
-            <h5 class="font-special bold upper text-shadow center-align">Ingredients</h5>
+            <h5 class="font-special bold upper text-shadow-2 center-align">Ingredients</h5>
             <ul id="ingredients">
                 {% for amount,measurement,ingredient in full_ingredient %}
                 {% set unit_loop = loop %}
@@ -122,11 +126,12 @@
                 </li>
                 {% endfor %}
             </ul>
+            <hr class="divider purple hide-on-med-and-up z-depth-1"></hr>
         </div>
 
         <!-- Directions -->
         <div class="col s12 m8 ing-dir">
-            <h5 class="font-special bold upper text-shadow center-align">Directions</h5>
+            <h5 class="font-special bold upper text-shadow-2 center-align">Directions</h5>
             <ol id="directions">
                 {% for direction in recipe.directions %}
                 <li class="direction-item">
@@ -138,7 +143,7 @@
     </div>
 
     <div class="row center-align">
-        <button type="reset" class="waves-effect waves-purple btn btn-large pink lighten-2 bold text-shadow" onclick="history.go(-1)"><i
+        <button type="reset" class="waves-effect waves-purple btn btn-large pink lighten-2 bold text-shadow-2" onclick="history.go(-1)"><i
                 class="fas fa-arrow-alt-circle-left material-icons left"></i> Back</button>
     </div>
 

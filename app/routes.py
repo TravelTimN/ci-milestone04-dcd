@@ -197,7 +197,7 @@ def add_dessert():
 @app.route("/add_dessert", methods=["POST"])
 def add_dessert_toDB():
         # input fields to be submitted to database
-        today = datetime.now().strftime("%B %Y")
+        today = datetime.now().strftime("%d %B, %Y")
 
         # get user_id
         session_user = users_collection.find_one({"username_lower": session["user"].lower()})["username"]
@@ -240,6 +240,12 @@ def add_dessert_toDB():
 # (cRud) ----- READ all desserts -----#
 @app.route("/desserts")
 def view_desserts():
+        # show author on cards
+        authors = []
+        get_authors = users_collection.find({}, {"username": 1})
+        for author in get_authors:
+                authors.append(author)
+
         # sort: alphabetically
         sort_recipe_name = recipes_collection.find().sort([("recipe_name", 1)])
 
@@ -247,7 +253,8 @@ def view_desserts():
         #sort_views = recipes_collection.find().sort([("views", -1)])
 
         return render_template("view_desserts.html",
-                                recipes=sort_recipe_name)
+                                recipes=sort_recipe_name,
+                                authors=authors)
 
 
 # (cRud) ----- READ a single dessert -----#
@@ -369,7 +376,7 @@ def update_dessert_toDB(recipe_id):
         recipe = recipes_collection.find_one({"_id": ObjectId(recipe_id)})
 
         # get today for date_updated
-        today = datetime.now().strftime("%B %Y")
+        today = datetime.now().strftime("%d %B, %Y")
 
         # get current hidden values
         get_author = recipe.get("author")

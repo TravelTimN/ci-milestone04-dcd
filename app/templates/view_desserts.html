@@ -2,43 +2,43 @@
 
 {% block content %}
 
-
 <div class="container-95">
 
     <div class="row">
 
         <!-- for each recipe, create Materialize Card -->
         {% for recipe in recipes %}
-        <div class="col s12 m6 l4">
-            <div class="card sticky-action">
+        <div class="col s12 m6 l3">
+            <div class="card sticky-action hoverable">
 
                 <!-- Card Image -->
-                <div class="card-image waves-effect waves-block waves-light">
+                <div class="card-image waves-effect waves-block waves-red">
                     {% if recipe.img_src %}
                     <img src="{{ recipe.img_src }}" alt="Dessert" class="activator">
                     {% else %}
                     <img src="{{ url_for('static', filename='img/no-img.png') }}" alt="Dessert" class="activator">
                     {% endif %}
                     <a href="{{ url_for('view_dessert', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}">
-                        <span class="card-title center-align purple-text font-emilys-candy">
+                        <span class="card-title center-align purple-text text-darken-4 text-shadow-1 font-emilys-candy" title="{{ recipe.recipe_name }}">
                             {{ recipe.recipe_name }}
                         </span>
                     </a>
                 </div>
 
                 <!-- Card Action (stats) -->
-                <div class="card-action purple lighten-3">
+                <div class="card-action purple lighten-3 activator">
+                    
                     <div class="row">
-                        <div class="col s4 center-align tooltipped" data-position="top" data-tooltip="Total Time: {% if recipe.total_hrs %}{{ recipe.total_hrs }}h{% endif %} {{ recipe.total_mins }}m">
-                            <i class="far fa-clock material-icons purple-text"></i><br>
+                        <div class="col s4 center-align bold" title="Total Time">
+                            <i class="far fa-clock material-icons purple-text text-shadow-1"></i><br>
                             {% if recipe.total_hrs %}{{ recipe.total_hrs }}h{% endif %} {{ recipe.total_mins }}m
                         </div>
-                        <div class="col s4 center-align tooltipped" data-position="top" data-tooltip="Total Views: {{ recipe.views }}">
-                            <i class="far fa-eye material-icons purple-text"></i><br>
+                        <div class="col s4 center-align bold" title="Recipe Views">
+                            <i class="far fa-eye material-icons blue-text text-darken-2 text-shadow-1"></i><br>
                             {{ recipe.views }}
                         </div>
-                        <div class="col s4 center-align tooltipped" data-position="top" data-tooltip="Total Likes: {{ recipe.user_favs }}">
-                            <i class="far fa-heart material-icons purple-text"></i><br>
+                        <div class="col s4 center-align bold" title="User Favorites">
+                            <i class="far fa-heart material-icons pink-text text-shadow-1"></i><br>
                             {{ recipe.user_favs }}
                         </div>
                     </div>
@@ -46,13 +46,30 @@
 
                 <!-- Card Reveal (hidden until clicked) -->
                 <div class="card-reveal">
-                    <p class="card-title">
+                    <h5 class="card-title">
                         <i class="material-icons right">close</i>
-                        <a href="{{ url_for('view_dessert', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}"
-                            class="purple-text bold font-emilys-candy">{{ recipe.recipe_name }}</a>
-                    </p>
-                    <p class="pink-text font-rye bold">{{ recipe.dessert_type }}</p>
-                    <q>{{ recipe.description }}</q>
+                        <a href="{{ url_for('view_dessert', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}">
+                            <i class="fas fa-info-circle material-icons pink-text text-lighten-3 hide-on-small-only tooltipped" data-position="bottom"
+                                data-tooltip="{{ recipe.description|truncate(85, True, '...<br>[ click to read more ]')|safe }}"></i>
+                            <span class="purple-text text-shadow-1 bold font-emilys-candy">{{ recipe.recipe_name }}</span>
+                        </a>
+                    </h5>
+                    <hr class="divider" color="purple"></hr>
+                    <h6 class="purple-text bold"><i class="fas fa-utensils materialize-icons"></i> : <span class="pink-text font-rye">{{ recipe.dessert_type }}</span><br>
+                        <span class="purple-text">
+                            {% for author in authors %}
+                            {% if recipe.author|string == author["_id"]|string %}
+                            <i class="fas fa-user-circle materialize-icons"></i> author: <span class="pink-text">{{ author["username"] }}</span>
+                            {% endif %}
+                            {% endfor %}
+                        </span><br>
+                        <span class="purple-text">
+                            <i class="fas fa-calendar-plus materialize-icons"></i> added: <span class="pink-text">{{ recipe.date_added }}</span>
+                            {% if recipe.date_added != recipe.date_updated %}
+                            <br><i class="fas fa-calendar-check materialize-icons"></i> updated: <span class="pink-text">{{ recipe.date_updated }}</span>
+                            {% endif %}
+                        </span>
+                    </h6>
                 </div>
             </div>
         </div>

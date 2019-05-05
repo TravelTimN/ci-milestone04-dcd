@@ -75,7 +75,11 @@ body {
     width: 90vw;
 }
 
-.text-shadow {
+.text-shadow-1 {
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+}
+
+.text-shadow-2 {
     text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
 }
 
@@ -98,10 +102,6 @@ main {
     margin-bottom: 50px;
     flex: 1 0 auto;
 }
-
-/*.dropdown-content {
-    z-index: 25;
-}*/
 
 
 /*----- Footer -----*/
@@ -172,14 +172,14 @@ footer {
 }
 
 .card .card-image .card-title {
-    padding: 5px;
+    padding: 0px;
     width: 100%;
-    mix-blend-mode: luminosity;
+    /*mix-blend-mode: luminosity;*/
     font-size: 2em;
     font-weight: bold;
     background: rgba(243, 229, 245, 0.75);
-    border-top: 5px solid #9c27b0;
-    border-bottom: 5px solid #9c27b0;
+    border-top: 3px dashed #f06292;
+    border-bottom: 3px dashed #f06292;
 }
 
 .card .card-content {
@@ -187,13 +187,18 @@ footer {
 }
 
 .card .card-action {
-    padding: 5px 5px 0px 5px;
+    vertical-align: middle;
+    padding: 16px 25px 1px 25px;
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
 }
 
-.card-action i {
-    vertical-align: top;
+.card .card-reveal {
+    background-color: rgba(255, 255, 255, 0.9);
+}
+
+.card .card-reveal h6 {
+    line-height: 1.5em;
 }
 
 
@@ -357,7 +362,6 @@ ul.collapsible {
 
 /*----- >600px Materialize Tablet size (.m) -----*/
 @media (min-width: 600px) {
-
     .login-form-container,
     .register-form-container {
         padding: 10px 50px;
@@ -382,7 +386,13 @@ ul.collapsible {
 
 /*----- >992px Materialize Desktop size (.l) -----*/
 @media (min-width: 992px) {
+    html {
+        font-size: 14px;
+    }
     .login-register {
         max-width: 50vw;
+    }
+    .card .card-action {
+        padding: 16px 5px 1px 5px;
     }
 }

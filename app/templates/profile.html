@@ -7,7 +7,6 @@
     <!-- USER AVATAR -->
     <div class="center-align">
         <h2 class="purple-text purple lighten-5 font-fredericka">{{ username }}</h2>
-        <h5 class="pink-text text-lighten-2 font-special">dessert avatar</h5>
         <img src="{{ url_for('static', filename='img/avatars/'+user_avatar+'.png') }}" alt="User Avatar" id="user-avatar" class="white">
         <h5 class="blue-text font-rye">{{ user_avatar|title }}</h5>
     </div>
@@ -17,7 +16,7 @@
     <!-- USER'S OWN RECIPES -->
     <ul class="collapsible" data-collapsible="accordion">
         <li class="recipe-card">
-            <div class="collapsible-header purple white-text text-shadow">
+            <div class="collapsible-header purple white-text text-shadow-2">
                 <i class="fas fa-user-plus material-icons"></i>
                 <h5 class="bold font-amatic">My Desserts</h5>
             </div>
@@ -59,7 +58,7 @@
     <!-- USER'S FAVORITE RECIPES -->
     <ul class="collapsible" data-collapsible="accordion">
         <li class="recipe-card">
-            <div class="collapsible-header pink lighten-2 white-text text-shadow">
+            <div class="collapsible-header pink lighten-2 white-text text-shadow-2">
                 <i class="fas fa-heart material-icons"></i>
                 <h5 class="bold font-amatic">Saved Desserts</h5>
             </div>
@@ -77,7 +76,7 @@
                             {% endif %}
                             <span class="title font-special bold purple-text">{{ user_fav.recipe_name }}</span>
                             <p class="truncate pink-text text-lighten-2">{{ user_fav.description }}</p>
-                            <i class="fas fa-heart material-icons pink-text text-lighten-2 text-shadow secondary-content"></i>
+                            <i class="fas fa-heart material-icons pink-text text-lighten-2 text-shadow-2 secondary-content"></i>
                         </a>
                     </li>
                     {% else %}
