@@ -52,24 +52,24 @@ def register():
                 # check if username already taken
                 existing_user = users_collection.find_one({"username_lower": request.form.get("username").lower()})
                 if existing_user:
-                        flash(Markup(f"<span class='pink-text text-lighten-2'>{request.form.get('username')}</span> is an excellent choice! (but it's already taken)"))
+                        flash(Markup(f"<i class='fas fa-exclamation-circle red-text material-icons small'></i> <span class='pink-text text-lighten-2'>{request.form.get('username')}</span> is an excellent choice! (but it's already taken)"))
                         return redirect(url_for("register"))
                 
                 # check if username is alphanumeric or contains 'test'
                 username_input = request.form.get("username").lower()
                 username_check = re.search(r"(?!\-)[\W]|t+e+s+t+", username_input, re.I)
                 if username_check:
-                        flash(Markup(f"Usernames containing <span class='pink-text text-lighten-2'>{username_check.group(0).upper()}</span> are not permitted."))
+                        flash(Markup(f"<i class='fas fa-exclamation-circle red-text material-icons small'></i> Usernames containing <span class='pink-text text-lighten-2'>{username_check.group(0).upper()}</span> are not permitted."))
                         return redirect(url_for("register"))
                 
                 # username should be 3-5 alphanumeric
                 if len(request.form.get("username")) < 3 or len(request.form.get("username")) > 15:
-                        flash(Markup(f"Usernames should be <span class='pink-text text-lighten-2'>3-15 characters</span> long."))
+                        flash(Markup(f"<i class='fas fa-exclamation-circle red-text material-icons small'></i> Usernames should be <span class='pink-text text-lighten-2'>3-15 characters</span> long."))
                         return redirect(url_for("register"))
                 
                 # password should be 5-15 characters
                 if len(request.form.get("password")) < 5 or len(request.form.get("password")) > 15:
-                        flash(Markup(f"Passwords should be <span class='pink-text text-lighten-2'>5-15 characters</span> long."))
+                        flash(Markup(f"<i class='fas fa-exclamation-circle red-text material-icons small'></i> Passwords should be <span class='pink-text text-lighten-2'>5-15 characters</span> long."))
                         return redirect(url_for("register"))
                 
                 # assign random avatar to user
@@ -117,7 +117,7 @@ def login():
                                 return redirect(url_for("login"))
                 else:
                         # username doesn't exist
-                        flash(Markup(f"Hmm... username <span class='pink-text text-lighten-2'>{request.form.get('username')}</span> doesn't seem to exist."))
+                        flash(Markup(f"<i class='fas fa-exclamation-circle red-text material-icons small'></i> Hmm... username <span class='pink-text text-lighten-2'>{request.form.get('username')}</span> doesn't seem to exist."))
                         return redirect(url_for("login"))
         
         return render_template("log_reg.html")
@@ -151,6 +151,8 @@ def profile(username):
 @app.route("/logout")
 def logout():
         # remove user from 'session' cookies
+        username = users_collection.find_one({"username_lower": session["user"].lower()})["username"]
+        flash(Markup(f"Missing you already, <span class='pink-text text-lighten-2 bold'>" + username + "</span>!<br><i class='far fa-sad-tear yellow-text material-icons medium'></i>"))
         session.pop("user")
         return redirect(url_for("login"))
 
@@ -231,7 +233,7 @@ def add_dessert_toDB():
 
         # slugify url to be user-friendly
         slugUrl = slugify(request.form.get("recipe_name"))
-        flash("Sounds delicious! Thanks for adding this recipe!")
+        flash(Markup(f"<i class='far fa-check-circle green-text material-icons small'></i> Sounds delicious! Thanks for adding this recipe!"))
         return redirect(url_for("view_dessert",
                                 recipe_id=newID.inserted_id,
                                 slugUrl=slugUrl))
@@ -467,7 +469,7 @@ def update_dessert_toDB(recipe_id):
                 "user_favs": get_user_favs
         })
         slugUrl = slugify(request.form.get("recipe_name"))
-        flash("Your recipe has been updated successfully!")
+        flash(Markup(f"<i class='far fa-check-circle green-text material-icons small'></i> Your recipe has been updated successfully!"))
         return redirect(url_for("view_dessert",
                                 recipe_id=recipe_id,
                                 slugUrl=slugUrl))

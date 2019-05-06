@@ -178,8 +178,8 @@ footer {
     font-size: 2em;
     font-weight: bold;
     background: rgba(243, 229, 245, 0.75);
-    border-top: 3px dashed #f06292;
-    border-bottom: 3px dashed #f06292;
+    border-top: 5px double #f06292;
+    border-bottom: 5px double #f06292;
 }
 
 .card .card-content {
@@ -187,14 +187,17 @@ footer {
 }
 
 .card .card-action {
-    vertical-align: middle;
-    padding: 16px 25px 1px 25px;
+    padding: 5px;
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    text-align: center;
+    justify-items: center;
 }
 
 .card .card-reveal {
-    background-color: rgba(255, 255, 255, 0.9);
+    background-color: rgba(255, 255, 255, 0.95);
 }
 
 .card .card-reveal h6 {
@@ -420,8 +423,5 @@ ul.collapsible {
     }
     .login-register {
         max-width: 50vw;
-    }
-    .card .card-action {
-        padding: 16px 5px 1px 5px;
     }
 }
