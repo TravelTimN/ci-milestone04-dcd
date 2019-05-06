@@ -156,7 +156,7 @@ footer {
 
 
 /*----- Cards -----*/
-.card {
+.card:not(#search_form) {
     border-radius: 8px;
     margin-bottom: 50px;
 }
@@ -287,6 +287,16 @@ footer {
 
 #directions>li.completed::before {
     color: #4caf50;
+}
+
+
+/*----- Search -----*/
+#search_form h2 {
+    margin: 0;
+}
+
+#search_form .row {
+    margin-bottom: 10px;
 }
 
 

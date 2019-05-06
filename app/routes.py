@@ -238,7 +238,7 @@ def add_dessert_toDB():
 
 
 # (cRud) ----- READ all desserts -----#
-@app.route("/desserts")
+@app.route("/desserts", methods=["GET", "POST"])
 def view_desserts():
         # show author on cards
         authors = []
@@ -251,10 +251,72 @@ def view_desserts():
 
         # sort: number of views
         #sort_views = recipes_collection.find().sort([("views", -1)])
+        
+        # generate dropdown lists
+        dropdown_allergen = []
+        dropdown_dessert = []
+        
+        # get allergens and sort
+        for allergen in allergens_collection.find():
+                allergen_name = allergen.get("allergen_name")
+                for item in allergen_name:
+                        dropdown_allergen.append(item)
+        dropdown_allergen = sorted(dropdown_allergen)
+        
+        # get desserts and sort
+        for dessert in desserts_collection.find().sort([("desserts", 1)]):
+                dessert_name = dessert.get("dessert_type")
+                for item in dessert_name:
+                        dropdown_dessert.append(item)
+        dropdown_dessert = sorted(dropdown_dessert)
+        
+        # search filters
+        search_keyword = ""
+        search_allergen = ""
+        search_dessert = ""
 
-        return render_template("view_desserts.html",
-                                recipes=sort_recipe_name,
-                                authors=authors)
+        # ensure no blanks
+        if request.form.get("search_keyword") == None:
+                search_keyword = ""
+        else:
+                search_keyword = request.form.get("search_keyword").split()
+        
+        if request.form.get("search_allergen") == None:
+                search_allergen = ""
+        else:
+                search_allergen = request.form.getlist("search_allergen")
+        
+        if request.form.get("search_dessert") == None:
+                search_dessert = ""
+        else:
+                search_dessert = request.form.get("search_dessert")
+        
+        # perform only GET functionality
+        if request.method == "GET":
+                return render_template("view_desserts.html",
+                                        recipes=sort_recipe_name,
+                                        authors=authors,
+                                        allergens=dropdown_allergen,
+                                        desserts=dropdown_dessert)
+
+        # perform only POST functionality
+        if request.method == "POST":
+                # string search items together
+                new_search = '"' + '" "'.join(search_keyword) + '" "' + ''.join(search_dessert) + '"' + ' -' + ' -'.join(search_allergen)
+                search_results = recipes_collection.find({"$text": {"$search": new_search}}, {"score": {"$meta": "textScore"}}).sort([("score", {"$meta": "textScore"})])
+                
+                # get result count
+                results_count = search_results.count()
+                flash(Markup(f"Search Matches:<h4 class='pink-text text-lighten-2 bold'>{results_count}</h4>"))
+
+                return render_template("view_desserts.html",
+                                        recipes=search_results,
+                                        authors=authors,
+                                        allergens=dropdown_allergen,
+                                        desserts=dropdown_dessert,
+                                        filter_allergen=search_allergen,
+                                        filter_dessert=request.form.get("search_dessert"),
+                                        results_count=results_count)
 
 
 # (cRud) ----- READ a single dessert -----#
