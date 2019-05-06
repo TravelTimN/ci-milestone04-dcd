@@ -105,6 +105,8 @@ $(document).ready(function () {
         $("i.fa-ban").removeClass("grey-text").addClass("purple-text");
         $("select").formSelect();
         $("#search_btn").prop("disabled", false).addClass("text-shadow-2");
+        // if results, collapsible should be open
+        var instance = M.Collapsible.getInstance($(".collapsible")); instance.open();
     }
     else {
         $("#search_allergen").prop("disabled", true);
@@ -126,7 +128,7 @@ $(document).ready(function () {
             $("select").formSelect();
             $("#search_btn").prop("disabled", true).removeClass("text-shadow-2");
         }
-    })
+    });
     
 
 });

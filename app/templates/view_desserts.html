@@ -15,70 +15,95 @@
     <!-- search function -->
     <form id="search" action="{{ url_for('view_desserts') }}" method="POST">
 
-        <div class="row card z-depth-2 recipe-card" id="search_form">
-            <div class="row">
-                <h2 class="center-align bold upper font-special text-shadow-2">Search</h2>
-                <h6 class="center-align purple-text bold">Search by keyword or category. Exclude recipes with allergens.</h6>
-            </div>
-        
-            <!-- search fields -->
-            <div class="row">
-                <div class="input-field col s12 m4">
-                    <i class="fas fa-search purple-text material-icons prefix"></i>
-                    <input id="search_keyword" name="search_keyword" type="text" class="form-control validate" autocomplete="off"
-                        pattern="^[\w '.-]{3,50}$" data-length="50" placeholder="enter search keyword" value="{{ request.form['search_keyword'] }}">
-                    <label for="search_keyword">
-                        Keyword <i class="fas fa-question-circle tooltipped" data-position="right" data-tooltip="3-50 alpha characters"></i>
-                    </label>
+        <ul class="collapsible" data-collapsible="accordion" id="search_form">
+            <li class="recipe-card">
+                <div class="collapsible-header purple white-text text-shadow-2">
+                    <i class="fas fa-search material-icons"></i>
+                    <h5 class="center-align bold upper font-special text-shadow-2">Search</h5>
                 </div>
                 
-                <div class="input-field col s12 m4">
-                    <i class="fas fa-ice-cream purple-text material-icons prefix"></i>
-                    <select id="search_dessert" name="search_dessert" class="form-control validate">
-                        <option value="" selected>filter by Category</option>
-                        {% for dessert in desserts %}
-                        {% if dessert == filter_dessert %}
-                        <option value="{{ dessert }}" selected>{{ dessert }}</option>
-                        {% else %}
-                        <option value="{{ dessert }}">{{ dessert }}</option>
-                        {% endif %}
-                        {% endfor %}
-                    </select>
-                    <label for="search_dessert">Category</label>
-                </div>
-                
-                <div class="input-field col s12 m4">
-                    <i class="fas fa-ban grey-text material-icons prefix"></i>
-                    <select id="search_allergen" name="search_allergen" disabled multiple>
-                        <option value="" disabled>exclude Allergens</option>
-                        {% for allergen in allergens %}
-                        {% if allergen in filter_allergen %}
-                        <option value="{{ allergen }}" data-icon="{{ url_for('static', filename='img/allergens/'+allergen|lower+'.png') }}" selected>{{ allergen }}</option>
-                        {% else %}
-                        <option value="{{ allergen }}" data-icon="{{ url_for('static', filename='img/allergens/'+allergen|lower+'.png') }}">{{ allergen }}</option>
-                        {% endif %}
-                        {% endfor %}
-                    </select>
-                    <label for="search_allergen">
-                        Allergens <i class="fas fa-question-circle tooltipped" data-position="right" data-tooltip="requires Keyword or Category"></i>
-                    </label>
-                </div>
-            </div>
+                <!-- search fields -->
+                <div class="collapsible-body collection collapsible-collection">
+                    <p><h6 class="center-align pink-text text-lighten-2 bold">Search keyword and/or category. Exclude recipes with allergens.</h6></p>
+                    
+                    <div class="row">
+                        <div class="input-field col s12 m4">
+                            <i class="fas fa-search purple-text material-icons prefix"></i>
+                            <input id="search_keyword" name="search_keyword" type="text" class="form-control validate" autocomplete="off"
+                                pattern="^[\w '.-]{3,50}$" data-length="50" placeholder="enter search keyword" value="{{ request.form['search_keyword'] }}">
+                            <label for="search_keyword">
+                                Keyword <i class="fas fa-question-circle tooltipped" data-position="right" data-tooltip="3-50 alpha characters"></i>
+                            </label>
+                        </div>
+                        
+                        <div class="input-field col s12 m4">
+                            <i class="fas fa-ice-cream purple-text material-icons prefix"></i>
+                            <select id="search_dessert" name="search_dessert" class="form-control validate">
+                                <option value="" selected>filter by Category</option>
+                                {% for dessert in desserts %}
+                                {% if dessert == filter_dessert %}
+                                <option value="{{ dessert }}" selected>{{ dessert }}</option>
+                                {% else %}
+                                <option value="{{ dessert }}">{{ dessert }}</option>
+                                {% endif %}
+                                {% endfor %}
+                            </select>
+                            <label for="search_dessert">Category</label>
+                        </div>
+                        
+                        <div class="input-field col s12 m4">
+                            <i class="fas fa-ban grey-text material-icons prefix"></i>
+                            <select id="search_allergen" name="search_allergen" disabled multiple>
+                                <option value="" disabled>exclude Allergens</option>
+                                {% for allergen in allergens %}
+                                {% if allergen in filter_allergen %}
+                                <!-- entire <option> must remain on single line, not beautified -->
+                                <option value="{{ allergen }}" data-icon="{{ url_for('static', filename='img/allergens/'+allergen|lower+'.png') }}" selected>{{ allergen }}</option>
+                                {% else %}
+                                <!-- entire <option> must remain on single line, not beautified -->
+                                <option value="{{ allergen }}" data-icon="{{ url_for('static', filename='img/allergens/'+allergen|lower+'.png') }}">{{ allergen }}</option>
+                                {% endif %}
+                                {% endfor %}
+                            </select>
+                            <label for="search_allergen">
+                                Allergens <i class="fas fa-question-circle tooltipped" data-position="right" data-tooltip="requires Keyword or Category"></i>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- search buttons -->
+                    <div class="row">
+                        <div class="col s12 center-align">
+                            <button id="search_btn" class="btn waves-effect blue waves-light text-shadow-2 bold upper" type="submit" name="action" disabled>Search
+                                <i class="fas fa-search left hide-on-small-only"></i>
+                            </button>
+                            <a class="btn waves-effect waves-purple pink lighten-2 text-shadow-2 bold upper" href="{{ url_for('view_desserts') }}">
+                                <i class="fas fa-undo-alt material-icons left hide-on-small-only"></i>Reset
+                            </a>
+                        </div>
+                    </div>
 
-            <!-- search buttons -->
-            <div class="row">
-                <div class="col s12 center-align">
-                    <button id="search_btn" class="btn waves-effect blue waves-light text-shadow-2 bold upper" type="submit" name="action" disabled>Search
-                        <i class="fas fa-search left hide-on-small-only"></i>
-                    </button>
-                    <a class="btn waves-effect waves-purple pink lighten-2 text-shadow-2 bold upper" href="{{ url_for('view_desserts') }}">
-                        <i class="fas fa-undo-alt material-icons left hide-on-small-only"></i>Reset
-                    </a>
-                </div>
-            </div>
-
-        </div>
+                    <!-- search results -->
+                    <div class="row">
+                        <div class="col s12 center-align">
+                            {% if results_count == 0 %}
+                            <h5 class="bold purple-text">found
+                                <span class="pink-text font-abril search-results text-shadow-1">0</span>
+                                recipe{% if results_count != 1 %}s{% endif %}
+                            </h5>
+                            {% elif results_count %}
+                            <h5 class="bold purple-text">found
+                                <span class="pink-text font-abril search-results text-shadow-1">{{ results_count }}</span>
+                                recipe{% if results_count != 1 %}s{% endif %}
+                            </h5>
+                            {% endif %}
+                        </div>
+                    </div>
         
+                </div>
+
+            </li>
+        </ul>
     </form>
 
 </div>
@@ -138,7 +163,9 @@
                         </a>
                     </h5>
                     <div class="divider purple"></div>
-                    <h6 class="purple-text bold"><i class="fas fa-utensils materialize-icons"></i> : <span class="pink-text font-rye">{{ recipe.dessert_type }}</span><br>
+                    <h6 class="purple-text bold">
+                        <i class="fas fa-utensils materialize-icons"></i> :
+                        <span class="pink-text font-rye">{{ recipe.dessert_type }}</span><br>
                         <span class="purple-text">
                             {% for author in authors %}
                             {% if recipe.author|string == author["_id"]|string %}

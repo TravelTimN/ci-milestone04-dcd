@@ -295,8 +295,24 @@ footer {
     margin: 0;
 }
 
-#search_form .row {
-    margin-bottom: 10px;
+#search_form .collapsible-body .row {
+    margin-bottom: 5px;
+}
+
+#search_form .collapsible-header h5 {
+    font-size: 3em;
+}
+
+#search_form .search-results {
+    font-size: 1.5em;
+}
+
+#search-results h5 {
+    vertical-align: middle;
+}
+
+.collection {
+    overflow: visible;
 }
 
 
@@ -319,18 +335,21 @@ footer {
     padding: 0;
 }
 
-.collapsible-collection li:nth-child(odd) {
+.collapsible-collection li:nth-child(odd):not(#search_form li) {
     background-color: rgba(243, 229, 245, 0.75);
 }
 
-.collapsible-collection li:nth-child(even) {
+.collapsible-collection li:nth-child(even):not(#search_form li) {
     background-color: rgba(252, 228, 236, 0.75);
+}
+
+.profile-header h5 {
+    margin: 0;
+    padding: 15px 0;
 }
 
 .collapsible-header h5 {
     font-size: 3em;
-    margin: 0;
-    padding: 15px 0;
 }
 
 .collapsible-header {

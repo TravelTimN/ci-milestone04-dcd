@@ -307,7 +307,6 @@ def view_desserts():
                 
                 # get result count
                 results_count = search_results.count()
-                flash(Markup(f"Search Matches:<h4 class='pink-text text-lighten-2 bold'>{results_count}</h4>"))
 
                 return render_template("view_desserts.html",
                                         recipes=search_results,
