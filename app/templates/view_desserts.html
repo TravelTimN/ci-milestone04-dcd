@@ -5,7 +5,7 @@
 <div class="container">
     
     <!-- search function -->
-    <form id="search" action="{{ url_for('view_desserts') }}" method="POST">
+    <form id="search">
 
         <ul class="collapsible" data-collapsible="accordion" id="search_form">
             <li class="recipe-card">
@@ -22,7 +22,7 @@
                         <div class="input-field col s12 m4">
                             <i class="fas fa-search purple-text material-icons prefix"></i>
                             <input id="search_keyword" name="search_keyword" type="text" class="form-control validate" autocomplete="off"
-                                pattern="^[\w '.-]{3,50}$" data-length="50" placeholder="enter search keyword" value="{{ request.form['search_keyword'] }}">
+                                pattern="^[\w '.-]{3,50}$" data-length="50" placeholder="enter search keyword" value="{% if keyword_args %}{{ keyword_args }}{% endif %}">
                             <label for="search_keyword">
                                 Keyword <i class="fas fa-question-circle tooltipped" data-position="right" data-tooltip="3-50 alpha characters"></i>
                             </label>
@@ -33,7 +33,7 @@
                             <select id="search_dessert" name="search_dessert" class="form-control validate">
                                 <option value="" selected>filter by Category</option>
                                 {% for dessert in desserts %}
-                                {% if dessert == filter_dessert %}
+                                {% if dessert == category_args %}
                                 <option value="{{ dessert }}" selected>{{ dessert }}</option>
                                 {% else %}
                                 <option value="{{ dessert }}">{{ dessert }}</option>
@@ -48,7 +48,7 @@
                             <select id="search_allergen" name="search_allergen" disabled multiple>
                                 <option value="" disabled>exclude Allergens</option>
                                 {% for allergen in allergens %}
-                                {% if allergen in filter_allergen %}
+                                {% if allergen in exclude_args %}
                                 <!-- entire <option> must remain on single line, not beautified -->
                                 <option value="{{ allergen }}" data-icon="{{ url_for('static', filename='img/allergens/'+allergen|lower+'.png') }}" selected>{{ allergen }}</option>
                                 {% else %}
@@ -66,7 +66,7 @@
                     <!-- search buttons -->
                     <div class="row">
                         <div class="col s12 center-align">
-                            <button id="search_btn" class="btn waves-effect blue waves-light text-shadow-2 bold upper" type="submit" name="action" disabled>Search
+                            <button id="search_btn" class="btn waves-effect blue waves-light text-shadow-2 bold upper" type="submit" disabled>Search
                                 <i class="fas fa-search left hide-on-small-only"></i>
                             </button>
                             <a class="btn waves-effect waves-purple pink lighten-2 text-shadow-2 bold upper" href="{{ url_for('view_desserts') }}">
@@ -96,7 +96,24 @@
 
             </li>
         </ul>
+
     </form>
+
+    <!-- sort options -->
+    <div class="row center-align">
+        <a href="{{ url_for('view_desserts', sort='author', order=1, search_keyword=request.args.get('search_keyword'), search_dessert=request.args.get('search_dessert'), search_allergen=request.args.get('search_allergen'))}}"
+            class="btn text-shadow-2 pink lighten-2">Author <i class="fas fa-user-edit material-icons"></i></a>
+        <a href="{{ url_for('view_desserts', sort='user_favs', order=-1, search_keyword=request.args.get('search_keyword'), search_dessert=request.args.get('search_dessert'), search_allergen=request.args.get('search_allergen'))}}"
+            class="btn text-shadow-2 pink lighten-2">Favorites <i class="far fa-heart material-icons"></i></a>
+        <a href="{{ url_for('view_desserts', sort='last_edit', order=-1, search_keyword=request.args.get('search_keyword'), search_dessert=request.args.get('search_dessert'), search_allergen=request.args.get('search_allergen'))}}"
+            class="btn text-shadow-2 pink lighten-2">Last Updated <i class="far fa-calendar-check material-icons"></i></a>
+        <a href="{{ url_for('view_desserts', sort='recipe_name', order=1, search_keyword=request.args.get('search_keyword'), search_dessert=request.args.get('search_dessert'), search_allergen=request.args.get('search_allergen'))}}"
+            class="btn text-shadow-2 pink lighten-2">Recipe Name <i class="fas fa-sort-alpha-down material-icons"></i></a>
+        <a href="{{ url_for('view_desserts', sort='total_time', order=1, search_keyword=request.args.get('search_keyword'), search_dessert=request.args.get('search_dessert'), search_allergen=request.args.get('search_allergen'))}}"
+            class="btn text-shadow-2 pink lighten-2">Total Time <i class="far fa-clock material-icons"></i></a>
+        <a href="{{ url_for('view_desserts', sort='views', order=-1, search_keyword=request.args.get('search_keyword'), search_dessert=request.args.get('search_dessert'), search_allergen=request.args.get('search_allergen'))}}"
+            class="btn text-shadow-2 pink lighten-2">Views <i class="far fa-eye material-icons"></i></a>
+    </div>
 
 </div>
 
@@ -106,65 +123,17 @@
     <!-- start building the recipe cards -->
     <div class="row">
 
-        <!-- for each recipe, create Materialize Card -->
-        {% for recipe in recipes %}
-        <div class="col s12 m6 l3">
-            <div class="card sticky-action hoverable">
-
-                <!-- Card Image -->
-                <div class="card-image waves-effect waves-block waves-red">
-                    {% if recipe.img_src %}
-                    <img src="{{ recipe.img_src }}" alt="Dessert" class="activator">
-                    {% else %}
-                    <img src="{{ url_for('static', filename='img/no-img.png') }}" alt="Dessert" class="activator">
-                    {% endif %}
-                    <a href="{{ url_for('view_dessert', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}">
-                        <span class="card-title center-align purple-text text-darken-4 text-shadow-1 font-emilys-candy" title="{{ recipe.recipe_name }}">
-                            {{ recipe.recipe_name }}
-                        </span>
-                    </a>
-                </div>
-
-                <!-- Card Action (stats) -->
-                <div class="card-action purple lighten-3 bold activator">
-                    <span><i class="far fa-clock material-icons purple-text text-shadow-1"></i><br>{% if recipe.total_hrs %}{{ recipe.total_hrs }}h{% endif %} {{ recipe.total_mins }}m</span>
-                    <span><i class="far fa-eye material-icons blue-text text-darken-2 text-shadow-1"></i><br>{{ recipe.views }}</span>
-                    <span><i class="far fa-heart material-icons pink-text text-shadow-1"></i><br>{{ recipe.user_favs }}</span>
-                </div>
-
-                <!-- Card Reveal (hidden until clicked) -->
-                <div class="card-reveal">
-                    <h5 class="card-title">
-                        <i class="far fa-times-circle material-icons text-shadow-1 right"></i>
-                        <a href="{{ url_for('view_dessert', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}">
-                            <span class="purple-text text-shadow-1 bold font-emilys-candy">{{ recipe.recipe_name }}</span>
-                        </a>
-                    </h5>
-                    <div class="divider purple"></div>
-                    <h6>
-                        <i class="fas fa-utensils materialize-icons"></i> :
-                        <span class="pink-text bold font-rye">{{ recipe.dessert_type }}</span><br>
-                        <span>
-                            {% for author in authors %}
-                            {% if recipe.author|string == author["_id"]|string %}
-                            <i class="fas fa-user-circle materialize-icons"></i> author: <span class="pink-text bold">{{ author["username"] }}</span>
-                            {% endif %}
-                            {% endfor %}
-                        </span><br>
-                        <span>
-                            <i class="fas fa-calendar-plus materialize-icons"></i> added: <span class="pink-text bold">{{ recipe.date_added }}</span>
-                            {% if recipe.date_added != recipe.date_updated %}
-                            <br><i class="fas fa-calendar-check materialize-icons"></i> updated: <span class="pink-text bold">{{ recipe.date_updated }}</span>
-                            {% endif %}
-                        </span><br>
-                        <small class="purple-text bold">
-                            <q>{{ recipe.description|truncate(80, True)|safe }}</q>
-                        </small>
-                    </h6>
-                </div>
-            </div>
-        </div>
-        {% endfor %}
+        <!-- create recipe card for initial display -->
+        {% if recipes_search == "" %}
+            {% for recipe in recipes_start %}
+                {% include "partials/_cards.html" %}
+            {% endfor %}
+        {% else %}
+        <!-- create recipe card for searched items -->
+            {% for recipe in recipes_search %}
+                {% include "partials/_cards.html" %}
+            {% endfor %}
+        {% endif %}
 
     </div>
 

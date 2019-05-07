@@ -113,7 +113,7 @@ def login():
                                 return redirect(url_for("profile", username=session["user"]))
                         else:
                                 # invalid password match
-                                flash(Markup(f"Whoops! <span class='pink-text text-lighten-2'>{request.form.get('username')}</span> it looks like your password is incorrect."))
+                                flash(Markup(f"<i class='fas fa-exclamation-circle red-text material-icons small'></i> Whoops! Looks like the <span class='pink-text text-lighten-2'>username</span> or <span class='pink-text text-lighten-2'>password</span> is incorrect."))
                                 return redirect(url_for("login"))
                 else:
                         # username doesn't exist
@@ -200,10 +200,15 @@ def add_dessert():
 def add_dessert_toDB():
         # input fields to be submitted to database
         today = datetime.now().strftime("%d %B, %Y")
+        last_edit = int(datetime.now().strftime("%Y%m%d"))
 
         # get user_id
         session_user = users_collection.find_one({"username_lower": session["user"].lower()})["username"]
         author = users_collection.find_one({"username": session_user})["_id"]
+
+        # get total time
+        hours = int(request.form.get("total_hrs")) * 60 if request.form.get("total_hrs") != "" else ""
+        total_time = int(request.form.get("total_mins")) + hours if hours != "" else int(request.form.get("total_mins"))
         
         submit = {
                 "recipe_name": request.form.get("recipe_name"),
@@ -216,11 +221,13 @@ def add_dessert_toDB():
                 "directions": request.form.getlist("directions"),
                 "total_hrs": request.form.get("total_hrs"),
                 "total_mins": request.form.get("total_mins"),
+                "total_time": total_time,
                 "allergens": request.form.getlist("allergens"),
                 "img_src": request.form.get("img_src"),
                 "author": author,
                 "date_added": today,
                 "date_updated": today,
+                "last_edit": last_edit,
                 "views": 0,
                 "user_favs": 0
         }
@@ -240,7 +247,7 @@ def add_dessert_toDB():
 
 
 # (cRud) ----- READ all desserts -----#
-@app.route("/desserts", methods=["GET", "POST"])
+@app.route("/desserts")
 def view_desserts():
         # show author on cards
         authors = []
@@ -248,12 +255,6 @@ def view_desserts():
         for author in get_authors:
                 authors.append(author)
 
-        # sort: alphabetically
-        sort_recipe_name = recipes_collection.find().sort([("recipe_name", 1)])
-
-        # sort: number of views
-        #sort_views = recipes_collection.find().sort([("views", -1)])
-        
         # generate dropdown lists
         dropdown_allergen = []
         dropdown_dessert = []
@@ -272,52 +273,41 @@ def view_desserts():
                         dropdown_dessert.append(item)
         dropdown_dessert = sorted(dropdown_dessert)
         
-        # search filters
-        search_keyword = ""
-        search_allergen = ""
-        search_dessert = ""
+        # search args
+        keyword_args = request.args.get(str("search_keyword")) if request.args.get(str("search_keyword")) != "" else ""
+        category_args = request.args.get(str("search_dessert")) if request.args.get(str("search_dessert")) != "" else ""
+        exclude_args = request.args.getlist("search_allergen") if request.args.getlist("search_allergen") != "" else []
 
-        # ensure no blanks
-        if request.form.get("search_keyword") == None:
-                search_keyword = ""
-        else:
-                search_keyword = request.form.get("search_keyword").split()
-        
-        if request.form.get("search_allergen") == None:
-                search_allergen = ""
-        else:
-                search_allergen = request.form.getlist("search_allergen")
-        
-        if request.form.get("search_dessert") == None:
-                search_dessert = ""
-        else:
-                search_dessert = request.form.get("search_dessert")
-        
-        # perform only GET functionality
-        if request.method == "GET":
-                return render_template("view_desserts.html",
-                                        recipes=sort_recipe_name,
-                                        authors=authors,
-                                        allergens=dropdown_allergen,
-                                        desserts=dropdown_dessert)
+        # prepare data from form for searching
+        search_keyword = keyword_args.split() if keyword_args != None else ""
+        search_dessert = category_args if category_args != None else ""
+        search_allergen = exclude_args if exclude_args != [] else ""
 
-        # perform only POST functionality
-        if request.method == "POST":
-                # string search items together
-                new_search = '"' + '" "'.join(search_keyword) + '" "' + ''.join(search_dessert) + '"' + ' -' + ' -'.join(search_allergen)
-                search_results = recipes_collection.find({"$text": {"$search": new_search}}, {"score": {"$meta": "textScore"}}).sort([("score", {"$meta": "textScore"})])
-                
-                # get result count
-                results_count = search_results.count()
+        # sorting recipes
+        sort_by = request.args.get(str("sort")) or "recipe_name"
+        order_by = int(request.args.get("order")) if request.args.get("order") else 1
+        sorting = recipes_collection.find().sort([(sort_by, order_by)])
 
-                return render_template("view_desserts.html",
-                                        recipes=search_results,
-                                        authors=authors,
-                                        allergens=dropdown_allergen,
-                                        desserts=dropdown_dessert,
-                                        filter_allergen=search_allergen,
-                                        filter_dessert=request.form.get("search_dessert"),
-                                        results_count=results_count)
+        # string search items together and search
+        new_search = '"' + '" "'.join(search_keyword) + '" "' + ''.join(search_dessert) + '"' + ' -' + ' -'.join(search_allergen)
+        if search_keyword == "" and search_dessert == "" and search_allergen == "":
+                search_results = ""
+        else:
+                search_results = recipes_collection.find({"$text": {"$search": new_search}}).sort([(sort_by, order_by)])
+
+        # get result count
+        results_count = search_results.count() if search_results != "" else ""
+        
+        return render_template("view_desserts.html",
+                                recipes_start=sorting,
+                                recipes_search=search_results,
+                                authors=authors,
+                                allergens=dropdown_allergen,
+                                desserts=dropdown_dessert,
+                                keyword_args=keyword_args,
+                                category_args=category_args,
+                                exclude_args=exclude_args,
+                                results_count=results_count)
 
 
 # (cRud) ----- READ a single dessert -----#
@@ -440,12 +430,17 @@ def update_dessert_toDB(recipe_id):
 
         # get today for date_updated
         today = datetime.now().strftime("%d %B, %Y")
+        last_edit = int(datetime.now().strftime("%Y%m%d"))
 
         # get current hidden values
         get_author = recipe.get("author")
         get_date_added = recipe.get("date_added")
         get_views = recipe.get("views")
         get_user_favs = recipe.get("user_favs")
+
+        # get total time
+        hours = int(request.form.get("total_hrs")) * 60 if request.form.get("total_hrs") != "" else ""
+        total_time = int(request.form.get("total_mins")) + hours if hours != "" else int(request.form.get("total_mins"))
 
         # find recipe to be updated, then push updates
         recipes_collection.update( {"_id": ObjectId(recipe_id)},
@@ -460,11 +455,13 @@ def update_dessert_toDB(recipe_id):
                 "directions": request.form.getlist("directions"),
                 "total_hrs": request.form.get("total_hrs"),
                 "total_mins": request.form.get("total_mins"),
+                "total_time": total_time,
                 "allergens": request.form.getlist("allergens"),
                 "img_src": request.form.get("img_src"),
                 "author": get_author,
                 "date_added": get_date_added,
                 "date_updated": today,
+                "last_edit": last_edit,
                 "views": get_views,
                 "user_favs": get_user_favs
         })
