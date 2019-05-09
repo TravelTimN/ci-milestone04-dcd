@@ -45,6 +45,10 @@
             <i class="fas fa-calendar-check materialize-icons" title="{{ recipe.date_updated }}"></i> updated: 
             <span class="pink-text bold">{{ recipe.date_updated }}</span><br>
             {% endif %}
+            <i class="fas fa-mouse-pointer materialize-icons" title="{{ recipe.recipe_name }}"></i>
+                <a href="{{ url_for('view_dessert', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}"> :
+                    <span class="blue-text bold" title="{{ recipe.recipe_name }}">View Recipe</span>
+                </a><br>
             <i class="fas fa-info-circle materialize-icons" title="{{ recipe.description }}"></i>
             <span class="purple-text bold"><q>{{ recipe.description|truncate(75, True)|safe }}</q></span>
         </div>

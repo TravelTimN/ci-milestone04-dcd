@@ -20,16 +20,19 @@
 <body>
 
     <header>
-            {% include "partials/_navbar.html" %}
+    <!-- NAVBAR -->
+    {% include "partials/_navbar.html" %}
     </header>
 
     <main>
+    <!-- MAIN CONTENT -->
     {% block content %}
     {% endblock %}
     </main>
 
     <footer class="purple white-text">
-        {% include "partials/_footer.html" %}
+    <!-- FOOTER -->
+    {% include "partials/_footer.html" %}
     </footer>
 
     <script src="https://code.jquery.com/jquery-3.4.0.slim.js" integrity="sha256-milezx5lakrZu0OP9b2QWFy1ft/UEUK6NH1Jqz8hUhQ=" crossorigin="anonymous"></script>

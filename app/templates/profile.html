@@ -45,7 +45,7 @@
                             You haven't shared anything yet. Click the icon on the right to add your first recipe.
                         </p>
                         <a href="{{ url_for('add_dessert') }}" title="Add a Recipe">
-                            <i class="fas fa-plus-circle material-icons small purple-text purple lighten-5 secondary-content"></i>
+                            <i class="fas fa-plus-circle material-icons small purple-text text-shadow-1 secondary-content"></i>
                         </a>
                     </li>
                     {% endfor %}
@@ -76,7 +76,7 @@
                             {% endif %}
                             <span class="title font-special bold purple-text">{{ user_fav.recipe_name }}</span>
                             <p class="truncate pink-text text-lighten-2">{{ user_fav.description }}</p>
-                            <i class="fas fa-heart material-icons pink-text text-lighten-2 text-shadow-2 secondary-content"></i>
+                            <i class="fas fa-heart material-icons pink-text text-lighten-2 text-shadow-1 secondary-content"></i>
                         </a>
                     </li>
                     {% else %}

@@ -53,6 +53,10 @@ body {
     font-weight: bold;
 }
 
+.disabled {
+    pointer-events: none;
+}
+
 .strike {
     text-decoration: line-through;
 }
@@ -322,7 +326,6 @@ footer {
 .collection {
     overflow: visible;
 }
-
 
 
 /*----- User Profile Page -----*/
