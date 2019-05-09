@@ -1,4 +1,6 @@
+#!/usr/bin/env python3
 import html
+import math
 import random
 import re
 from app import app
@@ -255,58 +257,87 @@ def view_desserts():
         for author in get_authors:
                 authors.append(author)
 
-        # generate dropdown lists
+        # get allergens and sort for dropdown
         dropdown_allergen = []
-        dropdown_dessert = []
-        
-        # get allergens and sort
         for allergen in allergens_collection.find():
                 allergen_name = allergen.get("allergen_name")
                 for item in allergen_name:
                         dropdown_allergen.append(item)
         dropdown_allergen = sorted(dropdown_allergen)
         
-        # get desserts and sort
+        # get desserts and sort for dropdown
+        dropdown_dessert = []
         for dessert in desserts_collection.find().sort([("desserts", 1)]):
                 dessert_name = dessert.get("dessert_type")
                 for item in dessert_name:
                         dropdown_dessert.append(item)
         dropdown_dessert = sorted(dropdown_dessert)
+
+        # URL args : search / sort / order / pagination
+        search_keyword_args = request.args.get(str("search_keyword")) if request.args.get(str("search_keyword")) != "" else ""
+        search_dessert_args = request.args.get(str("search_dessert")) if request.args.get(str("search_dessert")) != "" else ""
+        search_allergen_args = request.args.getlist("search_allergen") if request.args.getlist("search_allergen") != "" else []
+        sort_args = request.args.get(str("sort")) if request.args.get(str("sort")) else "recipe_name"
+        order_args = int(request.args.get("order")) if request.args.get("order") else 1
+        page_args = int(request.args.get("page")) if request.args.get("page") else 1
+        limit_args = int(request.form.get("limit")) if request.form.get("limit") else int(request.args.get("limit")) if request.args.get("limit") else 12
         
-        # search args
-        keyword_args = request.args.get(str("search_keyword")) if request.args.get(str("search_keyword")) != "" else ""
-        category_args = request.args.get(str("search_dessert")) if request.args.get(str("search_dessert")) != "" else ""
-        exclude_args = request.args.getlist("search_allergen") if request.args.getlist("search_allergen") != "" else []
+        # prepare form data for searching
+        search_keyword = search_keyword_args.split() if search_keyword_args != None else ""
+        search_dessert = search_dessert_args if search_dessert_args != None else ""
+        search_allergen = search_allergen_args if search_allergen_args != [] else ""
 
-        # prepare data from form for searching
-        search_keyword = keyword_args.split() if keyword_args != None else ""
-        search_dessert = category_args if category_args != None else ""
-        search_allergen = exclude_args if exclude_args != [] else ""
+        # pagination settings for sorting
+        all_recipes_count = range(1, (math.ceil(recipes_collection.count() / limit_args)) + 1)
+        all_recipes_pages = [page for page in all_recipes_count]
+        previous_page = page_args - 1 if page_args != 1 else 1
+        next_page = page_args + 1 if page_args < all_recipes_pages[-1] else page_args
 
-        # sorting recipes
-        sort_by = request.args.get(str("sort")) or "recipe_name"
-        order_by = int(request.args.get("order")) if request.args.get("order") else 1
-        sorting = recipes_collection.find().sort([(sort_by, order_by)])
+        # show results - without search
+        sorting = recipes_collection.find().sort([(sort_args, order_args)]).skip((page_args * limit_args) - limit_args).limit(limit_args)
 
         # string search items together and search
         new_search = '"' + '" "'.join(search_keyword) + '" "' + ''.join(search_dessert) + '"' + ' -' + ' -'.join(search_allergen)
         if search_keyword == "" and search_dessert == "" and search_allergen == "":
                 search_results = ""
         else:
-                search_results = recipes_collection.find({"$text": {"$search": new_search}}).sort([(sort_by, order_by)])
+                if request.args.get("limit") == "":
+                        # get all results on single page if user selects 'All'
+                        search_results = recipes_collection.find({"$text": {"$search": new_search}}).sort([(sort_args, order_args)])
+                else:
+                        # otherwise, get the limit they've selected, or the default of 12
+                        search_results = recipes_collection.find({"$text": {"$search": new_search}}).sort([(sort_args, order_args)]).skip((page_args * limit_args) - limit_args).limit(limit_args)
 
-        # get result count
+        # get search results count
         results_count = search_results.count() if search_results != "" else ""
+
+        # pagination for search
+        search_recipes_count = range(1, (math.ceil(int(results_count) / limit_args)) + 1) if results_count != "" else ""
+        search_recipes_pages = [page for page in search_recipes_count] if search_recipes_count != "" else ""
         
+        if search_recipes_pages == "" or search_recipes_pages == []:
+                next_page_search = ""
+        else:
+                next_page_search = page_args + 1 if page_args < search_recipes_pages[-1] else page_args
+        
+        # build page and pass through all data
         return render_template("view_desserts.html",
                                 recipes_start=sorting,
                                 recipes_search=search_results,
                                 authors=authors,
                                 allergens=dropdown_allergen,
                                 desserts=dropdown_dessert,
-                                keyword_args=keyword_args,
-                                category_args=category_args,
-                                exclude_args=exclude_args,
+                                search_keyword_args=search_keyword_args,
+                                search_dessert_args=search_dessert_args,
+                                search_allergen_args=search_allergen_args,
+                                sort_args=sort_args,
+                                order_args=order_args,
+                                limit_args=limit_args,
+                                all_recipes_pages=all_recipes_pages,
+                                search_recipes_pages=search_recipes_pages,
+                                previous_page=previous_page,
+                                next_page=next_page,
+                                next_page_search=next_page_search,
                                 results_count=results_count)
 
 

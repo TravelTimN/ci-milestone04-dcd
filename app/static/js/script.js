@@ -99,36 +99,75 @@ $(document).ready(function () {
     // only enable allergen filter + submit button if user searches with one of the other fields
     search_keyword = $("#search_keyword").val();
     search_dessert = $("#search_dessert").val();
+    sort_value = $("#sort").val();
     // on load
     if (search_keyword > "" || search_dessert > "") {
-        $("#search_allergen").prop("disabled", false);
-        $("i.fa-ban").removeClass("grey-text").addClass("purple-text");
+        $("#search_allergen, #sort").prop("disabled", false);
+        $("i.fa-ban, i.fa-sort-amount-down").removeClass("grey-text").addClass("purple-text");
         $("select").formSelect();
         $("#search_btn").prop("disabled", false).addClass("text-shadow-2");
         // if results, collapsible should be open
         var instance = M.Collapsible.getInstance($(".collapsible")); instance.open();
     }
     else {
-        $("#search_allergen").prop("disabled", true);
-            $("i.fa-ban").removeClass("purple-text").addClass("grey-text");
+        $("#search_allergen, #sort").prop("disabled", true);
+            $("i.fa-ban, i.fa-sort-amount-down").removeClass("purple-text").addClass("grey-text");
             $("select").formSelect();
             $("#search_btn").prop("disabled", true).removeClass("text-shadow-2");
     }
     // on user interaction
     $("#search_keyword, #search_dessert").on("keyup input change", function() {
         if ($("#search_keyword").val().length >= 3 || $("#search_dessert").val().length > 0) {
-            $("#search_allergen").prop("disabled", false);
-            $("i.fa-ban").removeClass("grey-text").addClass("purple-text");
+            $("#search_allergen, #sort").prop("disabled", false);
+            $("i.fa-ban, i.fa-sort-amount-down").removeClass("grey-text").addClass("purple-text");
             $("select").formSelect();
             $("#search_btn").prop("disabled", false).addClass("text-shadow-2");
         }
         else {
-            $("#search_allergen").prop("disabled", true);
-            $("i.fa-ban").removeClass("purple-text").addClass("grey-text");
+            $("#search_allergen, #sort").prop("disabled", true);
+            $("i.fa-ban, i.fa-sort-amount-down").removeClass("purple-text").addClass("grey-text");
             $("select").formSelect();
             $("#search_btn").prop("disabled", true).removeClass("text-shadow-2");
         }
     });
-    
+
+
+    // Sorting + Order By
+    // on load
+    if (sort_value == "author" || sort_value == "recipe_name") {
+        $(".order-span-asc").html("<i class='fas fa-sort-alpha-down materialize-icons hide-on-small-only'></i> Alphabetical <strong>(A-Z)</strong>");
+        $(".order-span-desc").html("<i class='fas fa-sort-alpha-up materialize-icons hide-on-small-only'></i> Alphabetical <strong>(Z-A)</strong>");
+    }
+    else if (sort_value == "user_favs" || sort_value == "views") {
+        $(".order-span-asc").html("<i class='fas fa-sort-numeric-down materialize-icons hide-on-small-only'></i> Lowest first");
+        $(".order-span-desc").html("<i class='fas fa-sort-numeric-up materialize-icons hide-on-small-only'></i> Highest first");
+    }
+    else if (sort_value == "last_edit") {
+        $(".order-span-asc").html("<i class='fas fa-calendar-check materialize-icons hide-on-small-only'></i> Oldest first");
+        $(".order-span-desc").html("<i class='far fa-calendar-check materialize-icons hide-on-small-only'></i> Newest first");
+    }
+    else if (sort_value == "total_time") {
+        $(".order-span-asc").html("<i class='fas fa-clock materialize-icons hide-on-small-only'></i> Shortest first");
+        $(".order-span-desc").html("<i class='far fa-clock materialize-icons hide-on-small-only'></i> Longest first");
+    }
+    // on selection
+    $("#sort").on("change", function() {
+        if ($("#sort").val() == "author" || $("#sort").val() == "recipe_name") {
+            $(".order-span-asc").html("<i class='fas fa-sort-alpha-down materialize-icons hide-on-small-only'></i> Alphabetical <strong>(A-Z)</strong>");
+            $(".order-span-desc").html("<i class='fas fa-sort-alpha-up materialize-icons hide-on-small-only'></i> Alphabetical <strong>(Z-A)</strong>");
+        }
+        else if ($("#sort").val() == "user_favs" || $("#sort").val() == "views") {
+            $(".order-span-asc").html("<i class='fas fa-sort-numeric-down materialize-icons hide-on-small-only'></i> Lowest first");
+            $(".order-span-desc").html("<i class='fas fa-sort-numeric-up materialize-icons hide-on-small-only'></i> Highest first");
+        }
+        else if ($("#sort").val() == "last_edit") {
+            $(".order-span-asc").html("<i class='fas fa-calendar-check materialize-icons hide-on-small-only'></i> Oldest first");
+            $(".order-span-desc").html("<i class='far fa-calendar-check materialize-icons hide-on-small-only'></i> Newest first");
+        }
+        else if ($("#sort").val() == "total_time") {
+            $(".order-span-asc").html("<i class='fas fa-clock materialize-icons hide-on-small-only'></i> Shortest first");
+            $(".order-span-desc").html("<i class='far fa-clock materialize-icons hide-on-small-only'></i> Longest first");
+        }
+    });
 
 });
