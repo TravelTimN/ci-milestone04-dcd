@@ -277,7 +277,7 @@ Sources of the images used on this site:
 
 - **favicon** : [Clipart-Library](http://clipart-library.com/kawaii-cookie-cliparts.html)
 - **recipe placeholder image** : [Pixabay](https://pixabay.com/photos/waffles-waffles-bake-ingredients-2190961/)
-- **profile avatars** : [123rf](https://www.123rf.com/stock-photo/cute_kawaii_dessert_cake_macaroon_ice_cream_icons.html)
+- **profile avatars** : [123rf](https://www.123rf.com/photo_40610865_stock-vector-cute-kawaii-dessert-cake-macaroon-ice-cream-icons.html)
 
 ### Code
 
