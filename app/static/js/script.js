@@ -26,6 +26,9 @@ $(document).ready(function () {
     // initialize input character count
     $("input#search_keyword, textarea").characterCounter();
 
+    // initialize floating action button
+    $(".fixed-action-btn").floatingActionButton({toolbarEnabled: true});
+
     
 
     /*----- CUSTOMIZATION -----*/

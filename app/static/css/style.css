@@ -49,6 +49,11 @@ body {
     flex-direction: column;
 }
 
+*::selection {
+    background-color: #9c27b0;
+    color: white;
+}
+
 .bold {
     font-weight: bold;
 }
@@ -97,6 +102,16 @@ nav {
     position: fixed;
     top: 0;
     z-index: 50;
+}
+
+.fixed-action-btn {
+    right: 2em;
+    bottom: 2em;
+}
+
+.fixed-action-btn.toolbar ul .btn-floating {
+    border-radius: 0;
+    font-size: 1.25em;
 }
 
 
