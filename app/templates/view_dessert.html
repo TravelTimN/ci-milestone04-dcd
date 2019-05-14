@@ -36,7 +36,7 @@
             {% if recipe.img_src %}
             <img src="{{ recipe.img_src }}" class="responsive-img" alt="Dessert">
             {% else %}
-            <img src="{{ url_for('static', filename='img/desserts/'+recipe.dessert_type|replace(' + ', '-')|replace(' ', '-')+'.png') }}" class="responsive-img" alt="Dessert">
+            <img src="{{ url_for('static', filename='img/desserts/'+recipe.dessert_type|replace(' + ', '-')|replace(' ', '-')|lower+'.png') }}" class="responsive-img" alt="Dessert">
             {% endif %}
         </div>
 

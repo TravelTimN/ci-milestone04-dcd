@@ -26,7 +26,7 @@
                     {% if recipe.img_src %}
                     <img src="{{ recipe.img_src }}" alt="Dessert">
                     {% else %}
-                    <img src="{{ url_for('static', filename='img/desserts/'+recipe.dessert_type|replace(' + ', '-')|replace(' ', '-')+'.png') }}" alt="Dessert">
+                    <img src="{{ url_for('static', filename='img/desserts/'+recipe.dessert_type|replace(' + ', '-')|replace(' ', '-')|lower+'.png') }}" alt="Dessert">
                     {% endif %}
                 </div>
                 {% endfor %}

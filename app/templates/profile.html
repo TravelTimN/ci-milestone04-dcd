@@ -29,7 +29,7 @@
                             {% if user_recipe.img_src %}
                             <img src="{{ user_recipe.img_src }}" alt="Dessert" class="circle">
                             {% else %}
-                            <img src="{{ url_for('static', filename='img/desserts/'+user_recipe.dessert_type|replace(' + ', '-')|replace(' ', '-')+'.png') }}" class="circle" alt="Dessert">
+                            <img src="{{ url_for('static', filename='img/desserts/'+user_recipe.dessert_type|replace(' + ', '-')|replace(' ', '-')|lower+'.png') }}" class="circle" alt="Dessert">
                             {% endif %}
                             <span class="title font-special bold purple-text">{{ user_recipe.recipe_name }}</span>
                             <p class="truncate pink-text text-lighten-2">{{ user_recipe.description }}</p>
@@ -71,7 +71,7 @@
                             {% if user_fav.img_src %}
                             <img src="{{ user_fav.img_src }}" alt="Dessert" class="circle">
                             {% else %}
-                            <img src="{{ url_for('static', filename='img/desserts/'+user_fav.dessert_type|replace(' + ', '-')|replace(' ', '-')+'.png') }}" class="circle" alt="Dessert">
+                            <img src="{{ url_for('static', filename='img/desserts/'+user_fav.dessert_type|replace(' + ', '-')|replace(' ', '-')|lower+'.png') }}" class="circle" alt="Dessert">
                             {% endif %}
                             <span class="title font-special bold purple-text">{{ user_fav.recipe_name }}</span>
                         </a>

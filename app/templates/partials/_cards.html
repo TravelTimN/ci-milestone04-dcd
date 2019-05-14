@@ -6,7 +6,7 @@
             {% if recipe.img_src %}
             <img src="{{ recipe.img_src }}" class="activator" alt="Dessert">
             {% else %}
-            <img src="{{ url_for('static', filename='img/desserts/'+recipe.dessert_type|replace(' + ', '-')|replace(' ', '-')+'.png') }}" class="activator" alt="Dessert">
+            <img src="{{ url_for('static', filename='img/desserts/'+recipe.dessert_type|replace(' + ', '-')|replace(' ', '-')|lower+'.png') }}" class="activator" alt="Dessert">
             {% endif %}
             <a href="{{ url_for('view_dessert', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}">
                 <span class="card-title center-align purple-text text-darken-4 text-shadow-1 font-emilys-candy" title="{{ recipe.recipe_name }}">
