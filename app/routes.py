@@ -40,7 +40,8 @@ def total_recipes():
 #----- HOME -----#
 @app.route("/")
 def home():
-        return render_template("base.html")
+        carousel = recipes_collection.aggregate([{"$sample": {"size": 8}}])
+        return render_template("index.html", carousel=carousel)
 
 
 
@@ -211,7 +212,7 @@ def add_dessert_toDB():
         # get total time
         hours = int(request.form.get("total_hrs")) * 60 if request.form.get("total_hrs") != "" else ""
         total_time = int(request.form.get("total_mins")) + hours if hours != "" else int(request.form.get("total_mins"))
-        
+
         submit = {
                 "recipe_name": request.form.get("recipe_name"),
                 "recipe_slug": slugify(request.form.get("recipe_name")),

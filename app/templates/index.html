@@ -1,16 +1,45 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
+{% block content %}
 
-<head>
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+{% for message in messages %}
+<span id="flashToast" class="white-text grey darken-4 center-align bold">{{ message }}</span>
+{% endfor %}
+{% endif %}
+{% endwith %}
 
-    <title>2BN-Desserts</title>
+<div class="container-95">
 
-</head>
+    <div class="row">
+        
+        <!-- carousel of random desserts -->
+        <div class="col s12 l6">
+            <div class="carousel carousel-slider center white recipe-card">
+                {% for recipe in carousel %}
+                <div class="carousel-item">
+                    <div class="carousel-fixed-item center">
+                        <h5>{{ recipe.recipe_name }}</h5>
+                        <p>{{ recipe.description }}</p>
+                        <a class="btn waves-effect darken-text-2" href="{{ url_for('view_dessert', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}">View Recipe</a>
+                    </div>
+                    {% if recipe.img_src %}
+                    <img src="{{ recipe.img_src }}" alt="Dessert">
+                    {% else %}
+                    <img src="{{ url_for('static', filename='img/desserts/'+recipe.dessert_type|replace(' + ', '-')|replace(' ', '-')+'.png') }}" alt="Dessert">
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
 
-<body>
+        <!-- call to action buttons -->
+        <div class="col s12 l6">
+            Welcome!
+        </div>    
 
-    TEST
+    </div>
 
-</body>
+</div>
 
-</html>
+{% endblock %}

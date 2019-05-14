@@ -29,6 +29,8 @@ $(document).ready(function () {
     // initialize floating action button
     $(".fixed-action-btn").floatingActionButton({toolbarEnabled: true});
 
+    // initialize carousel slider
+    $(".carousel.carousel-slider").carousel({fullWidth: true, indicators: true});
     
 
     /*----- CUSTOMIZATION -----*/
@@ -171,6 +173,20 @@ $(document).ready(function () {
             $(".order-span-asc").html("<i class='fas fa-clock materialize-icons hide-on-small-only'></i> Shortest first");
             $(".order-span-desc").html("<i class='far fa-clock materialize-icons hide-on-small-only'></i> Longest first");
         }
+    });
+
+
+    // autoplay recipe carousel
+    const timer = 4000;
+    let autoplay = setInterval(function () {
+        $(".carousel.carousel-slider").carousel("next");
+    }, timer);
+    $(".carousel").mouseover(function () {
+        clearInterval(autoplay);
+    }).mouseout(function () {
+        autoplay = setInterval(function () {
+            $(".carousel.carousel-slider").carousel("next");
+        }, timer);
     });
 
 });

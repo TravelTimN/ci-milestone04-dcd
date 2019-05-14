@@ -47,6 +47,8 @@ body {
     display: flex;
     min-height: 100vh;
     flex-direction: column;
+    background: url("../img/bg.png") no-repeat center center fixed;
+    background-size: cover;
 }
 
 *::selection {
@@ -97,6 +99,10 @@ nav {
     z-index: 50;
 }
 
+nav .brand-logo {
+    font-size: 1.9rem;
+}
+
 .fixed-action-btn {
     right: 2em;
     bottom: 2em;
@@ -113,6 +119,11 @@ main {
     margin-top: 80px;
     margin-bottom: 20px;
     flex: 1 0 auto;
+}
+
+.carousel-item img {
+    object-fit: cover;
+    height: 100%;
 }
 
 
@@ -411,8 +422,16 @@ ul.collapsible {
         padding: 10px 50px;
     }
 
+    .carousel {
+        border-radius: 8px;
+    }
+
+    .carousel-item img {
+        padding: 5px 5px 10px 5px;
+    }
+
     .card-image img {
-        height: 50vh;
+        height: 55vh;
     }
 
     .card:not(#search_form) {
