@@ -1,13 +1,12 @@
 {% extends "base.html" %}
-
 {% block content %}
 
 <form action="{{ url_for('update_dessert_toDB', recipe_id=recipe._id) }}" method="POST">
 
-    <div class="container">
+    <div class="container-75">
 
         <!-- RECIPE DETAILS -->
-        <div class="row card z-depth-2 recipe-card">
+        <div class="row card z-depth-2 recipe-card new-recipe">
 
             <h4 class="font-special bold upper text-shadow-2 center-align">Update Recipe</h4>
 
@@ -26,8 +25,8 @@
             <!-- recipe description -->
             <div class="input-field col s12">
                 <i class="fas fa-align-left purple-text material-icons prefix"></i>
-                <input id="description" name="description" type="text" class="form-control validate"
-                    value="{{ recipe.description }}" autocomplete="off" pattern="^.{15,500}$" placeholder="Description of your Recipe" required>
+                <textarea id="description" name="description" type="text" class="form-control validate materialize-textarea"
+                    autocomplete="off" pattern="^.{15,500}$" placeholder="Description of your Recipe" required>{{ recipe.description }}</textarea>
                 <label for="description">
                     <span class="red-text">*</span>
                     required
@@ -124,7 +123,7 @@
 
 
         <!-- Ingredients -->
-        <div class="row card z-depth-2 recipe-card">
+        <div class="row card z-depth-2 recipe-card new-recipe">
 
             <h4 class="font-special bold upper text-shadow-2 center-align">Ingredients</h4>
 
@@ -264,7 +263,7 @@
 
 
         <!-- Directions -->
-        <div class="row card z-depth-2 recipe-card">
+        <div class="row card z-depth-2 recipe-card new-recipe">
 
             <h4 class="font-special bold upper text-shadow-2 center-align">Directions</h4>
 
@@ -274,8 +273,8 @@
                 <!-- direction -->
                 <div class="input-field col s12">
                     <i class="fas fa-list-ol purple-text material-icons prefix"></i>
-                    <input id="directions" name="directions" type="text" class="directions validate" autocomplete="off"
-                        pattern="^.{5,500}$" placeholder="list each direction one per line" value="{{ direction }}" required>
+                    <textarea id="directions" name="directions" type="text" class="directions validate materialize-textarea" autocomplete="off"
+                        pattern="^.{5,500}$" placeholder="list each direction one per line" required>{{ direction }}</textarea>
                     <label for="directions">
                         <span class="red-text">*</span>
                         required
@@ -317,12 +316,12 @@
 
 
         <div class="row center-align">
-            <button type="submit" class="waves-effect waves-red btn btn-large purple bold text-shadow-2">
+            <button type="submit" class="waves-effect waves-red btn btn-large green bold text-shadow-2">
                 Update
                 <i class="fas fa-check-circle material-icons right hide-on-small-only"></i>
             </button>
 
-            <button type="reset" class="waves-effect waves-purple btn btn-large pink lighten-2 bold text-shadow-2" onclick="history.go(-1)">
+            <button type="reset" class="waves-effect waves-purple btn btn-large red bold text-shadow-2" onclick="history.go(-1)">
                 Cancel
                 <i class="fas fa-times-circle material-icons right hide-on-small-only"></i>
             </button>

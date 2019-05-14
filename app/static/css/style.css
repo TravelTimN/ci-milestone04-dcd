@@ -54,6 +54,10 @@ body {
     color: white;
 }
 
+.row .col {
+    padding: 0;
+}
+
 .bold {
     font-weight: bold;
 }
@@ -71,17 +75,10 @@ body {
 }
 
 .container,
+.container-95,
 .container-90,
-.container-95 {
+.container-75 {
     margin: auto;
-}
-
-.container-95 {
-    width: 95vw;
-}
-
-.container-90 {
-    width: 90vw;
 }
 
 .text-shadow-1 {
@@ -90,10 +87,6 @@ body {
 
 .text-shadow-2 {
     text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
-}
-
-hr {
-    margin-bottom: 18px;
 }
 
 
@@ -117,8 +110,8 @@ nav {
 
 /*----- Main -----*/
 main {
-    margin-top: 150px;
-    margin-bottom: 50px;
+    margin-top: 80px;
+    margin-bottom: 20px;
     flex: 1 0 auto;
 }
 
@@ -176,18 +169,12 @@ footer {
 
 /*----- Cards -----*/
 .card:not(#search_form) {
-    border-radius: 8px;
     margin-bottom: 50px;
 }
 
 .card-image img {
     object-fit: cover;
-    height: 100vw;
-}
-
-.card-image {
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
+    height: 60vw;
 }
 
 .card .card-image .card-title {
@@ -197,8 +184,8 @@ footer {
     font-size: 2em;
     font-weight: bold;
     background: rgba(243, 229, 245, 0.75);
-    border-top: 5px double #f06292;
-    border-bottom: 5px double #f06292;
+    border-top: 5px solid #f06292;
+    border-bottom: 5px solid #f06292;
 }
 
 .card .card-content {
@@ -207,8 +194,6 @@ footer {
 
 .card .card-action {
     padding: 5px;
-    border-bottom-left-radius: 8px;
-    border-bottom-right-radius: 8px;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     text-align: center;
@@ -229,25 +214,10 @@ footer {
 }
 
 
-/*----- Recipe Cards -----*/
-.recipe-card {
-    padding: 15px;
-    border: 3px dashed rgba(156, 39, 176, 0.5);
-    border-radius: 0.5vw;
-    box-shadow: 0 0 0 4px #f8bbd0, 2px 1px 6px 4px rgba(10, 10, 0, 0.5);
-}
-
-#recipe-img-small {
-    height: 150px;
-    max-width: 300px;
-    margin: 0 auto;
-}
-
 
 /*----- Recipe Ingredients + Directions -----*/
 .example {
     background-color: rgba(158, 158, 158, 0.1);
-    border-radius: 8px;
 }
 
 #ingredients li {
@@ -258,11 +228,6 @@ footer {
 
 .ingredient {
     font-size: 1.25em;
-}
-
-.new-ingredient,
-.new-direction {
-    border-radius: 8px;
 }
 
 .new-ingredient:nth-child(odd),
@@ -277,6 +242,18 @@ footer {
 
 .ing-dir h5 {
     letter-spacing: 5px;
+}
+
+.ing-dir-divider {
+    margin: 3em auto;
+}
+
+.recipe-card .ing-dir {
+    padding: 0 0.75rem;
+}
+
+.new-recipe {
+    padding: 15px;
 }
 
 #directions {
@@ -318,16 +295,16 @@ footer {
 
 
 /*----- Search -----*/
+.collapsible {
+    border: 0;
+}
+
 #search_form h2 {
     margin: 0;
 }
 
-#search_form .collapsible-body .row {
-    margin-bottom: 5px;
-}
-
-#search_form .collapsible-header h5 {
-    font-size: 3em;
+#search_form .collapsible-body {
+    padding: 5px;
 }
 
 #search_form .search-results {
@@ -390,10 +367,6 @@ footer {
     vertical-align: middle;
 }
 
-.collapsible .recipe-card {
-    padding: 5px;
-}
-
 .collection .collection-item.avatar {
     padding-right: 50px;
     min-height: 60px;
@@ -417,6 +390,22 @@ ul.collapsible {
 
 /*----- >600px Materialize Tablet size (.m) -----*/
 @media (min-width: 600px) {
+    .row .col {
+        padding: 0 0.75rem;
+    }
+
+    .container-95 {
+        width: 95vw;
+    }
+
+    .container-90 {
+        width: 90vw;
+    }
+
+    .container-75 {
+        width: 75vw;
+    }
+
     .login-form-container,
     .register-form-container {
         padding: 10px 50px;
@@ -424,6 +413,53 @@ ul.collapsible {
 
     .card-image img {
         height: 50vh;
+    }
+
+    .card:not(#search_form) {
+        border-radius: 8px;
+    }
+
+    .card-image {
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+    }
+
+    .card .card-action {
+        border-bottom-left-radius: 8px;
+        border-bottom-right-radius: 8px;
+    }
+
+    .collapsible .recipe-card {
+        padding: 5px;
+    }
+
+    .example {
+        border-radius: 8px;
+    }
+
+    .recipe-card {
+        border: 3px dashed rgba(156, 39, 176, 0.5);
+        border-radius: 0.5vw;
+        box-shadow: 0 0 0 4px #f8bbd0, 2px 1px 6px 4px rgba(10, 10, 0, 0.5);
+    }
+
+    .recipe-card .card-image img {
+        margin: 0.75rem auto;
+    }
+
+    #recipe-img-small {
+        height: 150px;
+        max-width: 300px;
+        margin: 0 auto;
+    }
+    
+    .new-recipe {
+        padding: 0.75rem;
+    }
+
+    .new-ingredient,
+    .new-direction {
+        border-radius: 8px;
     }
 
     .ing-dir h5 {

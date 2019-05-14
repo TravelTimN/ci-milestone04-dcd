@@ -9,6 +9,24 @@
 {% endif %}
 {% endwith %}
 
+<!-- modal for delete button in partials/_tools -->
+{% if session.user|lower == author|lower or session.user|lower == "admin"|lower %}
+<div id="modal-delete-recipe" class="modal">
+    <div class="modal-content">
+        <h4 class="red-text bold upper">Confirm Deletion</h4>
+        <h5 class="bold">Are you sure you want to delete this recipe?</h5>
+        <p class="grey-text bold">This action cannot be undone.</p>
+    </div>
+    <div class="modal-footer center-align">
+        <a class="waves-effect waves-light red btn text-shadow-2 upper"
+            href="{{ url_for('delete_dessert', recipe_id=recipe._id) }}"><i
+                class="far fa-trash-alt material-icons right"></i>Yes</a>
+        <a href="#" class="modal-close waves-effect waves-light green btn text-shadow-2 upper">
+            <i class="fas fa-reply material-icons right"></i>No</a>
+    </div>
+</div>
+{% endif %}
+
 <div class="container-90">
 
     <!-- THE RECIPE -->
@@ -20,25 +38,6 @@
             {% else %}
             <img src="{{ url_for('static', filename='img/no-img.png') }}" class="responsive-img" alt="Dessert">
             {% endif %}
-
-            <!-- modal for delete button in partials/_tools -->
-            {% if session.user|lower == author|lower or session.user|lower == "admin"|lower %}
-            <div id="modal-delete-recipe" class="modal">
-                <div class="modal-content">
-                    <h4 class="red-text bold upper">Confirm Deletion</h4>
-                    <h5 class="bold">Are you sure you want to delete this recipe?</h5>
-                    <p class="grey-text bold">This action cannot be undone.</p>
-                </div>
-                <div class="modal-footer center-align">
-                    <a class="waves-effect waves-light red btn text-shadow-2 upper"
-                        href="{{ url_for('delete_dessert', recipe_id=recipe._id) }}"><i
-                            class="far fa-trash-alt material-icons right"></i>Yes</a>
-                    <a href="#" class="modal-close waves-effect waves-light green btn text-shadow-2 upper">
-                        <i class="fas fa-reply material-icons right"></i>No</a>
-                </div>
-            </div>
-            {% endif %}
-
         </div>
 
         <!-- Recipe Details -->
@@ -66,21 +65,21 @@
             {% if recipe.date_added != recipe.date_updated %}
             <br><i class="fas fa-calendar-check"></i> Updated: <span class="purple-text bold">{{ recipe.date_updated }}</span></p>
             {% endif %}
-            <div class="card-content">
+            <p>
                 {% for allergen in recipe.allergens %}
                 <div class="chip pink lighten-4 black-text">
                     <img src="{{ url_for('static', filename='img/allergens/'+allergen|lower+'.png') }}"
                         alt="Allergen">{{ allergen }}</div>
                 {% endfor %}
-            </div>
+            </p>
             {% if session.user %}
-            <div class="card-content row">
+            <p>
                 {% if recipe._id in user_favs %}
                 <a class="btn white purple-text bold upper waves-effect waves-purple" href="{{ url_for('delete_favorite', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}">You love it! <i class="fas fa-heart material-icons pink-text text-lighten-2 text-shadow-1"></i></a>
                 {% else %}
                 <a class="btn white purple-text bold upper waves-effect waves-purple" href="{{ url_for('add_favorite', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}">Love it? <i class="far fa-heart material-icons pink-text text-lighten-2 text-shadow-1"></i></a>
                 {% endif %}
-            </div>
+            </p>
             {% endif %}
         </div>
     </div>
@@ -89,7 +88,7 @@
     <!-- INGREDIENTS | DIRECTIONS-->
     <div class="row card z-depth-2 recipe-card">
         <!-- Ingredients -->
-        <div class="col s12 m4 ing-dir">
+        <div class="col s12 m5 ing-dir">
             <h5 class="font-special bold upper text-shadow-2 center-align">Ingredients</h5>
             <ul id="ingredients">
                 {% for amount,measurement,ingredient in full_ingredient %}
@@ -104,16 +103,16 @@
                             data-tooltip="{{ units[unit_loop.index-1] }}">{{ measurement }}</span> of
                         {% endif %}
 
-                        {{ ingredient }}
+                        <span class="purple-text">{{ ingredient }}</span>
                     </span>
                 </li>
                 {% endfor %}
             </ul>
-            <div class="divider purple hide-on-med-and-up z-depth-1"></div>
+            <div class="divider ing-dir-divider purple hide-on-med-and-up z-depth-1"></div>
         </div>
 
         <!-- Directions -->
-        <div class="col s12 m8 ing-dir">
+        <div class="col s12 m7 ing-dir">
             <h5 class="font-special bold upper text-shadow-2 center-align">Directions</h5>
             <ol id="directions">
                 {% for direction in recipe.directions %}

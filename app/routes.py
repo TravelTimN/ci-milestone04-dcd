@@ -533,9 +533,7 @@ def add_favorite(recipe_id, slugUrl):
         recipes_collection.update_one({"_id": ObjectId(recipe_id)}, {"$inc": {"user_favs": 1}})
         # retain the original view-count by decrementing -1
         recipes_collection.update_one({"_id": ObjectId(recipe_id)}, {"$inc": {"views": -1}})
-        return redirect(url_for("view_dessert",
-                                recipe_id=recipe_id,
-                                slugUrl=slugUrl))
+        return redirect(request.referrer)
 
 
 #----- Delete Favorites ----- #
@@ -549,6 +547,4 @@ def delete_favorite(recipe_id, slugUrl):
         recipes_collection.update_one({"_id": ObjectId(recipe_id)}, {"$inc": {"user_favs": -1}})
         # retain the original view-count by decrementing -1
         recipes_collection.update_one({"_id": ObjectId(recipe_id)}, {"$inc": {"views": -1}})
-        return redirect(url_for("view_dessert",
-                                recipe_id=recipe_id,
-                                slugUrl=slugUrl))
+        return redirect(request.referrer)

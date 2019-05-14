@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<div class="container">
+<div class="container-75">
 
     <!-- USER AVATAR -->
     <div class="center-align">
@@ -34,6 +34,7 @@
                             {% endif %}
                             <span class="title font-special bold purple-text">{{ user_recipe.recipe_name }}</span>
                             <p class="truncate pink-text text-lighten-2">{{ user_recipe.description }}</p>
+                            <i class="fas fa-eye material-icons blue-text text-shadow-1 secondary-content tooltipped" data-position="left" data-tooltip="View Dessert"></i>
                         </a>
                     </li>
                     {% else %}
@@ -45,7 +46,7 @@
                             You haven't shared anything yet. Click the icon on the right to add your first recipe.
                         </p>
                         <a href="{{ url_for('add_dessert') }}" title="Add a Recipe">
-                            <i class="fas fa-plus-circle material-icons small purple-text text-shadow-1 secondary-content"></i>
+                            <i class="fas fa-plus-circle material-icons purple-text text-shadow-1 secondary-content tooltipped" data-position="left" data-tooltip="Add Dessert"></i>
                         </a>
                     </li>
                     {% endfor %}
@@ -75,8 +76,10 @@
                                 class="circle">
                             {% endif %}
                             <span class="title font-special bold purple-text">{{ user_fav.recipe_name }}</span>
-                            <p class="truncate pink-text text-lighten-2">{{ user_fav.description }}</p>
-                            <i class="fas fa-heart material-icons pink-text text-lighten-2 text-shadow-1 secondary-content"></i>
+                        </a>
+                        <p class="truncate pink-text text-lighten-2">{{ user_fav.description }}</p>
+                        <a href="{{ url_for('delete_favorite', recipe_id=user_fav._id, slugUrl=user_fav.recipe_slug) }}">
+                            <i class="fas fa-minus-circle material-icons red-text text-shadow-1 secondary-content tooltipped" data-position="left" data-tooltip="Remove from Saved"></i>
                         </a>
                     </li>
                     {% else %}
@@ -88,7 +91,7 @@
                             Click the magnifying glass on the right to find something delicious!
                         </p>
                         <a href="{{ url_for('view_desserts') }}" title="View all Desserts">
-                            <i class="fas fa-search-plus material-icons small pink-text text-lighten-2 purple lighten-5 secondary-content"></i>
+                            <i class="fas fa-search-plus material-icons small pink-text text-lighten-2 purple lighten-5 secondary-content tooltipped" data-position="left" data-tooltip="Search Desserts"></i>
                         </a>
                     </li>
                     {% endfor %}

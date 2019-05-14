@@ -49,7 +49,7 @@ $(document).ready(function () {
         // 'destroy' is needed in order to clone select fields
         $("select").formSelect("destroy");
         // clone the ingredient line, and remove its values
-        $(".new-ingredient:first").clone().insertBefore(".add-ingredient").find("input[type='text'], select").val("");
+        $(".new-ingredient:first").clone().insertBefore(".add-ingredient").find("input[type='text'], select, textarea").val("");
         $("select").formSelect();
         // increase counter so original ingredient never gets deleted
         ingredientCount += 1;
@@ -69,7 +69,7 @@ $(document).ready(function () {
     let directionCount = $(".direction").length;
     $(".add-direction").on("click", function () {
         // clone the direction line, and remove its value
-        $(".new-direction:first").clone().insertBefore(".add-direction").find("input[type='text']").val("");
+        $(".new-direction:first").clone().insertBefore(".add-direction").find("input[type='text'], select, textarea").val("");
         // increase counter so original direction never gets deleted
         directionCount += 1;
     });

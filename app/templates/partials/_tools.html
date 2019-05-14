@@ -7,10 +7,12 @@
         <li class="tooltipped blue" data-position="top" data-tooltip="{{ session['user']|upper }}"><a class="btn-floating" href="{{ url_for('profile', username=session['user']) }}"><i class="fas fa-user material-icons hide-on-med-and-up"></i><span class="bold upper hide-on-small-only">{{ session['user']|upper }}</span></a></li>
         <li class="tooltipped green" data-position="top" data-tooltip="Add Recipe"><a class="btn-floating" href="{{ url_for('add_dessert') }}"><i class="fas fa-plus material-icons hide-on-med-and-up"></i><span class="bold upper hide-on-small-only">Add Recipe</span></a></li>
 
-        <!-- if current recipe page author is actual author (or Admin), show edit/delete buttons -->
-        {% if session.user|lower == author|lower or session.user|lower == "admin"|lower %}
-            <li class="tooltipped yellow darken-1" data-position="top" data-tooltip="Edit Recipe"><a class="btn-floating" href="{{ url_for('update_dessert', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}"><i class="fas fa-pencil-alt material-icons hide-on-med-and-up"></i><span class="bold upper hide-on-small-only">Edit Recipe</span></a></li>
-            <li class="tooltipped red" data-position="top" data-tooltip="Delete Recipe"><a class="btn-floating modal-trigger" href="#modal-delete-recipe"><i class="far fa-trash-alt material-icons hide-on-med-and-up"></i><span class="bold upper hide-on-small-only">Delete Recipe</span></a></li>
+        {% if "/dessert/" in request.path %}
+            <!-- if current recipe page author is actual author (or Admin), show edit/delete buttons -->
+            {% if session.user|lower == author|lower or session.user|lower == "admin"|lower %}
+                <li class="tooltipped yellow darken-1" data-position="top" data-tooltip="Edit Recipe"><a class="btn-floating" href="{{ url_for('update_dessert', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}"><i class="fas fa-pencil-alt material-icons hide-on-med-and-up"></i><span class="bold upper hide-on-small-only">Edit Recipe</span></a></li>
+                <li class="tooltipped red" data-position="top" data-tooltip="Delete Recipe"><a class="btn-floating modal-trigger" href="#modal-delete-recipe"><i class="far fa-trash-alt material-icons hide-on-med-and-up"></i><span class="bold upper hide-on-small-only">Delete Recipe</span></a></li>
+            {% endif %}
         {% endif %}
 
     </ul>
