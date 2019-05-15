@@ -12,16 +12,93 @@
 <div class="container-95">
 
     <div class="row">
-        
+
+        <!-- Intro to 2BN-Desserts -->
+        <div class="col s12 l6 card landing-page">
+            <header>
+                <h1 class="center-align purple-text font-rye text-shadow-1">2BN-Desserts</h1>
+            </header>
+            <div>
+                <h5 class="center-align bold pink-text text-lighten-2 font-special upper">
+                    Life is short;
+                    <br>
+                    Eat dessert first!
+                </h5>
+                <p class="bold justify">
+                    Sometimes we all just want to indulge a little (or a lot) in something
+                    <span class="pink-text text-lighten-2">sweet</span>,
+                    so you've come to the right place to find
+                    <span class="purple-text">mouth-watering desserts</span>
+                    that will take care of any
+                    <span class="pink-text text-lighten-2">sweet tooth</span>
+                    in your household - just remember to share! Also, a party without
+                    <span class="purple-text">cake</span>
+                    is just a meeting, and nobody likes meetings.
+                    <br><br>
+                    Concerned about <span class="red-text">food allergies</span>?
+                    Not to worry, you can filter out the most common food allergens!
+                    <span class="green-text">(eggs, milk, nuts, etc.)</span>
+                    <br><br>
+                    Be sure to check out the
+                    <!-- get random dessert category and replace characters for proper URL -->
+                    {% set random_category = categories|random %}
+                    {% set convert_category = random_category|replace('+', '%2B')|replace(' ', '+') %}
+                    <a href="desserts?search_dessert={{convert_category}}&limit=" class="blue-text">{{ random_category }}</a>
+                    recipes!
+                </p>
+            </div>
+
+            <!-- dividers -->
+            <div class="divider pink lighten-2"></div>
+            <div class="divider red"></div>
+            <div class="divider orange"></div>
+            <div class="divider yellow"></div>
+            <div class="divider green"></div>
+            <div class="divider blue"></div>
+            <div class="divider purple"></div>
+            <div class="divider pink"></div>
+
+            <!-- Quick Links -->
+            <div class="center-align quick-links">
+                <h5 class="bold purple-text font-special upper">Quick Links</h5>
+                <a href="{{ url_for('view_desserts') }}" class="btn purple white-text text-shadow-2">
+                    <i class="fas fa-search material-icons"></i> Search
+                </a>
+                <!-- get random recipe -->
+                {% for recipe in random_recipe %}
+                <a href="{{ url_for('view_dessert', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}" class="btn blue white-text text-shadow-2">
+                    <i class="fas fa-random material-icons"></i> Random
+                </a>
+                {% endfor %}
+                <!-- only if user in session -->
+                {% if session.user %}
+                <a href="{{ url_for('profile', username=session['user']) }}" class="btn pink lighten-2 white-text text-shadow-2">
+                    <i class="fas fa-user-circle material-icons"></i> Profile
+                </a>
+                <a href="{{ url_for('add_dessert') }}" class="btn green white-text text-shadow-2">
+                    <i class="fas fa-plus material-icons"></i> Add
+                </a>
+                <!-- if no user in session -->
+                {% else %}
+                <a href="{{ url_for('login') }}" class="btn pink lighten-2 white-text text-shadow-2">
+                    <i class="fas fa-user-plus material-icons"></i> Log In | Register
+                </a>
+                {% endif %}
+            </div>
+        </div>
+
         <!-- carousel of random desserts -->
-        <div class="col s12 l6">
-            <div class="carousel carousel-slider center white recipe-card">
+        <div class="col s12 l5 offset-l1 center-align white card">
+            <h6 class="mark-purple upper font-merienda text-shadow-1">Featured Favorites</h6>
+            <div class="carousel carousel-slider">
                 {% for recipe in carousel %}
                 <div class="carousel-item">
-                    <div class="carousel-fixed-item center">
-                        <h5>{{ recipe.recipe_name }}</h5>
-                        <p>{{ recipe.description }}</p>
-                        <a class="btn waves-effect darken-text-2" href="{{ url_for('view_dessert', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}">View Recipe</a>
+                    <div class="carousel-fixed-item center text-shadow-1">
+                        <a href="{{ url_for('view_dessert', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}">
+                        <h4 class="bold font-emilys-candy mark-purple text-shadow-2">
+                            {{ recipe.recipe_name|truncate(50, True)|safe }}
+                        </h4>
+                        </a>
                     </div>
                     {% if recipe.img_src %}
                     <img src="{{ recipe.img_src }}" alt="Dessert">
@@ -32,11 +109,6 @@
                 {% endfor %}
             </div>
         </div>
-
-        <!-- call to action buttons -->
-        <div class="col s12 l6">
-            Welcome!
-        </div>    
 
     </div>
 

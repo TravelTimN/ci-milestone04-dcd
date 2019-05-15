@@ -44,6 +44,7 @@
 /*----- Global Settings -----*/
 body {
     background-color: rgba(243, 229, 245, 0.5);
+    background: linear-gradient(90deg, rgba(225,190,231,1) 0%, rgba(243,229,245,1) 50%, rgba(225,190,231,1) 100%);
     display: flex;
     min-height: 100vh;
     flex-direction: column;
@@ -66,6 +67,26 @@ body {
 
 .disabled {
     pointer-events: none;
+}
+
+.justify {
+    text-align: justify;
+}
+
+.mark-purple {
+    padding: 10px 5px;
+    color: #fff;
+    background-color: rgba(156, 39, 176, 0.75);
+}
+
+.mark-white {
+    padding: 10px 5px;
+    background-color: rgba(255, 255, 255, 0.75);
+}
+
+.pulse::before {
+    background-color: #9c27b0;
+    animation: pulse-animation 2.5s cubic-bezier(0.24, 0, 0.38, 1) infinite;
 }
 
 .strike {
@@ -97,6 +118,7 @@ nav {
     position: fixed;
     top: 0;
     z-index: 50;
+    background: linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(34,34,34,1) 50%, rgba(0,0,0,1) 100%);
 }
 
 nav .brand-logo {
@@ -121,9 +143,50 @@ main {
     flex: 1 0 auto;
 }
 
+
+/*----- Landing Page -----*/
+.landing-page {
+    background-color: rgba(255, 255, 255, 0.75);
+}
+
+.landing-page p {
+    margin: 10px;
+    font-size: 1.15em;
+}
+
+.landing-page .quick-links a {
+    margin: 5px;
+}
+
+.landing-page .quick-links {
+    margin-bottom: 15px;
+}
+
 .carousel-item img {
     object-fit: cover;
     height: 100%;
+}
+
+.carousel .indicators {
+    background-color: rgba(0, 0, 0, 0.75);
+}
+
+.carousel .indicators .indicator-item {
+    height: 1em;
+    width: 1em;
+    margin: 10px 5px;
+    background-color: #9c27b0;
+    vertical-align: middle;
+}
+
+.carousel .indicators .indicator-item.active {
+    height: 1.5em;
+    width: 1.5em;
+    background-color: #f06292;
+}
+
+.carousel.carousel-slider .carousel-fixed-item.with-indicators {
+    bottom: 6%;
 }
 
 
@@ -132,6 +195,7 @@ footer {
     font-size: 1.5em;
     line-height: 2em;
     padding-top: 15px;
+    background: linear-gradient(90deg, rgba(156,39,176,1) 0%, rgba(186,104,200,1) 50%, rgba(156,39,176,1) 100%);
 }
 
 
@@ -169,7 +233,7 @@ footer {
 
 /*----- Login | Register -----*/
 .login-register {
-    border-radius: 10px;
+    border-radius: 8px;
 }
 
 .login-form-container,
@@ -191,7 +255,6 @@ footer {
 .card .card-image .card-title {
     padding: 0px;
     width: 100%;
-    /*mix-blend-mode: luminosity;*/
     font-size: 2em;
     font-weight: bold;
     background: rgba(243, 229, 245, 0.75);
@@ -393,6 +456,7 @@ footer {
 
 ul.collapsible {
     margin: 25px auto;
+    background-color: #fff;
 }
 
 
@@ -422,19 +486,21 @@ ul.collapsible {
         padding: 10px 50px;
     }
 
-    .carousel {
-        border-radius: 8px;
-    }
-
-    .carousel-item img {
-        padding: 5px 5px 10px 5px;
-    }
-
     .card-image img {
         height: 55vh;
     }
 
-    .card:not(#search_form) {
+    .carousel.carousel-slider {
+        margin-bottom: 5px;
+    }
+
+    .landing-page,
+    .carousel,
+    .card:not(#search_form),
+    .example,
+    .new-ingredient,
+    .new-direction,
+    .recipe-card {
         border-radius: 8px;
     }
 
@@ -452,13 +518,8 @@ ul.collapsible {
         padding: 5px;
     }
 
-    .example {
-        border-radius: 8px;
-    }
-
     .recipe-card {
         border: 3px dashed rgba(156, 39, 176, 0.5);
-        border-radius: 0.5vw;
         box-shadow: 0 0 0 4px #f8bbd0, 2px 1px 6px 4px rgba(10, 10, 0, 0.5);
     }
 
@@ -474,11 +535,6 @@ ul.collapsible {
     
     .new-recipe {
         padding: 0.75rem;
-    }
-
-    .new-ingredient,
-    .new-direction {
-        border-radius: 8px;
     }
 
     .ing-dir h5 {

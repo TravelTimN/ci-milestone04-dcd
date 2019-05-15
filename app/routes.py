@@ -41,7 +41,21 @@ def total_recipes():
 @app.route("/")
 def home():
         carousel = recipes_collection.aggregate([{"$sample": {"size": 8}}])
-        return render_template("index.html", carousel=carousel)
+        
+        # get recipes for random recipe link
+        random_recipe = recipes_collection.aggregate([{"$sample": {"size": 1}}])
+
+        # get desserts for random dessert link
+        categories = []
+        for dessert in desserts_collection.find().sort([("desserts", 1)]):
+                dessert_name = dessert.get("dessert_type")
+                for item in dessert_name:
+                        categories.append(item)
+
+        return render_template("index.html",
+                                carousel=carousel,
+                                categories=categories,
+                                random_recipe=random_recipe)
 
 
 
@@ -62,8 +76,12 @@ def register():
                 username_input = request.form.get("username").lower()
                 username_check = re.search(r"(?!\-)[\W]|t+e+s+t+", username_input, re.I)
                 if username_check:
-                        flash(Markup(f"<i class='fas fa-exclamation-circle red-text material-icons small'></i> Usernames containing <span class='pink-text text-lighten-2'>{username_check.group(0).upper()}</span> are not permitted."))
-                        return redirect(url_for("register"))
+                        if " " in {username_check.group(0)}:
+                                flash(Markup(f"<i class='fas fa-exclamation-circle red-text material-icons small'></i> Usernames containing <span class='pink-text text-lighten-2'>spaces</span> are not permitted."))
+                                return redirect(url_for("register"))
+                        else:
+                                flash(Markup(f"<i class='fas fa-exclamation-circle red-text material-icons small'></i> Usernames containing <span class='pink-text text-lighten-2'>{username_check.group(0).upper()}</span> are not permitted."))
+                                return redirect(url_for("register"))
                 
                 # username should be 3-5 alphanumeric
                 if len(request.form.get("username")) < 3 or len(request.form.get("username")) > 15:
@@ -157,7 +175,7 @@ def logout():
         username = users_collection.find_one({"username_lower": session["user"].lower()})["username"]
         flash(Markup(f"Missing you already, <span class='pink-text text-lighten-2 bold'>" + username + "</span>!<br><i class='far fa-sad-tear yellow-text material-icons medium'></i>"))
         session.pop("user")
-        return redirect(url_for("login"))
+        return redirect(url_for("home"))
 
 
 
