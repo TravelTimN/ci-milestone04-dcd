@@ -43,6 +43,14 @@
         <!-- Recipe Details -->
         <div class="col s12 l6 center-align">
             <h4><span class="font-emilys-candy bold text-shadow-2">{{ recipe.recipe_name }}</span></h4>
+            <div class="divider pink lighten-2"></div>
+            <div class="divider red"></div>
+            <div class="divider orange"></div>
+            <div class="divider yellow"></div>
+            <div class="divider green"></div>
+            <div class="divider blue"></div>
+            <div class="divider purple"></div>
+            <div class="divider pink"></div>
             <p>
                 <img src="{{ url_for('static', filename='img/avatars/'+user_avatar+'.png') }}" alt="{{ author }} Avatar" id="avatar-small" class="center-align">
                 <br>
@@ -108,7 +116,14 @@
                 </li>
                 {% endfor %}
             </ul>
-            <div class="divider ing-dir-divider purple hide-on-med-and-up z-depth-1"></div>
+            <div class="divider pink lighten-2 hide-on-med-and-up"></div>
+            <div class="divider red hide-on-med-and-up"></div>
+            <div class="divider orange hide-on-med-and-up"></div>
+            <div class="divider yellow hide-on-med-and-up"></div>
+            <div class="divider green hide-on-med-and-up"></div>
+            <div class="divider blue hide-on-med-and-up"></div>
+            <div class="divider purple hide-on-med-and-up"></div>
+            <div class="divider pink hide-on-med-and-up"></div>
         </div>
 
         <!-- Directions -->
@@ -124,10 +139,10 @@
         </div>
     </div>
 
-    <div class="row center-align">
+    <!--<div class="row center-align">
         <button type="reset" class="waves-effect waves-purple btn btn-large pink lighten-2 bold text-shadow-2" onclick="history.go(-1)"><i
                 class="fas fa-arrow-alt-circle-left material-icons left"></i> Back</button>
-    </div>
+    </div>-->
 
 </div>
 

@@ -28,7 +28,15 @@
                 <i class="far fa-times-circle material-icons text-shadow-1 right"></i>
                 <span class="purple-text text-shadow-1 bold center-align font-emilys-candy">{{ recipe.recipe_name }}</span>
             </h5>
-            <div class="divider purple"></div><br>
+            <div class="divider pink lighten-2"></div>
+            <div class="divider red"></div>
+            <div class="divider orange"></div>
+            <div class="divider yellow"></div>
+            <div class="divider green"></div>
+            <div class="divider blue"></div>
+            <div class="divider purple"></div>
+            <div class="divider pink"></div>
+            <br>
             <i class="fas fa-utensils materialize-icons" title="{{ recipe.dessert_type }}"></i> :
             <span class="pink-text bold font-rye">{{ recipe.dessert_type }}</span><br>
             {% for author in authors %}
@@ -43,8 +51,8 @@
             <i class="fas fa-calendar-check materialize-icons" title="{{ recipe.date_updated }}"></i> updated: 
             <span class="pink-text bold">{{ recipe.date_updated }}</span><br>
             {% endif %}
-            <i class="fas fa-mouse-pointer materialize-icons" title="{{ recipe.recipe_name }}"></i>
-                <a href="{{ url_for('view_dessert', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}"> :
+            <i class="fas fa-mouse-pointer materialize-icons" title="{{ recipe.recipe_name }}"></i> :
+                <a href="{{ url_for('view_dessert', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}">
                     <span class="blue-text bold" title="{{ recipe.recipe_name }}">View Recipe</span>
                 </a><br>
             <i class="fas fa-info-circle materialize-icons" title="{{ recipe.description }}"></i>
