@@ -14,7 +14,7 @@
     <div class="row">
 
         <!-- Intro to 2BN-Desserts -->
-        <div class="col s12 l6 card landing-page">
+        <div class="col s12 l6 card landing-page recipe-card white">
             <header>
                 <h1 class="center-align purple-text font-rye text-shadow-1">2BN-Desserts</h1>
             </header>
@@ -61,34 +61,34 @@
             <!-- Quick Links -->
             <div class="center-align quick-links">
                 <h5 class="bold purple-text font-special upper">Quick Links</h5>
-                <a href="{{ url_for('view_desserts') }}" class="btn purple white-text text-shadow-2">
-                    <i class="fas fa-search material-icons"></i> Search
+                <a href="{{ url_for('view_desserts') }}" class="btn bold purple white-text text-shadow-2">
+                    <i class="fas fa-search material-icons left"></i> Search
                 </a>
-                <!-- get random recipe -->
-                {% for recipe in random_recipe %}
-                <a href="{{ url_for('view_dessert', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}" class="btn blue white-text text-shadow-2">
-                    <i class="fas fa-random material-icons"></i> Random
-                </a>
-                {% endfor %}
                 <!-- only if user in session -->
                 {% if session.user %}
-                <a href="{{ url_for('profile', username=session['user']) }}" class="btn pink lighten-2 white-text text-shadow-2">
-                    <i class="fas fa-user-circle material-icons"></i> Profile
+                <a href="{{ url_for('profile', username=session['user']) }}" class="btn bold blue white-text text-shadow-2">
+                    <i class="fas fa-user-circle material-icons left"></i> Profile
                 </a>
-                <a href="{{ url_for('add_dessert') }}" class="btn green white-text text-shadow-2">
-                    <i class="fas fa-plus material-icons"></i> Add
+                <a href="{{ url_for('add_dessert') }}" class="btn bold green white-text text-shadow-2">
+                    <i class="fas fa-plus material-icons left"></i> Add
                 </a>
                 <!-- if no user in session -->
                 {% else %}
-                <a href="{{ url_for('login') }}" class="btn pink lighten-2 white-text text-shadow-2">
-                    <i class="fas fa-user-plus material-icons"></i> Log In | Register
+                <a href="{{ url_for('login') }}" class="btn bold pink lighten-2 white-text text-shadow-2">
+                    <i class="fas fa-user-plus material-icons left"></i> Log In | Register
                 </a>
                 {% endif %}
+                <!-- get random recipe -->
+                {% for recipe in random_recipe %}
+                <a href="{{ url_for('view_dessert', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}" class="btn bold red white-text text-shadow-2">
+                    <i class="fas fa-random material-icons left"></i> Random
+                </a>
+                {% endfor %}
             </div>
         </div>
 
         <!-- carousel of random desserts -->
-        <div class="col s12 l5 offset-l1 center-align white card">
+        <div class="col s12 l5 offset-l1 center-align white card recipe-card">
             <h6 class="mark-purple upper font-merienda text-shadow-1">Featured Favorites</h6>
             <div class="carousel carousel-slider">
                 {% for recipe in carousel %}

@@ -1,110 +1,114 @@
 {% extends "base.html" %}
-
 {% block content %}
 
-<div class="container-75">
+<div class="container-95">
 
-    <!-- USER AVATAR -->
-    <div class="center-align">
-        <h2 class="purple-text purple lighten-5 font-fredericka">{{ username }}</h2>
-        <img src="{{ url_for('static', filename='img/avatars/'+user_avatar+'.png') }}" alt="User Avatar" id="user-avatar" class="white">
-        <h5 class="blue-text font-rye">{{ user_avatar|title }}</h5>
+    <div class="row">
+
+        <!-- Profile Details -->
+        <div class="col s12 l8 offset-l2 recipe-card card white profile-card center-align">
+            <h2 class="purple-text purple lighten-5 font-fredericka">{{ username }}</h2>
+            <h5 class="blue-text font-rye">the "{{ user_avatar|title }}"</h5>
+            <img src="{{ url_for('static', filename='img/avatars/'+user_avatar+'.png') }}" alt="User Avatar"
+                id="user-avatar" class="white tooltipped" data-position="top" data-tooltip="Hi! I'm your dessert avatar, '{{ user_avatar|title }}'!<br>I will be displayed on any recipe you submit!">
+
+            <div class="row">
+                <div class="col s12 m6">
+                    <!-- User's Own Recipes (modal trigger) -->
+                    <a class="waves-effect waves-light btn btn-large bold blue text-shadow-2 modal-trigger"
+                        href="#modal-user-recipes"><i class="fas fa-user-plus material-icons left"></i>My Recipes</a>
+                </div>
+                <div class="col s12 m6">
+                    <!-- User's Own Recipes (modal trigger) -->
+                    <a class="waves-effect waves-light btn btn-large bold pink lighten-2 text-shadow-2 modal-trigger"
+                        href="#modal-user-favorites"><i class="fas fa-heart material-icons left"></i>My Favorites</a>
+                </div>
+            </div>
+
+        </div>
     </div>
+</div>
 
-    <div class="divider pink lighten-2"></div>
-    <div class="divider red"></div>
-    <div class="divider orange"></div>
-    <div class="divider yellow"></div>
-    <div class="divider green"></div>
-    <div class="divider blue"></div>
-    <div class="divider purple"></div>
-    <div class="divider pink"></div>
 
-    <!-- USER'S OWN RECIPES -->
-    <ul class="collapsible" data-collapsible="accordion">
-        <li class="recipe-card">
-            <div class="collapsible-header profile-header purple white-text text-shadow-2">
-                <i class="fas fa-user-plus material-icons"></i>
-                <h5 class="bold font-amatic">My Desserts</h5>
-            </div>
-
-            <div class="collapsible-body collection collapsible-collection">
-                <ul class="collection">
-                    {% for user_recipe in user_recipes %}
-                    <li class="collection-item avatar">
-                        <a href="{{ url_for('view_dessert', recipe_id=user_recipe._id, slugUrl=user_recipe.recipe_slug) }}">
-                            {% if user_recipe.img_src %}
-                            <img src="{{ user_recipe.img_src }}" alt="Dessert" class="circle">
-                            {% else %}
-                            <img src="{{ url_for('static', filename='img/desserts/'+user_recipe.dessert_type|replace(' + ', '-')|replace(' ', '-')|lower+'.png') }}" class="circle" alt="Dessert">
-                            {% endif %}
-                            <span class="title font-special bold purple-text">{{ user_recipe.recipe_name }}</span>
-                            <p class="truncate pink-text text-lighten-2">{{ user_recipe.description }}</p>
-                            <i class="fas fa-eye material-icons blue-text text-shadow-1 secondary-content tooltipped" data-position="left" data-tooltip="View Dessert"></i>
-                        </a>
-                    </li>
+<!-- user recipes modal -->
+<div id="modal-user-recipes" class="modal bottom-sheet blue lighten-5">
+    <div class="modal-content">
+        <h4 class="bold blue-text text-shadow-1 font-rye center-align">{{ username }}'s Recipes</h4>
+        <ul class="collection">
+            {% for user_recipe in user_recipes %}
+            <li class="collection-item avatar">
+                <a href="{{ url_for('view_dessert', recipe_id=user_recipe._id, slugUrl=user_recipe.recipe_slug) }}">
+                    {% if user_recipe.img_src %}
+                    <img src="{{ user_recipe.img_src }}" alt="Dessert" class="circle">
                     {% else %}
-                    <li class="collection-item avatar">
-                        <span class="title font-special bold purple-text">
-                            Good things come to those who share recipes.
-                        </span>
-                        <p class="purple-text bold">
-                            You haven't shared anything yet. Click the icon on the right to add your first recipe.
-                        </p>
-                        <a href="{{ url_for('add_dessert') }}" title="Add a Recipe">
-                            <i class="fas fa-plus-circle material-icons purple-text text-shadow-1 secondary-content tooltipped" data-position="left" data-tooltip="Add Dessert"></i>
-                        </a>
-                    </li>
-                    {% endfor %}
-                </ul>
-            </div>
-        </li>
-    </ul>
+                    <img src="{{ url_for('static', filename='img/desserts/'+user_recipe.dessert_type|replace(' + ', '-')|replace(' ', '-')|lower+'.png') }}"
+                        class="circle" alt="Dessert">
+                    {% endif %}
+                    <span class="title font-special bold purple-text">{{ user_recipe.recipe_name }}</span>
+                    <p class="truncate pink-text text-lighten-2">{{ user_recipe.description }}</p>
+                    <i class="fas fa-link material-icons blue-text text-shadow-1 secondary-content tooltipped"
+                        data-position="left" data-tooltip="View Dessert"></i>
+                </a>
+            </li>
+            {% else %}
+            <li class="collection-item avatar">
+                <span class="title font-special bold purple-text">
+                    Good things come to those who share recipes.
+                </span>
+                <p class="purple-text bold">
+                    You haven't shared anything yet. Click the icon on the right to add your first
+                    recipe.
+                </p>
+                <a href="{{ url_for('add_dessert') }}" title="Add a Recipe">
+                    <i class="fas fa-plus-circle material-icons purple-text text-shadow-1 secondary-content tooltipped"
+                        data-position="left" data-tooltip="Add Dessert"></i>
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
 
 
-    <!-- USER'S FAVORITE RECIPES -->
-    <ul class="collapsible" data-collapsible="accordion">
-        <li class="recipe-card">
-            <div class="collapsible-header pink lighten-2 white-text text-shadow-2">
-                <i class="fas fa-heart material-icons"></i>
-                <h5 class="bold font-amatic">Saved Desserts</h5>
-            </div>
 
-            <div class="collapsible-body collection collapsible-collection">
-                <ul class="collection">
-                    {% for user_fav in user_favs %}
-                    <li class="collection-item avatar">
-                        <a href="{{ url_for('view_dessert', recipe_id=user_fav._id, slugUrl=user_fav.recipe_slug) }}">
-                            {% if user_fav.img_src %}
-                            <img src="{{ user_fav.img_src }}" alt="Dessert" class="circle">
-                            {% else %}
-                            <img src="{{ url_for('static', filename='img/desserts/'+user_fav.dessert_type|replace(' + ', '-')|replace(' ', '-')|lower+'.png') }}" class="circle" alt="Dessert">
-                            {% endif %}
-                            <span class="title font-special bold purple-text">{{ user_fav.recipe_name }}</span>
-                        </a>
-                        <p class="truncate pink-text text-lighten-2">{{ user_fav.description }}</p>
-                        <a href="{{ url_for('delete_favorite', recipe_id=user_fav._id, slugUrl=user_fav.recipe_slug) }}">
-                            <i class="fas fa-minus-circle material-icons red-text text-shadow-1 secondary-content tooltipped" data-position="left" data-tooltip="Remove from Saved"></i>
-                        </a>
-                    </li>
+<!-- user favorites modal -->
+<div id="modal-user-favorites" class="modal bottom-sheet pink lighten-5">
+    <div class="modal-content">
+        <h4 class="bold pink-text text-lighten-2 text-shadow-1 font-rye center-align">{{ username }}'s Favorites</h4>
+        <ul class="collection">
+            {% for user_fav in user_favs %}
+            <li class="collection-item avatar">
+                <a href="{{ url_for('view_dessert', recipe_id=user_fav._id, slugUrl=user_fav.recipe_slug) }}">
+                    {% if user_fav.img_src %}
+                    <img src="{{ user_fav.img_src }}" alt="Dessert" class="circle">
                     {% else %}
-                    <li class="collection-item avatar">
-                        <span class="title font-special bold pink-text text-lighten-2">
-                            Happiness rarely keeps company with an empty stomach.
-                        </span>
-                        <p class="pink-text text-lighten-2 bold">
-                            Click the magnifying glass on the right to find something delicious!
-                        </p>
-                        <a href="{{ url_for('view_desserts') }}" title="View all Desserts">
-                            <i class="fas fa-search-plus material-icons small pink-text text-lighten-2 purple lighten-5 secondary-content tooltipped" data-position="left" data-tooltip="Search Desserts"></i>
-                        </a>
-                    </li>
-                    {% endfor %}
-                </ul>
-            </div>
-        </li>
-    </ul>
-
+                    <img src="{{ url_for('static', filename='img/desserts/'+user_fav.dessert_type|replace(' + ', '-')|replace(' ', '-')|lower+'.png') }}"
+                        class="circle" alt="Dessert">
+                    {% endif %}
+                    <span class="title font-special bold purple-text">{{ user_fav.recipe_name }}</span>
+                </a>
+                <p class="truncate pink-text text-lighten-2">{{ user_fav.description }}</p>
+                <a href="{{ url_for('delete_favorite', recipe_id=user_fav._id, slugUrl=user_fav.recipe_slug) }}">
+                    <i class="fas fa-minus-circle material-icons red-text text-shadow-1 secondary-content tooltipped"
+                        data-position="left" data-tooltip="Remove from Favorites"></i>
+                </a>
+            </li>
+            {% else %}
+            <li class="collection-item avatar">
+                <span class="title font-special bold pink-text text-lighten-2">
+                    Happiness rarely keeps company with an empty stomach.
+                </span>
+                <p class="pink-text text-lighten-2 bold">
+                    Click the magnifying glass on the right to find something delicious!
+                </p>
+                <a href="{{ url_for('view_desserts') }}" title="View all Desserts">
+                    <i class="fas fa-search-plus material-icons small pink-text text-lighten-2 purple lighten-5 secondary-content tooltipped"
+                        data-position="left" data-tooltip="Search Desserts"></i>
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
 </div>
 
 {% endblock content %}
