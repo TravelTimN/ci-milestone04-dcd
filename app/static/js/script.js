@@ -21,21 +21,30 @@ $(document).ready(function () {
     $(".dropdown-trigger").dropdown();
     $("select").formSelect();
     // solution to dropdowns not enforcing validation: https://stackoverflow.com/questions/34248898/how-to-validate-select-option-for-a-materialize-dropdown
-    $("select[required]").css({display: "block", height: 0, padding: 0, width: 0, position: "absolute"});
+    $("select[required]").css({
+        display: "block",
+        height: 0,
+        padding: 0,
+        width: 0,
+        position: "absolute"
+    });
 
     // initialize input character count
     $("input#search_keyword, textarea#description").characterCounter();
 
     // initialize carousel slider
-    $(".carousel.carousel-slider").carousel({fullWidth: true, indicators: true});
-    
+    $(".carousel.carousel-slider").carousel({
+        fullWidth: true,
+        indicators: true
+    });
+
 
     /*----- CUSTOMIZATION -----*/
 
     // custom Flash Toast
     function flashToast() {
         $("#flashToast").addClass("show");
-        setTimeout(function() {
+        setTimeout(function () {
             $("#flashToast").removeClass("show");
         }, 4000);
     };
@@ -109,23 +118,22 @@ $(document).ready(function () {
         $("select").formSelect();
         $("#search_btn").prop("disabled", false).addClass("text-shadow-2");
         // if results, collapsible should be open
-        var instance = M.Collapsible.getInstance($(".collapsible")); instance.open();
-    }
-    else {
+        var instance = M.Collapsible.getInstance($(".collapsible"));
+        instance.open();
+    } else {
         $("#search_allergen, #sort").prop("disabled", true);
-            $("i.fa-ban, i.fa-sort-amount-down").removeClass("purple-text").addClass("grey-text");
-            $("select").formSelect();
-            $("#search_btn").prop("disabled", true).removeClass("text-shadow-2");
+        $("i.fa-ban, i.fa-sort-amount-down").removeClass("purple-text").addClass("grey-text");
+        $("select").formSelect();
+        $("#search_btn").prop("disabled", true).removeClass("text-shadow-2");
     }
     // on user interaction
-    $("#search_keyword, #search_dessert").on("keyup input change", function() {
+    $("#search_keyword, #search_dessert").on("keyup input change", function () {
         if ($("#search_keyword").val().length >= 3 || $("#search_dessert").val().length > 0) {
             $("#search_allergen, #sort").prop("disabled", false);
             $("i.fa-ban, i.fa-sort-amount-down").removeClass("grey-text").addClass("purple-text");
             $("select").formSelect();
             $("#search_btn").prop("disabled", false).addClass("text-shadow-2");
-        }
-        else {
+        } else {
             $("#search_allergen, #sort").prop("disabled", true);
             $("i.fa-ban, i.fa-sort-amount-down").removeClass("purple-text").addClass("grey-text");
             $("select").formSelect();
@@ -139,34 +147,28 @@ $(document).ready(function () {
     if (sort_value == "author" || sort_value == "recipe_name") {
         $(".order-span-asc").html("<i class='fas fa-sort-alpha-down materialize-icons hide-on-small-only'></i> Alphabetical <strong>(A-Z)</strong>");
         $(".order-span-desc").html("<i class='fas fa-sort-alpha-up materialize-icons hide-on-small-only'></i> Alphabetical <strong>(Z-A)</strong>");
-    }
-    else if (sort_value == "user_favs" || sort_value == "views") {
+    } else if (sort_value == "user_favs" || sort_value == "views") {
         $(".order-span-asc").html("<i class='fas fa-sort-numeric-down materialize-icons hide-on-small-only'></i> Lowest first");
         $(".order-span-desc").html("<i class='fas fa-sort-numeric-up materialize-icons hide-on-small-only'></i> Highest first");
-    }
-    else if (sort_value == "last_edit") {
+    } else if (sort_value == "last_edit") {
         $(".order-span-asc").html("<i class='fas fa-calendar-check materialize-icons hide-on-small-only'></i> Oldest first");
         $(".order-span-desc").html("<i class='far fa-calendar-check materialize-icons hide-on-small-only'></i> Newest first");
-    }
-    else if (sort_value == "total_time") {
+    } else if (sort_value == "total_time") {
         $(".order-span-asc").html("<i class='fas fa-clock materialize-icons hide-on-small-only'></i> Shortest first");
         $(".order-span-desc").html("<i class='far fa-clock materialize-icons hide-on-small-only'></i> Longest first");
     }
     // on selection
-    $("#sort").on("change", function() {
+    $("#sort").on("change", function () {
         if ($("#sort").val() == "author" || $("#sort").val() == "recipe_name") {
             $(".order-span-asc").html("<i class='fas fa-sort-alpha-down materialize-icons hide-on-small-only'></i> Alphabetical <strong>(A-Z)</strong>");
             $(".order-span-desc").html("<i class='fas fa-sort-alpha-up materialize-icons hide-on-small-only'></i> Alphabetical <strong>(Z-A)</strong>");
-        }
-        else if ($("#sort").val() == "user_favs" || $("#sort").val() == "views") {
+        } else if ($("#sort").val() == "user_favs" || $("#sort").val() == "views") {
             $(".order-span-asc").html("<i class='fas fa-sort-numeric-down materialize-icons hide-on-small-only'></i> Lowest first");
             $(".order-span-desc").html("<i class='fas fa-sort-numeric-up materialize-icons hide-on-small-only'></i> Highest first");
-        }
-        else if ($("#sort").val() == "last_edit") {
+        } else if ($("#sort").val() == "last_edit") {
             $(".order-span-asc").html("<i class='fas fa-calendar-check materialize-icons hide-on-small-only'></i> Oldest first");
             $(".order-span-desc").html("<i class='far fa-calendar-check materialize-icons hide-on-small-only'></i> Newest first");
-        }
-        else if ($("#sort").val() == "total_time") {
+        } else if ($("#sort").val() == "total_time") {
             $(".order-span-asc").html("<i class='fas fa-clock materialize-icons hide-on-small-only'></i> Shortest first");
             $(".order-span-desc").html("<i class='far fa-clock materialize-icons hide-on-small-only'></i> Longest first");
         }
@@ -194,16 +196,26 @@ $(document).ready(function () {
 
 
     // insert current URL into input text
-    $("#share-btn").on("click", function() {
+    $("#share-btn").on("click", function () {
         recipeUrl = $(location).attr("href");
         $("#share-url").val(recipeUrl);
     });
     // copy value of input text
-    $("#copy-btn").on("click", function() {
+    $("#copy-btn").on("click", function () {
         let copyUrl = $("#share-url").val(recipeUrl);
         copyUrl.select();
         document.execCommand("copy");
-        M.toast({html: "<i class='fas fa-clipboard-check material-icons left'></i> Copied to Clipboard"})
+        M.toast({
+            html: "<i class='fas fa-clipboard-check material-icons left'></i> Copied to Clipboard"
+        })
+    });
+
+
+    // auto-open card-reveal
+    $(".card").hover(function () {
+        $(this).find("> .card-image > img.activator").click();
+    }, function () {
+        $(this).find("> .card-reveal > .card-title").click();
     });
 
 });
