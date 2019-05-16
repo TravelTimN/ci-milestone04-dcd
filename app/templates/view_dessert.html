@@ -9,55 +9,104 @@
 {% endif %}
 {% endwith %}
 
-<!-- modal for delete button in partials/_tools -->
-{% if session.user|lower == author|lower or session.user|lower == "admin"|lower %}
-<div id="modal-delete-recipe" class="modal">
-    <div class="modal-content">
-        <h4 class="red-text bold upper">Confirm Deletion</h4>
-        <h5 class="bold">Are you sure you want to delete this recipe?</h5>
-        <p class="grey-text bold">This action cannot be undone.</p>
-    </div>
-    <div class="modal-footer center-align">
-        <a class="waves-effect waves-light red btn text-shadow-2 upper"
-            href="{{ url_for('delete_dessert', recipe_id=recipe._id) }}"><i
-                class="far fa-trash-alt material-icons right"></i>Yes</a>
-        <a href="#" class="modal-close waves-effect waves-light green btn text-shadow-2 upper">
-            <i class="fas fa-reply material-icons right"></i>No</a>
-    </div>
-</div>
-{% endif %}
-
-<div class="container-90">
+<div class="container-90" id="print-yes">
 
     <!-- THE RECIPE -->
     <div class="row card z-depth-2 recipe-card">
         <!-- Recipe Image -->
-        <div class="col s12 l6 center-align card-image">
+        <div class="col s12 l6 center-align card-image print-no">
             {% if recipe.img_src %}
             <img src="{{ recipe.img_src }}" class="responsive-img" alt="Dessert">
             {% else %}
             <img src="{{ url_for('static', filename='img/desserts/'+recipe.dessert_type|replace(' + ', '-')|replace(' ', '-')|lower+'.png') }}" class="responsive-img" alt="Dessert">
             {% endif %}
+
+            <div class="card-content row user-buttons">
+                <!-- Print Button -->
+                <div class="col s3">
+                    <a class="waves-effect waves-light btn bold upper pink lighten-2 text-shadow-2" id="print-btn">
+                        <span class="hide-on-small-only">Print</span>
+                        <i class="fas fa-print material-icons hide-on-med-only"></i>
+                    </a>
+                </div>
+
+                <!-- Share Button -->
+                <div class="col s3">
+                    <a class="waves-effect waves-light btn bold upper modal-trigger purple text-shadow-2" id="share-btn"
+                        href="#modal-share-recipe">
+                        <span class="hide-on-small-only">Share</span>
+                        <i class="fas fa-share-alt material-icons hide-on-med-only"></i></a>
+                    <!-- share modal -->
+                    <div id="modal-share-recipe" class="modal">
+                        <div class="modal-content">
+                            <h4 class="purple-text bold upper">Share something Sweet</h4>
+                            <input type="text" id="share-url">
+                            <a id="copy-btn"
+                                class="modal-close waves-effect waves-light purple btn text-shadow-2 upper">
+                                <i class="fas fa-copy material-icons right"></i>Copy Link
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- only visible for session-user or Admin -->
+                {% if session.user|lower == author|lower or session.user|lower == "admin"|lower %}
+                <!-- Update Button -->
+                <div class="col s3">
+                    <a class="waves-effect waves-light btn bold upper green text-shadow-2"
+                        href="{{ url_for('update_dessert', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}">
+                        <span class="hide-on-small-only">Update</span>
+                        <i class="fas fa-pencil-alt material-icons hide-on-med-only"></i>
+                    </a>
+                </div>
+                
+                <!-- Delete Button -->
+                <div class="col s3">
+                    <a class="waves-effect waves-light btn bold upper modal-trigger red text-shadow-2"
+                        href="#modal-delete-recipe">
+                        <span class="hide-on-small-only">Delete</span>
+                        <i class="far fa-trash-alt material-icons hide-on-med-only"></i></a>
+                    <!-- delete modal -->
+                    <div id="modal-delete-recipe" class="modal">
+                        <div class="modal-content">
+                            <h4 class="red-text bold upper">Confirm Deletion</h4>
+                            <h5 class="bold">Are you sure you want to delete this recipe?</h5>
+                            <p class="grey-text bold">This action cannot be undone.</p>
+                        </div>
+                        <div class="modal-footer center-align">
+                            <a class="waves-effect waves-light red btn text-shadow-2 upper"
+                                href="{{ url_for('delete_dessert', recipe_id=recipe._id) }}">
+                                <i class="far fa-trash-alt material-icons right"></i>Yes
+                            </a>
+                            <a class="modal-close waves-effect waves-light green btn text-shadow-2 upper">
+                                <i class="fas fa-reply material-icons right"></i>No
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+
         </div>
 
         <!-- Recipe Details -->
         <div class="col s12 l6 center-align">
             <h4><span class="font-emilys-candy bold text-shadow-2">{{ recipe.recipe_name }}</span></h4>
-            <div class="divider pink lighten-2"></div>
-            <div class="divider red"></div>
-            <div class="divider orange"></div>
-            <div class="divider yellow"></div>
-            <div class="divider green"></div>
-            <div class="divider blue"></div>
-            <div class="divider purple"></div>
-            <div class="divider pink"></div>
-            <p>
+            <div class="divider pink lighten-2 print-no"></div>
+            <div class="divider red print-no"></div>
+            <div class="divider orange print-no"></div>
+            <div class="divider yellow print-no"></div>
+            <div class="divider green print-no"></div>
+            <div class="divider blue print-no"></div>
+            <div class="divider purple print-no"></div>
+            <div class="divider pink print-no"></div>
+            <p class="print-no">
                 <img src="{{ url_for('static', filename='img/avatars/'+user_avatar+'.png') }}" alt="{{ author }} Avatar" id="avatar-small" class="center-align">
                 <br>
                 by: <span class="purple-text bold">{{ author }}</span>
             </p>
-            <q>{{ recipe.description }}</q>
-            <p><i class="fas fa-clock"></i>
+            <q class="print-no">{{ recipe.description }}</q>
+            <p class="print-no"><i class="fas fa-clock"></i>
                 Total Time:
                 <span class="purple-text bold">
                     {% if recipe.total_hrs %}
@@ -69,23 +118,31 @@
                     {% endif %}
                 </span>
             </p>
-            <p><i class="fas fa-calendar-plus"></i> Added: <span class="purple-text bold">{{ recipe.date_added }}</span>
+            <p class="print-no"><i class="fas fa-calendar-plus"></i> Added: <span class="purple-text bold">{{ recipe.date_added }}</span>
             {% if recipe.date_added != recipe.date_updated %}
             <br><i class="fas fa-calendar-check"></i> Updated: <span class="purple-text bold">{{ recipe.date_updated }}</span></p>
             {% endif %}
-            <p>
+            <p class="print-no">
                 {% for allergen in recipe.allergens %}
-                <div class="chip pink lighten-4 black-text">
+                <div class="chip pink lighten-4 black-text print-no">
                     <img src="{{ url_for('static', filename='img/allergens/'+allergen|lower+'.png') }}"
                         alt="Allergen">{{ allergen }}</div>
                 {% endfor %}
             </p>
             {% if session.user %}
-            <p>
+            <p class="print-no">
                 {% if recipe._id in user_favs %}
-                <a class="btn white purple-text bold upper waves-effect waves-purple" href="{{ url_for('delete_favorite', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}">You love it! <i class="fas fa-heart material-icons pink-text text-lighten-2 text-shadow-1"></i></a>
+                <a class="btn white purple-text bold upper waves-effect waves-purple" id="love-it-yes"
+                    href="{{ url_for('delete_favorite', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}">
+                    You love it!
+                    <i class="fas fa-heart material-icons pink-text text-lighten-2 text-shadow-1"></i>
+                </a>
                 {% else %}
-                <a class="btn white purple-text bold upper waves-effect waves-purple" href="{{ url_for('add_favorite', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}">Love it? <i class="far fa-heart material-icons pink-text text-lighten-2 text-shadow-1"></i></a>
+                <a class="btn white purple-text bold upper waves-effect waves-purple" id="love-it-no"
+                    href="{{ url_for('add_favorite', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}">
+                    Love it?
+                    <i class="far fa-heart material-icons pink-text text-lighten-2 text-shadow-1"></i>
+                </a>
                 {% endif %}
             </p>
             {% endif %}
@@ -101,7 +158,7 @@
             <ul id="ingredients">
                 {% for amount,measurement,ingredient in full_ingredient %}
                 {% set unit_loop = loop %}
-                <li class="ingredient-item"><i class="fas fa-circle purple-text"></i>
+                <li class="ingredient-item"><i class="fas fa-circle purple-text print-no"></i>
                     <span class="ingredient">
                         {{ amount }}
 
@@ -116,14 +173,14 @@
                 </li>
                 {% endfor %}
             </ul>
-            <div class="divider pink lighten-2 hide-on-med-and-up"></div>
-            <div class="divider red hide-on-med-and-up"></div>
-            <div class="divider orange hide-on-med-and-up"></div>
-            <div class="divider yellow hide-on-med-and-up"></div>
-            <div class="divider green hide-on-med-and-up"></div>
-            <div class="divider blue hide-on-med-and-up"></div>
-            <div class="divider purple hide-on-med-and-up"></div>
-            <div class="divider pink hide-on-med-and-up"></div>
+            <div class="divider pink lighten-2 hide-on-med-and-up print-no"></div>
+            <div class="divider red hide-on-med-and-up print-no"></div>
+            <div class="divider orange hide-on-med-and-up print-no"></div>
+            <div class="divider yellow hide-on-med-and-up print-no"></div>
+            <div class="divider green hide-on-med-and-up print-no"></div>
+            <div class="divider blue hide-on-med-and-up print-no"></div>
+            <div class="divider purple hide-on-med-and-up print-no"></div>
+            <div class="divider pink hide-on-med-and-up print-no"></div>
         </div>
 
         <!-- Directions -->

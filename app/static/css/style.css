@@ -125,6 +125,11 @@ nav .brand-logo {
     font-size: 1.9rem;
 }
 
+nav ul a.btn {
+    margin-left: 0;
+    margin-right: 1em;
+}
+
 .fixed-action-btn {
     right: 2em;
     bottom: 2em;
@@ -133,6 +138,11 @@ nav .brand-logo {
 .fixed-action-btn.toolbar ul .btn-floating {
     border-radius: 0;
     font-size: 1.25em;
+}
+
+.fixed-action-btn.add-recipe-btn {
+    right: 1em;
+    top: 4em;
 }
 
 
@@ -203,6 +213,10 @@ footer {
 .modal {
     margin-top: 100px;
     border-radius: 8px;
+}
+
+.modal.bottom-sheet {
+    max-height: 65%;
 }
 
 #flashToast {
@@ -398,8 +412,10 @@ footer {
 #user-avatar {
     height: 150px;
     padding: 0;
-    border: 3px dashed rgba(156, 39, 176, 0.5);
-    box-shadow: 0 0 0 4px #f8bbd0, 2px 1px 6px 4px rgba(10, 10, 0, 0.5);
+}
+
+.profile-card a {
+    margin: 5px;
 }
 
 #avatar-small {
@@ -420,9 +436,12 @@ footer {
     background-color: rgba(252, 228, 236, 0.75);
 }
 
-.profile-header h5 {
-    margin: 0;
-    padding: 15px 0;
+.profile-card h2 {
+    margin: 1rem 0;
+}
+
+.profile-card {
+    padding: 15px;
 }
 
 .collapsible-header h5 {
@@ -557,5 +576,49 @@ ul.collapsible {
     }
     .login-register {
         max-width: 50vw;
+    }
+}
+
+
+/*----- Print Recipe (plain text - limited formatting) -----*/
+@media print {
+    body * {
+        visibility: hidden;
+    }
+
+    #print-yes *,
+    #print-yes *::before {
+        visibility: visible;
+        font-family: Verdana, Geneva, Tahoma, sans-serif !important;
+        font-size: 1em !important;
+        color: #000000 !important;
+        text-shadow: none !important;
+        box-shadow: none !important;
+        border: 0 !important;
+        padding: 0 !important;
+    }
+
+    #print-yes h4 {
+        font-size: 2em !important;
+    }
+
+    #print-yes h5 {
+        text-decoration: underline;
+    }
+
+    #print-yes li::before {
+        content: "•";
+        font-weight: normal !important;
+    }
+
+    #print-yes {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+    }
+
+    #print-yes .print-no {
+        display: none;
     }
 }

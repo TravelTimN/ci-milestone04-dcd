@@ -24,10 +24,7 @@ $(document).ready(function () {
     $("select[required]").css({display: "block", height: 0, padding: 0, width: 0, position: "absolute"});
 
     // initialize input character count
-    $("input#search_keyword, textarea").characterCounter();
-
-    // initialize floating action button
-    $(".fixed-action-btn").floatingActionButton({toolbarEnabled: true});
+    $("input#search_keyword, textarea#description").characterCounter();
 
     // initialize carousel slider
     $(".carousel.carousel-slider").carousel({fullWidth: true, indicators: true});
@@ -187,6 +184,26 @@ $(document).ready(function () {
         autoplay = setInterval(function () {
             $(".carousel.carousel-slider").carousel("next");
         }, timer);
+    });
+
+
+    // print recipe page
+    $("#print-btn").on("click", function () {
+        window.print();
+    });
+
+
+    // insert current URL into input text
+    $("#share-btn").on("click", function() {
+        recipeUrl = $(location).attr("href");
+        $("#share-url").val(recipeUrl);
+    });
+    // copy value of input text
+    $("#copy-btn").on("click", function() {
+        let copyUrl = $("#share-url").val(recipeUrl);
+        copyUrl.select();
+        document.execCommand("copy");
+        M.toast({html: "<i class='fas fa-clipboard-check material-icons left'></i> Copied to Clipboard"})
     });
 
 });
