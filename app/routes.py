@@ -173,7 +173,7 @@ def profile(username):
 def logout():
         # remove user from 'session' cookies
         username = users_collection.find_one({"username_lower": session["user"].lower()})["username"]
-        flash(Markup(f"Missing you already, <span class='pink-text text-lighten-2 bold'>" + username + "</span>!<br><i class='far fa-sad-tear yellow-text material-icons medium'></i>"))
+        flash(Markup(f"<i class='far fa-sad-tear yellow-text material-icons small'></i> Missing you already, <span class='pink-text text-lighten-2 bold'>" + username + "</span>!"))
         session.pop("user")
         return redirect(url_for("home"))
 
@@ -534,6 +534,7 @@ def delete_dessert(recipe_id):
         # pull recipe from all users user_favs
         users_collection.update_many({}, {"$pull": {"user_favs": ObjectId(recipe_id)}})
 
+        flash(Markup(f"<i class='fas fa-trash-alt red-text material-icons small'></i> Your recipe has been deleted."))
         return redirect(url_for("view_desserts"))
 
 
@@ -552,6 +553,8 @@ def add_favorite(recipe_id, slugUrl):
         recipes_collection.update_one({"_id": ObjectId(recipe_id)}, {"$inc": {"user_favs": 1}})
         # retain the original view-count by decrementing -1
         recipes_collection.update_one({"_id": ObjectId(recipe_id)}, {"$inc": {"views": -1}})
+
+        flash(Markup(f"<i class='fas fa-heart pink-text material-icons small'></i> Saved to your favorites!"))
         return redirect(request.referrer)
 
 
@@ -566,4 +569,6 @@ def delete_favorite(recipe_id, slugUrl):
         recipes_collection.update_one({"_id": ObjectId(recipe_id)}, {"$inc": {"user_favs": -1}})
         # retain the original view-count by decrementing -1
         recipes_collection.update_one({"_id": ObjectId(recipe_id)}, {"$inc": {"views": -1}})
+
+        flash(Markup(f"<i class='fas fa-minus-circle red-text material-icons small'></i> Removed from your favorites."))
         return redirect(request.referrer)
