@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% block title %}Tweaking the Taste of {{ recipe.recipe_name }} | {% endblock %}
 {% block content %}
 
 <form action="{{ url_for('update_dessert_toDB', recipe_id=recipe._id) }}" method="POST">
