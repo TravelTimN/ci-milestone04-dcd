@@ -15,7 +15,7 @@
     {% if search_recipes_pages == "" %}
         {% for page in all_recipes_pages %}
             <!-- *active* if: url args has current page loop.index, or if page is 1 -->
-            <li {% if request.args.get('page') %}{% if page|string in request.args.get('page') %} class="active purple waves-effect waves-red" {% endif %}{% elif page==1 %} class="active purple waves-effect waves-red" {% endif %} class="waves-effect waves-purple">
+            <li {% if request.args.get('page') %}{% if page|string in request.args.get('page') %} class="active purple waves-effect waves-red" {% endif %}{% elif page==1 %} class="active purple waves-effect waves-red" {% endif %} class="waves-effect waves-purple purple lighten-5">
                 <!-- capture all individual url args to retain searched items ... must remain on single line, otherwise it breaks -->
                 <a href="{{ url_for('view_desserts', page=page, sort=request.args.get('sort'), order=request.args.get('order'), limit=request.args.get('limit'), search_keyword=request.args.get('search_keyword'), search_dessert=request.args.get('search_dessert'), search_allergen=request.args.get('search_allergen')) }}">{{ loop.index }}</a>
             </li>
@@ -24,7 +24,7 @@
     <!-- with Search -->
         {% for page in search_recipes_pages %}
             <!-- *active* if: url args has current page loop.index, or if page is 1 -->
-            <li {% if request.args.get('page') %}{% if page|string in request.args.get('page') %} class="active purple waves-effect waves-red" {% endif %}{% elif page==1 %} class="active purple waves-effect waves-red" {% endif %} class="waves-effect waves-purple">
+            <li {% if request.args.get('page') %}{% if page|string in request.args.get('page') %} class="active purple waves-effect waves-red" {% endif %}{% elif page==1 %} class="active purple waves-effect waves-red" {% endif %} class="waves-effect waves-purple purple lighten-5">
                 <!-- capture all individual url args to retain searched items ... must remain on single line, otherwise it breaks -->
                 <a href="{{ url_for('view_desserts', page=page, sort=request.args.get('sort'), order=request.args.get('order'), limit=request.args.get('limit'), search_keyword=request.args.get('search_keyword'), search_dessert=request.args.get('search_dessert'), search_allergen=request.args.get('search_allergen')) }}">{{ loop.index }}</a>
             </li>

@@ -407,7 +407,8 @@ footer {
     padding: 5px;
 }
 
-#search_form .search-results {
+#search_form .search-results,
+#page-items .page-items {
     font-size: 1.5em;
 }
 
@@ -415,8 +416,16 @@ footer {
     vertical-align: middle;
 }
 
+#page-items h5 {
+    margin: 1rem auto;
+}
+
 .collection {
     overflow: visible;
+}
+
+.pagination li a {
+    font-size: 1.5rem;
 }
 
 

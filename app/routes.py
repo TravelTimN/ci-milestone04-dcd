@@ -334,10 +334,20 @@ def view_desserts():
         search_recipes_count = range(1, (math.ceil(int(results_count) / limit_args)) + 1) if results_count != "" else ""
         search_recipes_pages = [page for page in search_recipes_count] if search_recipes_count != "" else ""
         
+        # get the next page variables
         if search_recipes_pages == "" or search_recipes_pages == []:
                 next_page_search = ""
         else:
                 next_page_search = page_args + 1 if page_args < search_recipes_pages[-1] else page_args
+        
+        # get total of recipes to display per page
+        # (no search)
+        count_display = page_args * limit_args if (page_args * limit_args) < sorting.count() else sorting.count()
+        # (with search)
+        if search_results == "":
+                count_display_search = ""
+        else:
+                count_display_search = page_args * limit_args if (page_args * limit_args) < search_results.count() else search_results.count()
         
         # build page and pass through all data
         return render_template("view_desserts.html",
@@ -357,7 +367,10 @@ def view_desserts():
                                 previous_page=previous_page,
                                 next_page=next_page,
                                 next_page_search=next_page_search,
-                                results_count=results_count)
+                                results_count=results_count,
+                                page_args=page_args,
+                                count_display=count_display,
+                                count_display_search=count_display_search)
 
 
 # (cRud) ----- READ a single dessert -----#
