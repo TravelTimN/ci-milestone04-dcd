@@ -44,7 +44,7 @@
 /*----- Global Settings -----*/
 body {
     background-color: rgba(243, 229, 245, 0.5);
-    background: linear-gradient(90deg, rgba(225,190,231,1) 0%, rgba(243,229,245,1) 50%, rgba(225,190,231,1) 100%);
+    background: linear-gradient(90deg, rgba(225, 190, 231, 1) 0%, rgba(243, 229, 245, 1) 50%, rgba(225, 190, 231, 1) 100%);
     display: flex;
     min-height: 100vh;
     flex-direction: column;
@@ -114,15 +114,25 @@ body {
 
 
 /*----- NavBar -----*/
+.nav-wrapper {
+    border-top: 2px solid black;
+}
+
 nav {
     position: fixed;
     top: 0;
     z-index: 50;
-    background: linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(34,34,34,1) 50%, rgba(0,0,0,1) 100%);
+    background: linear-gradient(90deg, rgba(0, 0, 0, 1) 0%, rgba(70, 70, 70, 1) 50%, rgba(0, 0, 0, 1) 100%);
 }
 
 nav .brand-logo {
-    font-size: 1.9rem;
+    font-size: 1.4em;
+    width: 60%;
+}
+
+nav .brand-logo img {
+    vertical-align: text-top;
+    height: 25px;
 }
 
 nav ul a.btn {
@@ -130,19 +140,17 @@ nav ul a.btn {
     margin-right: 1em;
 }
 
-.fixed-action-btn {
-    right: 2em;
-    bottom: 2em;
+ul.sidenav {
+    display: flex;
+    flex-direction: column;
 }
 
-.fixed-action-btn.toolbar ul .btn-floating {
-    border-radius: 0;
-    font-size: 1.25em;
+ul.sidenav li:last-child {
+    margin-top: auto;
 }
 
-.fixed-action-btn.add-recipe-btn {
-    right: 1em;
-    top: 4em;
+ul.sidenav li>a.btn {
+    margin: 5px 15px;
 }
 
 
@@ -205,7 +213,8 @@ footer {
     font-size: 1.5em;
     line-height: 2em;
     padding-top: 15px;
-    background: linear-gradient(90deg, rgba(156,39,176,1) 0%, rgba(186,104,200,1) 50%, rgba(156,39,176,1) 100%);
+    border-bottom: 2px solid #9c27b0;
+    background: linear-gradient(90deg, rgba(156, 39, 176, 1) 0%, rgba(196, 126, 208, 1) 50%, rgba(156, 39, 176, 1) 100%);
 }
 
 
@@ -500,6 +509,15 @@ ul.collapsible {
         width: 75vw;
     }
 
+    nav .brand-logo {
+        font-size: 2em;
+        margin-left: 0.75em;
+    }
+
+    nav .brand-logo img {
+        vertical-align: inherit;
+    }
+
     .login-form-container,
     .register-form-container {
         padding: 10px 50px;
@@ -551,7 +569,7 @@ ul.collapsible {
         max-width: 300px;
         margin: 0 auto;
     }
-    
+
     .new-recipe {
         padding: 0.75rem;
     }
@@ -574,6 +592,7 @@ ul.collapsible {
     html {
         font-size: 14px;
     }
+
     .login-register {
         max-width: 50vw;
     }

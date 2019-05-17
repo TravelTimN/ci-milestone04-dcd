@@ -1,16 +1,14 @@
 <!-- TOP NAV -->
 <nav class="nav-extended">
     <div class="nav-wrapper">
-        <a href="{{ url_for('home') }}" class="brand-logo">2BN-Desserts</a>
+        <a href="{{ url_for('home') }}" class="brand-logo font-rye">
+            <img src="{{ url_for('static', filename='img/favicon.png') }}" alt="2BN-Desserts Cookie Logo">
+            2BN-Desserts
+        </a>
         <a href="#" data-target="mobile-demo" class="sidenav-trigger">
             <i class="fas fa-bars material-icons"></i>
         </a>
         <ul id="nav-mobile" class="right hide-on-med-and-down text-shadow-2 bold upper">
-            <li>
-                <a title="Home" href="{{ url_for('home') }}">
-                    <i class="fas fa-home material-icons"></i>
-                </a>
-            </li>
             <li>
                 <a class="waves-effect waves-red btn purple" href="{{ url_for('view_desserts') }}">
                     <i class="fas fa-ice-cream material-icons left white-text"></i>
@@ -52,6 +50,9 @@
 <!-- MOBILE SIDE NAV -->
 <ul class="sidenav" id="mobile-demo">
     <li>
+        <h4 class="center-align font-rye text-shadow-2 mark-purple">2BN-Desserts</h4>
+    </li>
+    <li>
         <a class="waves-effect waves-light btn black text-shadow-2 upper bold hoverable" href="{{ url_for('home') }}">
             <i class="fas fa-home material-icons left white-text"></i>
             Home
@@ -90,12 +91,21 @@
             </a>
         </li>
     {% endif %}
-    <div class="divider pink lighten-2"></div>
-    <div class="divider red"></div>
-    <div class="divider orange"></div>
-    <div class="divider yellow"></div>
-    <div class="divider green"></div>
-    <div class="divider blue"></div>
-    <div class="divider purple"></div>
-    <div class="divider pink"></div>
+
+    <li class="center-align purple-text font-amatic text-shadow-1">
+        <h4 class="bold">&copy; 2BN-Desserts
+            <br>
+            <a href="https://github.com/TravelTimN" target="_blank" class="blue-text">
+                <small>&lpar;&lbrace; Tim Nelson &rbrace;&rpar;</small>
+            </a>
+        </h4>
+        <div class="divider pink lighten-2"></div>
+        <div class="divider red"></div>
+        <div class="divider orange"></div>
+        <div class="divider yellow"></div>
+        <div class="divider green"></div>
+        <div class="divider blue"></div>
+        <div class="divider purple"></div>
+        <div class="divider pink"></div>
+    </li>
 </ul>
