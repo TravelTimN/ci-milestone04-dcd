@@ -54,26 +54,26 @@
             <div class="center-align quick-links">
                 <h5 class="bold purple-text font-special upper">Quick Links</h5>
                 <a href="{{ url_for('view_desserts') }}" class="btn bold purple white-text text-shadow-2">
-                    <i class="fas fa-search material-icons left"></i> Search
+                    <i class="fas fa-search material-icons left" aria-hidden="true"></i> Search
                 </a>
                 <!-- only if user in session -->
                 {% if session.user %}
                 <a href="{{ url_for('profile', username=session['user']) }}" class="btn bold blue white-text text-shadow-2">
-                    <i class="fas fa-user-circle material-icons left"></i> Profile
+                    <i class="fas fa-user-circle material-icons left" aria-hidden="true"></i> Profile
                 </a>
                 <a href="{{ url_for('add_dessert') }}" class="btn bold green white-text text-shadow-2">
-                    <i class="fas fa-plus material-icons left"></i> Add
+                    <i class="fas fa-plus material-icons left" aria-hidden="true"></i> Add
                 </a>
                 <!-- if no user in session -->
                 {% else %}
                 <a href="{{ url_for('login') }}" class="btn bold pink lighten-2 white-text text-shadow-2">
-                    <i class="fas fa-user-plus material-icons left"></i> Log In | Register
+                    <i class="fas fa-user-plus material-icons left" aria-hidden="true"></i> Log In | Register
                 </a>
                 {% endif %}
                 <!-- get random recipe -->
                 {% for recipe in random_recipe %}
                 <a href="{{ url_for('view_dessert', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}" class="btn bold red white-text text-shadow-2">
-                    <i class="fas fa-random material-icons left"></i> Random
+                    <i class="fas fa-random material-icons left" aria-hidden="true"></i> Random
                 </a>
                 {% endfor %}
             </div>

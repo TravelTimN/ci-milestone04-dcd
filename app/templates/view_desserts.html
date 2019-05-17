@@ -9,7 +9,7 @@
         <ul class="collapsible" data-collapsible="accordion" id="search_form">
             <li class="recipe-card">
                 <div class="collapsible-header purple white-text text-shadow-2">
-                    <i class="fas fa-search material-icons"></i>
+                    <i class="fas fa-search material-icons" aria-hidden="true"></i>
                     <h5 class="center-align bold upper font-special text-shadow-2">Search</h5>
                 </div>
                 
@@ -20,17 +20,17 @@
                     <div class="row">
                         <!-- Search Keywords -->
                         <div class="input-field col s12 l4">
-                            <i class="fas fa-search purple-text material-icons prefix"></i>
+                            <i class="fas fa-search purple-text material-icons prefix" aria-hidden="true"></i>
                             <input id="search_keyword" name="search_keyword" type="text" class="form-control validate" autocomplete="off"
                                 pattern="^[\w '.-]{3,50}$" data-length="50" placeholder="enter search keyword" value="{% if search_keyword_args %}{{ search_keyword_args }}{% endif %}">
                             <label for="search_keyword">
-                                Keyword <i class="fas fa-question-circle tooltipped" data-position="right" data-tooltip="3-50 alpha characters"></i>
+                                Keyword <i class="fas fa-question-circle tooltipped" data-position="right" data-tooltip="3-50 alpha characters" aria-hidden="true"></i>
                             </label>
                         </div>
                         
                         <!-- Search Category -->
                         <div class="input-field col s12 l4">
-                            <i class="fas fa-ice-cream purple-text material-icons prefix"></i>
+                            <i class="fas fa-ice-cream purple-text material-icons prefix" aria-hidden="true"></i>
                             <select id="search_dessert" name="search_dessert" class="form-control validate">
                                 <option value="" selected>filter by Category</option>
                                 {% for dessert in desserts %}
@@ -46,7 +46,7 @@
                         
                         <!-- Search Allergens -->
                         <div class="input-field col s12 l4">
-                            <i class="fas fa-ban grey-text material-icons prefix"></i>
+                            <i class="fas fa-ban grey-text material-icons prefix" aria-hidden="true"></i>
                             <select id="search_allergen" name="search_allergen" disabled multiple>
                                 <option value="" disabled>exclude Allergens</option>
                                 {% for allergen in allergens %}
@@ -60,7 +60,7 @@
                                 {% endfor %}
                             </select>
                             <label for="search_allergen">
-                                Allergens <i class="fas fa-question-circle tooltipped" data-position="right" data-tooltip="requires Keyword or Category"></i>
+                                Allergens <i class="fas fa-question-circle tooltipped" data-position="right" data-tooltip="requires Keyword or Category" aria-hidden="true"></i>
                             </label>
                         </div>
                     </div>
@@ -69,7 +69,7 @@
                     <div class="row">
                         <!-- Sort Options -->
                         <div class="input-field col s12 l4">
-                            <i class="fas fa-sort-amount-down purple-text material-icons prefix"></i>
+                            <i class="fas fa-sort-amount-down purple-text material-icons prefix" aria-hidden="true"></i>
                             <select id="sort" name="sort" required>
                                 <option value="author" {% if sort_args=="author" %}selected{% endif %}>Author</option>
                                 <option value="user_favs" {% if sort_args=="user_favs" %}selected{% endif %}>Favorites</option>
@@ -102,10 +102,10 @@
                         <!-- Search Buttons -->
                         <div class="col s12 l4 center-align">
                             <button id="search_btn" class="btn waves-effect blue waves-light text-shadow-2 bold upper" type="submit" disabled>Search
-                                <i class="fas fa-search material-icons left"></i>
+                                <i class="fas fa-search material-icons left" aria-hidden="true"></i>
                             </button>
                             <a class="btn waves-effect waves-purple pink lighten-2 text-shadow-2 bold upper tooltipped" data-position="top" data-tooltip="Reset All" href="{{ url_for('view_desserts') }}">
-                                <i class="fas fa-undo-alt material-icons"></i>
+                                <i class="fas fa-undo-alt material-icons" aria-hidden="true"></i>
                             </a>
                         </div>
                     </div>

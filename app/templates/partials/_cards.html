@@ -17,15 +17,15 @@
 
         <!-- Card Action (stats) -->
         <div class="card-action purple lighten-3 bold activator">
-            <span><i class="far fa-clock material-icons purple-text text-shadow-1"></i><br>{% if recipe.total_hrs %}{{ recipe.total_hrs }}h{% endif %} {{ recipe.total_mins }}m</span>
-            <span><i class="far fa-eye material-icons blue-text text-darken-2 text-shadow-1"></i><br>{{ recipe.views }}</span>
-            <span><i class="far fa-heart material-icons pink-text text-shadow-1"></i><br>{{ recipe.user_favs }}</span>
+            <span><i class="far fa-clock material-icons purple-text text-shadow-1" aria-hidden="true"></i><br>{% if recipe.total_hrs %}{{ recipe.total_hrs }}h{% endif %} {{ recipe.total_mins }}m</span>
+            <span><i class="far fa-eye material-icons blue-text text-darken-2 text-shadow-1" aria-hidden="true"></i><br>{{ recipe.views }}</span>
+            <span><i class="far fa-heart material-icons pink-text text-shadow-1" aria-hidden="true"></i><br>{{ recipe.user_favs }}</span>
         </div>
 
         <!-- Card Reveal (hidden until clicked) -->
         <div class="card-reveal">
             <h5 class="card-title">
-                <i class="far fa-times-circle material-icons text-shadow-1 right"></i>
+                <i class="far fa-times-circle material-icons text-shadow-1 right" aria-hidden="true"></i>
                 <a href="{{ url_for('view_dessert', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}">
                     <span class="purple-text text-shadow-1 bold center-align font-emilys-candy">{{ recipe.recipe_name }}</span>
                 </a>
@@ -39,25 +39,25 @@
             <div class="divider purple"></div>
             <div class="divider pink"></div>
             <br>
-            <i class="fas fa-mouse-pointer materialize-icons" title="{{ recipe.recipe_name }}"></i> :
+            <i class="fas fa-mouse-pointer materialize-icons" title="{{ recipe.recipe_name }}" aria-hidden="true"></i> :
             <a href="{{ url_for('view_dessert', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}">
                 <span class="blue-text bold" title="{{ recipe.recipe_name }}">View Recipe</span>
             </a><br>
-            <i class="fas fa-utensils materialize-icons" title="{{ recipe.dessert_type }}"></i> :
+            <i class="fas fa-utensils materialize-icons" title="{{ recipe.dessert_type }}" aria-hidden="true"></i> :
             <span class="pink-text bold">{{ recipe.dessert_type }}</span><br>
             {% for author in authors %}
             {% if recipe.author|string == author["_id"]|string %}
-            <i class="fas fa-user-circle materialize-icons" title="{{ author['username'] }}"></i> author:
+            <i class="fas fa-user-circle materialize-icons" title="{{ author['username'] }}" aria-hidden="true"></i> author:
             <span class="pink-text bold">{{ author["username"] }}</span><br>
             {% endif %}
             {% endfor %}
-            <i class="fas fa-calendar-plus materialize-icons" title="{{ recipe.date_added }}"></i> added:
+            <i class="fas fa-calendar-plus materialize-icons" title="{{ recipe.date_added }}" aria-hidden="true"></i> added:
             <span class="pink-text bold">{{ recipe.date_added }}</span><br>
             {% if recipe.date_added != recipe.date_updated %}
-            <i class="fas fa-calendar-check materialize-icons" title="{{ recipe.date_updated }}"></i> updated: 
+            <i class="fas fa-calendar-check materialize-icons" title="{{ recipe.date_updated }}" aria-hidden="true"></i> updated: 
             <span class="pink-text bold">{{ recipe.date_updated }}</span><br>
             {% endif %}
-            <i class="fas fa-info-circle materialize-icons" title="{{ recipe.description }}"></i>
+            <i class="fas fa-info-circle materialize-icons" title="{{ recipe.description }}" aria-hidden="true"></i>
             <span class="purple-text bold"><q>{{ recipe.description|truncate(75, True)|safe }}</q></span>
         </div>
     </div>

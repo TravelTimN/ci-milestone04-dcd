@@ -12,31 +12,31 @@
 
             <!-- recipe name -->
             <div class="input-field col s12">
-                <i class="far fa-file-alt purple-text material-icons prefix"></i>
+                <i class="far fa-file-alt purple-text material-icons prefix" aria-hidden="true"></i>
                 <input id="recipe_name" name="recipe_name" type="text" class="form-control validate" autocomplete="off"
                     value="{{ recipe.recipe_name }}" pattern="^[\w '.-]{5,50}$" placeholder="Recipe Name" required>
                 <label for="recipe_name">
                     <span class="red-text">*</span>
                     required
-                    <i class="fas fa-question-circle tooltipped" data-position="right" data-tooltip="5-50 characters"></i>
+                    <i class="fas fa-question-circle tooltipped" data-position="right" data-tooltip="5-50 characters" aria-hidden="true"></i>
                 </label>
             </div>
 
             <!-- recipe description -->
             <div class="input-field col s12">
-                <i class="fas fa-align-left purple-text material-icons prefix"></i>
+                <i class="fas fa-align-left purple-text material-icons prefix" aria-hidden="true"></i>
                 <textarea id="description" name="description" type="text" class="form-control validate materialize-textarea"
                     autocomplete="off" pattern="^.{15,500}$" placeholder="Description of your Recipe" required>{{ recipe.description }}</textarea>
                 <label for="description">
                     <span class="red-text">*</span>
                     required
-                    <i class="fas fa-question-circle tooltipped" data-position="right" data-tooltip="15-500 characters"></i>
+                    <i class="fas fa-question-circle tooltipped" data-position="right" data-tooltip="15-500 characters" aria-hidden="true"></i>
                 </label>
             </div>
 
             <!-- dessert type -->
             <div class="input-field col s12">
-                <i class="fas fa-ice-cream purple-text material-icons prefix"></i>
+                <i class="fas fa-ice-cream purple-text material-icons prefix" aria-hidden="true"></i>
                 <select id="dessert_type" name="dessert_type" class="form-control validate" required>
                     <option value="" disabled selected>Dessert Category</option>
                     {% for dessert in desserts %}
@@ -55,30 +55,30 @@
 
             <!-- total hours -->
             <div class="input-field col s6 m3">
-                <i class="fas fa-hourglass-half purple-text material-icons prefix"></i>
+                <i class="fas fa-hourglass-half purple-text material-icons prefix" aria-hidden="true"></i>
                 <input id="total_hrs" name="total_hrs" type="number" min="0" max="99"
                     value="{{ recipe.total_hrs }}" placeholder="Hours" autocomplete="off">
                 <label for="total_hrs">
                     optional
-                    <i class="fas fa-question-circle hide-on-small-only tooltipped" data-position="right" data-tooltip="0 - 99"></i>
+                    <i class="fas fa-question-circle hide-on-small-only tooltipped" data-position="right" data-tooltip="0 - 99" aria-hidden="true"></i>
                 </label>
             </div>
 
             <!-- total minutes -->
             <div class="input-field col s6 m3">
-                <i class="fas fa-stopwatch purple-text material-icons prefix"></i>
+                <i class="fas fa-stopwatch purple-text material-icons prefix" aria-hidden="true"></i>
                 <input id="total_mins" name="total_mins" type="number" min="0" max="59" value="{{ recipe.total_mins }}"
                     placeholder="Minutes" autocomplete="off" class="form-control validate" required>
                 <label for="total_mins">
                     <span class="red-text">*</span>
                     required
-                    <i class="fas fa-question-circle hide-on-small-only tooltipped" data-position="right" data-tooltip="0 - 59"></i>
+                    <i class="fas fa-question-circle hide-on-small-only tooltipped" data-position="right" data-tooltip="0 - 59" aria-hidden="true"></i>
                 </label>
             </div>
 
             <!-- recipe allergens -->
             <div class="input-field col s12 m6">
-                <i class="fas fa-exclamation-triangle purple-text material-icons prefix"></i>
+                <i class="fas fa-exclamation-triangle purple-text material-icons prefix" aria-hidden="true"></i>
                 <select id="allergens" name="allergens" multiple>
                     <option value="" disabled>Possible Allergens</option>
                     {% for allergen in allergens %}
@@ -92,13 +92,13 @@
                     {% endfor %}
                 </select>
                 <label for="allergens">optional
-                    <i class="fas fa-question-circle tooltipped" data-position="right" data-tooltip="select all that apply"></i>
+                    <i class="fas fa-question-circle tooltipped" data-position="right" data-tooltip="select all that apply" aria-hidden="true"></i>
                 </label>
             </div>
 
             <!-- recipe photo -->
             <div class="input-field col s12">
-                <i class="fas fa-image purple-text material-icons prefix"></i>
+                <i class="fas fa-image purple-text material-icons prefix" aria-hidden="true"></i>
                 {% if recipe.img_src %}
                 <input id="img_src" name="img_src" class="validate" type="url" value="{{ recipe.img_src }}"
                     placeholder="Recipe Photo URL" pattern="https?://.+" autocomplete="off">
@@ -107,7 +107,7 @@
                     placeholder="Recipe Photo URL" pattern="https?://.+" autocomplete="off">
                 {% endif %}
                 <label for="img_src">optional
-                    <i class="fas fa-question-circle tooltipped" data-position="right" data-tooltip="link to your recipe photo online"></i>
+                    <i class="fas fa-question-circle tooltipped" data-position="right" data-tooltip="link to your recipe photo online" aria-hidden="true"></i>
                 </label>
             </div>
 
@@ -132,7 +132,7 @@
             <div class="new-ingredient ingredient row">
                 <!-- ingredient amount / quantity -->
                 <div class="input-field col s12 m3 l2">
-                    <i class="fas fa-hashtag purple-text material-icons prefix"></i>
+                    <i class="fas fa-hashtag purple-text material-icons prefix" aria-hidden="true"></i>
                     <input id="ingredient_amount" name="ingredient_amount" type="text" class="ingredient_amount validate"
                         autocomplete="off" placeholder="Amount" pattern="^[\d\/\-\. ]{1,7}$" value="{{ amount_list }}" required>
                     <label for="ingredient_amount">
@@ -143,7 +143,7 @@
 
                 <!-- ingredient measurement / volume-->
                 <div class="input-field col s12 m4">
-                    <i class="fas fa-utensil-spoon purple-text material-icons prefix"></i>
+                    <i class="fas fa-utensil-spoon purple-text material-icons prefix" aria-hidden="true"></i>
                     <select id="ingredient_measurement" name="ingredient_measurement" class="validate" required>
                         <option value="" disabled selected>unit of measurement</option>
                         <optgroup label="not applicable">
@@ -188,7 +188,7 @@
 
                 <!-- ingredient -->
                 <div class="input-field col s12 m5 l6">
-                    <i class="fas fa-egg purple-text material-icons prefix"></i>
+                    <i class="fas fa-egg purple-text material-icons prefix" aria-hidden="true"></i>
                     <input id="ingredient_name" name="ingredient_name" type="text" class="ingredient_name validate"
                         autocomplete="off" pattern="^.{3,100}$" value="{{ ingredient_list }}" placeholder="Ingredient" required>
                     <label for="ingredient_name">
@@ -204,7 +204,7 @@
             <div class="new-ingredient ingredient row">
                 <!-- ingredient amount / quantity -->
                 <div class="input-field col s12 m3 l2">
-                    <i class="fas fa-hashtag purple-text material-icons prefix"></i>
+                    <i class="fas fa-hashtag purple-text material-icons prefix" aria-hidden="true"></i>
                     <input id="ingredient_amount" name="ingredient_amount" type="text" class="ingredient_amount validate"
                         autocomplete="off" placeholder="Amount" pattern="^[\d\/\-\. ]{1,7}$" value="{{ amount_list }}" required>
                     <label for="ingredient_amount">
@@ -215,7 +215,7 @@
 
                 <!-- ingredient measurement / volume-->
                 <div class="input-field col s12 m4">
-                    <i class="fas fa-utensil-spoon purple-text material-icons prefix"></i>
+                    <i class="fas fa-utensil-spoon purple-text material-icons prefix" aria-hidden="true"></i>
                     <label for="ingredient_measurement"></label>
                     <select id="ingredient_measurement" name="ingredient_measurement" class="validate" required>
                         <option value="" disabled selected>unit of measurement</option>
@@ -235,7 +235,7 @@
 
                 <!-- ingredient -->
                 <div class="input-field col s12 m5 l6">
-                    <i class="fas fa-egg purple-text material-icons prefix"></i>
+                    <i class="fas fa-egg purple-text material-icons prefix" aria-hidden="true"></i>
                     <input id="ingredient_name" name="ingredient_name" type="text" class="ingredient_name validate"
                         autocomplete="off" pattern="^.{3,100}$" value="{{ ingredient_list }}" placeholder="Ingredient" required>
                     <label for="ingredient_name">
@@ -251,12 +251,12 @@
 
             <!-- add another ingredient -->
             <button type="button" class="add-ingredient btn purple text-shadow-2">
-                <i class="fas fa-plus material-icons"></i>
+                <i class="fas fa-plus material-icons" aria-hidden="true"></i>
             </button>
 
             <!-- remove last ingredient -->
             <button type="button" class="remove-ingredient btn pink lighten-2 text-shadow-2">
-                <i class="fas fa-minus material-icons"></i>
+                <i class="fas fa-minus material-icons" aria-hidden="true"></i>
             </button>
 
         </div>
@@ -272,7 +272,7 @@
             <div class="new-direction direction row">
                 <!-- direction -->
                 <div class="input-field col s12">
-                    <i class="fas fa-list-ol purple-text material-icons prefix"></i>
+                    <i class="fas fa-list-ol purple-text material-icons prefix" aria-hidden="true"></i>
                     <textarea id="directions" name="directions" type="text" class="directions validate materialize-textarea" autocomplete="off"
                         pattern="^.{5,500}$" placeholder="list each direction one per line" required>{{ direction }}</textarea>
                     <label for="directions">
@@ -288,7 +288,7 @@
             <div class="new-direction direction row">
                 <!-- direction -->
                 <div class="input-field col s12">
-                    <i class="fas fa-list-ol purple-text material-icons prefix"></i>
+                    <i class="fas fa-list-ol purple-text material-icons prefix" aria-hidden="true"></i>
                     <input id="directions" name="directions" type="text" class="directions validate" autocomplete="off"
                         pattern="^.{5,500}$" placeholder="list each direction one per line" required>
                     <label for="directions">
@@ -304,12 +304,12 @@
 
             <!-- add another direction -->
             <button type="button" class="add-direction btn purple text-shadow-2">
-                <i class="fas fa-plus material-icons"></i>
+                <i class="fas fa-plus material-icons" aria-hidden="true"></i>
             </button>
 
             <!-- remove last direction -->
             <button type="button" class="remove-direction btn pink lighten-2 text-shadow-2">
-                <i class="fas fa-minus material-icons"></i>
+                <i class="fas fa-minus material-icons" aria-hidden="true"></i>
             </button>
 
         </div>
@@ -318,12 +318,12 @@
         <div class="row center-align">
             <button type="submit" class="waves-effect waves-yellow btn btn-large green bold text-shadow-2">
                 Update
-                <i class="fas fa-check-circle material-icons right hide-on-small-only"></i>
+                <i class="fas fa-check-circle material-icons right hide-on-small-only" aria-hidden="true"></i>
             </button>
 
             <button type="reset" class="waves-effect waves-purple btn btn-large red bold text-shadow-2" onclick="history.go(-1)">
                 Cancel
-                <i class="fas fa-times-circle material-icons right hide-on-small-only"></i>
+                <i class="fas fa-times-circle material-icons right hide-on-small-only" aria-hidden="true"></i>
             </button>
         </div>
 

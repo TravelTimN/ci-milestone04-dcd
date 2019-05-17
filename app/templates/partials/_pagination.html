@@ -5,7 +5,7 @@
     <li {% if not request.args or not request.args.get('page') or request.args.get('page')=='1' %} class="disabled" {% else %} class="tooltipped" data-position="top" data-tooltip="Previous Page" {% endif %}>
         <!-- capture all individual url args to retain searched items ... must remain on single line, otherwise it breaks -->
         <a href="{{ url_for('view_desserts', page=previous_page, sort=request.args.get('sort'), order=request.args.get('order'), limit=request.args.get('limit'), search_keyword=request.args.get('search_keyword'), search_dessert=request.args.get('search_dessert'), search_allergen=request.args.get('search_allergen')) }}">
-            <i class="fas fa-chevron-circle-left material-icons"></i>
+            <i class="fas fa-chevron-circle-left material-icons" aria-hidden="true"></i>
         </a>
     </li>
 
@@ -39,7 +39,7 @@
     <li {% if request.args.get('page')==all_recipes_pages|length|string %} class="disabled" {% else %} class="tooltipped" data-position="top" data-tooltip="Next Page" {% endif %}>
         <!-- capture all individual url args to retain searched items ... must remain on single line, otherwise it breaks -->
         <a href="{{ url_for('view_desserts', page=next_page, sort=request.args.get('sort'), order=request.args.get('order'), limit=request.args.get('limit'), search_keyword=request.args.get('search_keyword'), search_dessert=request.args.get('search_dessert'), search_allergen=request.args.get('search_allergen')) }}">
-            <i class="fas fa-chevron-circle-right material-icons"></i>
+            <i class="fas fa-chevron-circle-right material-icons" aria-hidden="true"></i>
         </a>
     </li>
     {% else %}
@@ -48,7 +48,7 @@
     <li {% if search_recipes_pages|length|string=='1' or request.args.get('page')==search_recipes_pages|length|string %} class="disabled" {% else %} class="tooltipped" data-position="top" data-tooltip="Next Page" {% endif %}>
         <!-- capture all individual url args to retain searched items ... must remain on single line, otherwise it breaks -->
         <a href="{{ url_for('view_desserts', page=next_page_search, sort=request.args.get('sort'), order=request.args.get('order'), limit=request.args.get('limit'), search_keyword=request.args.get('search_keyword'), search_dessert=request.args.get('search_dessert'), search_allergen=request.args.get('search_allergen')) }}">
-            <i class="fas fa-chevron-circle-right material-icons"></i>
+            <i class="fas fa-chevron-circle-right material-icons" aria-hidden="true"></i>
         </a>
     </li>
     {% endif %}

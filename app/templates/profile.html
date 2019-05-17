@@ -12,10 +12,10 @@
             <p>
                 <!-- User's Own Recipes (modal trigger) -->
                 <a class="waves-effect waves-light btn btn-large bold blue text-shadow-2 modal-trigger"
-                    href="#modal-user-recipes"><i class="fas fa-user-plus material-icons left"></i>My Recipes</a>
+                    href="#modal-user-recipes"><i class="fas fa-user-plus material-icons left" aria-hidden="true"></i>My Recipes</a>
                 <!-- User's Own Recipes (modal trigger) -->
                 <a class="waves-effect waves-light btn btn-large bold pink lighten-2 text-shadow-2 modal-trigger"
-                    href="#modal-user-favorites"><i class="fas fa-heart material-icons left"></i>My Favorites</a>
+                    href="#modal-user-favorites"><i class="fas fa-heart material-icons left" aria-hidden="true"></i>My Favorites</a>
             </p>
         </div>
     </div>
@@ -39,7 +39,7 @@
                     <span class="title font-special bold purple-text">{{ user_recipe.recipe_name }}</span>
                     <p class="truncate pink-text text-lighten-2">{{ user_recipe.description }}</p>
                     <i class="fas fa-link material-icons blue-text text-shadow-1 secondary-content tooltipped"
-                        data-position="left" data-tooltip="View Dessert"></i>
+                        data-position="left" data-tooltip="View Dessert" aria-hidden="true"></i>
                 </a>
             </li>
             {% else %}
@@ -53,7 +53,7 @@
                 </p>
                 <a href="{{ url_for('add_dessert') }}" title="Add a Recipe">
                     <i class="fas fa-plus-circle material-icons blue-text text-shadow-1 secondary-content tooltipped"
-                        data-position="left" data-tooltip="Add Dessert"></i>
+                        data-position="left" data-tooltip="Add Dessert" aria-hidden="true"></i>
                 </a>
             </li>
             {% endfor %}
@@ -82,7 +82,7 @@
                 <p class="truncate pink-text text-lighten-2">{{ user_fav.description }}</p>
                 <a href="{{ url_for('delete_favorite', recipe_id=user_fav._id, slugUrl=user_fav.recipe_slug) }}">
                     <i class="fas fa-minus-circle material-icons red-text text-shadow-1 secondary-content tooltipped"
-                        data-position="left" data-tooltip="Remove from Favorites"></i>
+                        data-position="left" data-tooltip="Remove from Favorites" aria-hidden="true"></i>
                 </a>
             </li>
             {% else %}
@@ -95,7 +95,7 @@
                 </p>
                 <a href="{{ url_for('view_desserts') }}" title="View all Desserts">
                     <i class="fas fa-search-plus material-icons red-text text-shadow-1 secondary-content tooltipped"
-                        data-position="left" data-tooltip="Search Desserts"></i>
+                        data-position="left" data-tooltip="Search Desserts" aria-hidden="true"></i>
                 </a>
             </li>
             {% endfor %}

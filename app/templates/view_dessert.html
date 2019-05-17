@@ -17,14 +17,14 @@
                 <!-- Print Button -->
                     <a class="waves-effect waves-purple btn bold upper pink lighten-2 text-shadow-2" id="print-btn">
                         <span class="hide-on-small-and-down">Print</span>
-                        <i class="fas fa-print material-icons"></i>
+                        <i class="fas fa-print material-icons" aria-hidden="true"></i>
                     </a>
 
                 <!-- Share Button -->
                     <a class="waves-effect waves-red btn bold upper modal-trigger purple text-shadow-2" id="share-btn"
                         href="#modal-share-recipe">
                         <span class="hide-on-small-and-down">Share</span>
-                        <i class="fas fa-share-alt material-icons"></i></a>
+                        <i class="fas fa-share-alt material-icons" aria-hidden="true"></i></a>
                     <!-- share modal -->
                     <div id="modal-share-recipe" class="modal">
                         <div class="modal-content">
@@ -32,7 +32,7 @@
                             <input type="text" id="share-url">
                             <a id="copy-btn"
                                 class="modal-close waves-effect waves-red purple btn text-shadow-2 upper">
-                                <i class="fas fa-copy material-icons right"></i>Copy Link
+                                <i class="fas fa-copy material-icons right" aria-hidden="true"></i>Copy Link
                             </a>
                         </div>
                     </div>
@@ -43,14 +43,14 @@
                     <a class="waves-effect waves-yellow btn bold upper green text-shadow-2"
                         href="{{ url_for('update_dessert', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}">
                         <span class="hide-on-small-and-down">Edit</span>
-                        <i class="fas fa-pencil-alt material-icons"></i>
+                        <i class="fas fa-pencil-alt material-icons" aria-hidden="true"></i>
                     </a>
                 
                 <!-- Delete Button -->
                     <a class="waves-effect waves-purple btn bold upper modal-trigger red text-shadow-2"
                         href="#modal-delete-recipe">
                         <span class="hide-on-small-and-down">Delete</span>
-                        <i class="far fa-trash-alt material-icons"></i></a>
+                        <i class="far fa-trash-alt material-icons" aria-hidden="true"></i></a>
                     <!-- delete modal -->
                     <div id="modal-delete-recipe" class="modal">
                         <div class="modal-content">
@@ -61,10 +61,10 @@
                         <div class="modal-footer center-align">
                             <a class="waves-effect waves-purple red btn text-shadow-2 upper"
                                 href="{{ url_for('delete_dessert', recipe_id=recipe._id) }}">
-                                <i class="far fa-trash-alt material-icons right"></i>Yes
+                                <i class="far fa-trash-alt material-icons right" aria-hidden="true"></i>Yes
                             </a>
                             <a class="modal-close waves-effect waves-yellow green btn text-shadow-2 upper">
-                                <i class="fas fa-reply material-icons right"></i>No
+                                <i class="fas fa-reply material-icons right" aria-hidden="true"></i>No
                             </a>
                         </div>
                     </div>
@@ -90,7 +90,7 @@
                 by: <span class="purple-text bold">{{ author }}</span>
             </p>
             <q class="print-no">{{ recipe.description }}</q>
-            <p class="print-no"><i class="fas fa-clock"></i>
+            <p class="print-no"><i class="fas fa-clock" aria-hidden="true"></i>
                 Total Time:
                 <span class="purple-text bold">
                     {% if recipe.total_hrs %}
@@ -102,9 +102,9 @@
                     {% endif %}
                 </span>
             </p>
-            <p class="print-no"><i class="fas fa-calendar-plus"></i> Added: <span class="purple-text bold">{{ recipe.date_added }}</span>
+            <p class="print-no"><i class="fas fa-calendar-plus" aria-hidden="true"></i> Added: <span class="purple-text bold">{{ recipe.date_added }}</span>
             {% if recipe.date_added != recipe.date_updated %}
-            <br><i class="fas fa-calendar-check"></i> Updated: <span class="purple-text bold">{{ recipe.date_updated }}</span></p>
+            <br><i class="fas fa-calendar-check" aria-hidden="true"></i> Updated: <span class="purple-text bold">{{ recipe.date_updated }}</span></p>
             {% endif %}
             <p class="print-no">
                 {% for allergen in recipe.allergens %}
@@ -119,13 +119,13 @@
                 <a class="btn btn-large red lighten-5 purple-text bold upper waves-effect waves-purple" id="love-it-yes"
                     href="{{ url_for('delete_favorite', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}">
                     You love it!
-                    <i class="fas fa-heart material-icons pink-text text-lighten-2 text-shadow-1"></i>
+                    <i class="fas fa-heart material-icons pink-text text-lighten-2 text-shadow-1" aria-hidden="true"></i>
                 </a>
                 {% else %}
                 <a class="btn btn-large red lighten-5 purple-text bold upper waves-effect waves-purple" id="love-it-no"
                     href="{{ url_for('add_favorite', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}">
                     Love it?
-                    <i class="far fa-heart material-icons pink-text text-lighten-2 text-shadow-1"></i>
+                    <i class="far fa-heart material-icons pink-text text-lighten-2 text-shadow-1" aria-hidden="true"></i>
                 </a>
                 {% endif %}
             </p>
@@ -142,7 +142,7 @@
             <ul id="ingredients">
                 {% for amount,measurement,ingredient in full_ingredient %}
                 {% set unit_loop = loop %}
-                <li class="ingredient-item"><i class="fas fa-circle purple-text print-no"></i>
+                <li class="ingredient-item"><i class="fas fa-circle purple-text print-no" aria-hidden="true"></i>
                     <span class="ingredient">
                         {{ amount }}
 
