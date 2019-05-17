@@ -93,9 +93,9 @@
                         </a>
                     </div>
                     {% if recipe.img_src %}
-                    <img src="{{ recipe.img_src }}" alt="Dessert">
+                    <img src="{{ recipe.img_src }}" alt="Dessert" lazyload="on">
                     {% else %}
-                    <img src="{{ url_for('static', filename='img/desserts/'+recipe.dessert_type|replace(' + ', '-')|replace(' ', '-')|lower+'.png') }}" alt="Dessert">
+                    <img src="{{ url_for('static', filename='img/desserts/'+recipe.dessert_type|replace(' + ', '-')|replace(' ', '-')|lower+'.png') }}" alt="Dessert" lazyload="on">
                     {% endif %}
                 </div>
                 {% endfor %}

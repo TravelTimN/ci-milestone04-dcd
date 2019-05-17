@@ -2,13 +2,18 @@
 <nav class="nav-extended">
     <div class="nav-wrapper">
         <a href="{{ url_for('home') }}" class="brand-logo font-rye">
-            <img src="{{ url_for('static', filename='img/favicon.png') }}" alt="2BN-Desserts Cookie Logo">
+            <img src="{{ url_for('static', filename='img/favicon.png') }}" alt="2BN-Desserts Cookie Logo" lazyload="on">
             2BN-Desserts
         </a>
         <a href="#" data-target="mobile-demo" class="sidenav-trigger">
             <i class="fas fa-bars material-icons"></i>
         </a>
         <ul id="nav-mobile" class="right hide-on-med-and-down text-shadow-2 bold upper">
+            <li>
+                <a title="Home" href="{{ url_for('home') }}">
+                    <i class="fas fa-home material-icons"></i>
+                </a>
+            </li>
             <li>
                 <a class="waves-effect waves-red btn purple" href="{{ url_for('view_desserts') }}">
                     <i class="fas fa-ice-cream material-icons left white-text"></i>

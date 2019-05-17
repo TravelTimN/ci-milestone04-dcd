@@ -8,9 +8,9 @@
         <!-- Recipe Image -->
         <div class="col s12 l6 center-align card-image print-no">
             {% if recipe.img_src %}
-            <img src="{{ recipe.img_src }}" class="responsive-img" alt="Dessert">
+            <img src="{{ recipe.img_src }}" class="responsive-img" alt="Dessert" lazyload="on">
             {% else %}
-            <img src="{{ url_for('static', filename='img/desserts/'+recipe.dessert_type|replace(' + ', '-')|replace(' ', '-')|lower+'.png') }}" class="responsive-img" alt="Dessert">
+            <img src="{{ url_for('static', filename='img/desserts/'+recipe.dessert_type|replace(' + ', '-')|replace(' ', '-')|lower+'.png') }}" class="responsive-img" alt="Dessert" lazyload="on">
             {% endif %}
 
             <div class="card-content user-buttons">
@@ -85,7 +85,7 @@
             <div class="divider purple print-no"></div>
             <div class="divider pink print-no"></div>
             <p class="print-no">
-                <img src="{{ url_for('static', filename='img/avatars/'+user_avatar+'.png') }}" alt="{{ author }} Avatar" id="avatar-small" class="center-align">
+                <img src="{{ url_for('static', filename='img/avatars/'+user_avatar+'.png') }}" alt="{{ author }} Avatar" id="avatar-small" class="center-align" lazyload="on">
                 <br>
                 by: <span class="purple-text bold">{{ author }}</span>
             </p>
@@ -110,7 +110,7 @@
                 {% for allergen in recipe.allergens %}
                 <div class="chip pink lighten-4 black-text print-no">
                     <img src="{{ url_for('static', filename='img/allergens/'+allergen|lower+'.png') }}"
-                        alt="Allergen">{{ allergen }}</div>
+                        alt="Allergen" lazyload="on">{{ allergen }}</div>
                 {% endfor %}
             </p>
             {% if session.user %}

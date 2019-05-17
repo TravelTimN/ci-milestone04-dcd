@@ -127,7 +127,7 @@ nav {
 
 nav .brand-logo {
     font-size: 1.4em;
-    width: 60%;
+    width: fit-content;
 }
 
 nav .brand-logo img {
