@@ -21,21 +21,18 @@
             <img src="{{ url_for('static', filename='img/desserts/'+recipe.dessert_type|replace(' + ', '-')|replace(' ', '-')|lower+'.png') }}" class="responsive-img" alt="Dessert">
             {% endif %}
 
-            <div class="card-content row user-buttons">
+            <div class="card-content user-buttons">
                 <!-- Print Button -->
-                <div class="col s3">
                     <a class="waves-effect waves-light btn bold upper pink lighten-2 text-shadow-2" id="print-btn">
-                        <span class="hide-on-small-only">Print</span>
-                        <i class="fas fa-print material-icons hide-on-med-only"></i>
+                        <span class="hide-on-small-and-down">Print</span>
+                        <i class="fas fa-print material-icons"></i>
                     </a>
-                </div>
 
                 <!-- Share Button -->
-                <div class="col s3">
                     <a class="waves-effect waves-light btn bold upper modal-trigger purple text-shadow-2" id="share-btn"
                         href="#modal-share-recipe">
-                        <span class="hide-on-small-only">Share</span>
-                        <i class="fas fa-share-alt material-icons hide-on-med-only"></i></a>
+                        <span class="hide-on-small-and-down">Share</span>
+                        <i class="fas fa-share-alt material-icons"></i></a>
                     <!-- share modal -->
                     <div id="modal-share-recipe" class="modal">
                         <div class="modal-content">
@@ -47,25 +44,21 @@
                             </a>
                         </div>
                     </div>
-                </div>
 
                 <!-- only visible for session-user or Admin -->
                 {% if session.user|lower == author|lower or session.user|lower == "admin"|lower %}
                 <!-- Update Button -->
-                <div class="col s3">
                     <a class="waves-effect waves-light btn bold upper green text-shadow-2"
                         href="{{ url_for('update_dessert', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}">
-                        <span class="hide-on-small-only">Update</span>
-                        <i class="fas fa-pencil-alt material-icons hide-on-med-only"></i>
+                        <span class="hide-on-small-and-down">Edit</span>
+                        <i class="fas fa-pencil-alt material-icons"></i>
                     </a>
-                </div>
                 
                 <!-- Delete Button -->
-                <div class="col s3">
                     <a class="waves-effect waves-light btn bold upper modal-trigger red text-shadow-2"
                         href="#modal-delete-recipe">
-                        <span class="hide-on-small-only">Delete</span>
-                        <i class="far fa-trash-alt material-icons hide-on-med-only"></i></a>
+                        <span class="hide-on-small-and-down">Delete</span>
+                        <i class="far fa-trash-alt material-icons"></i></a>
                     <!-- delete modal -->
                     <div id="modal-delete-recipe" class="modal">
                         <div class="modal-content">
@@ -83,7 +76,6 @@
                             </a>
                         </div>
                     </div>
-                </div>
                 {% endif %}
             </div>
 
@@ -132,13 +124,13 @@
             {% if session.user %}
             <p class="print-no">
                 {% if recipe._id in user_favs %}
-                <a class="btn white purple-text bold upper waves-effect waves-purple" id="love-it-yes"
+                <a class="btn btn-large red lighten-5 purple-text bold upper waves-effect waves-purple" id="love-it-yes"
                     href="{{ url_for('delete_favorite', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}">
                     You love it!
                     <i class="fas fa-heart material-icons pink-text text-lighten-2 text-shadow-1"></i>
                 </a>
                 {% else %}
-                <a class="btn white purple-text bold upper waves-effect waves-purple" id="love-it-no"
+                <a class="btn btn-large red lighten-5 purple-text bold upper waves-effect waves-purple" id="love-it-no"
                     href="{{ url_for('add_favorite', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}">
                     Love it?
                     <i class="far fa-heart material-icons pink-text text-lighten-2 text-shadow-1"></i>

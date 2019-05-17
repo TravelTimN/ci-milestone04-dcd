@@ -2,29 +2,21 @@
 {% block content %}
 
 <div class="container-95">
-
     <div class="row">
-
         <!-- Profile Details -->
         <div class="col s12 l8 offset-l2 recipe-card card white profile-card center-align">
             <h2 class="purple-text purple lighten-5 font-fredericka">{{ username }}</h2>
             <h5 class="blue-text font-rye">the "{{ user_avatar|title }}"</h5>
             <img src="{{ url_for('static', filename='img/avatars/'+user_avatar+'.png') }}" alt="User Avatar"
                 id="user-avatar" class="white tooltipped" data-position="top" data-tooltip="Hi! I'm your dessert avatar, '{{ user_avatar|title }}'!<br>I will be displayed on any recipe you submit!">
-
-            <div class="row">
-                <div class="col s12 m6">
-                    <!-- User's Own Recipes (modal trigger) -->
-                    <a class="waves-effect waves-light btn btn-large bold blue text-shadow-2 modal-trigger"
-                        href="#modal-user-recipes"><i class="fas fa-user-plus material-icons left"></i>My Recipes</a>
-                </div>
-                <div class="col s12 m6">
-                    <!-- User's Own Recipes (modal trigger) -->
-                    <a class="waves-effect waves-light btn btn-large bold pink lighten-2 text-shadow-2 modal-trigger"
-                        href="#modal-user-favorites"><i class="fas fa-heart material-icons left"></i>My Favorites</a>
-                </div>
-            </div>
-
+            <p>
+                <!-- User's Own Recipes (modal trigger) -->
+                <a class="waves-effect waves-light btn btn-large bold blue text-shadow-2 modal-trigger"
+                    href="#modal-user-recipes"><i class="fas fa-user-plus material-icons left"></i>My Recipes</a>
+                <!-- User's Own Recipes (modal trigger) -->
+                <a class="waves-effect waves-light btn btn-large bold pink lighten-2 text-shadow-2 modal-trigger"
+                    href="#modal-user-favorites"><i class="fas fa-heart material-icons left"></i>My Favorites</a>
+            </p>
         </div>
     </div>
 </div>

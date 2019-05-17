@@ -157,7 +157,6 @@ ul.sidenav li>a.btn {
 /*----- Main -----*/
 main {
     margin-top: 80px;
-    margin-bottom: 20px;
     flex: 1 0 auto;
 }
 
@@ -349,6 +348,10 @@ footer {
     padding: 0 0.75rem;
 }
 
+.user-buttons a {
+    margin: 5px;
+}
+
 .new-recipe {
     padding: 15px;
 }
@@ -507,6 +510,10 @@ ul.collapsible {
 
     .container-75 {
         width: 75vw;
+    }
+
+    .material-tooltip {
+        font-size: 1.25rem;
     }
 
     nav .brand-logo {
