@@ -6,9 +6,9 @@
         <!-- Profile Details -->
         <div class="col s12 l8 offset-l2 recipe-card card white profile-card center-align">
             <h2 class="purple-text purple lighten-5 font-fredericka">{{ username }}</h2>
-            <h5 class="blue-text font-rye">the "{{ user_avatar|title }}"</h5>
+            <h5 class="pink-text font-rye">the "{{ user_avatar|title }}"</h5>
             <img src="{{ url_for('static', filename='img/avatars/'+user_avatar+'.png') }}" alt="User Avatar"
-                id="user-avatar" class="white tooltipped" data-position="top" data-tooltip="Hi! I'm your dessert avatar, '{{ user_avatar|title }}'!<br>I will be displayed on any recipe you submit!">
+                id="user-avatar" class="tooltipped" data-position="top" data-tooltip="Hi {{ username }}! I'm your dessert avatar, '{{ user_avatar|title }}'!<br>I will be displayed on any recipe you submit!">
             <p>
                 <!-- User's Own Recipes (modal trigger) -->
                 <a class="waves-effect waves-light btn btn-large bold blue text-shadow-2 modal-trigger"
@@ -47,12 +47,12 @@
                 <span class="title font-special bold purple-text">
                     Good things come to those who share recipes.
                 </span>
-                <p class="purple-text bold">
+                <p class="pink-text text-lighten-2 bold">
                     You haven't shared anything yet. Click the icon on the right to add your first
                     recipe.
                 </p>
                 <a href="{{ url_for('add_dessert') }}" title="Add a Recipe">
-                    <i class="fas fa-plus-circle material-icons purple-text text-shadow-1 secondary-content tooltipped"
+                    <i class="fas fa-plus-circle material-icons blue-text text-shadow-1 secondary-content tooltipped"
                         data-position="left" data-tooltip="Add Dessert"></i>
                 </a>
             </li>
@@ -87,14 +87,14 @@
             </li>
             {% else %}
             <li class="collection-item avatar">
-                <span class="title font-special bold pink-text text-lighten-2">
+                <span class="title font-special bold purple-text">
                     Happiness rarely keeps company with an empty stomach.
                 </span>
                 <p class="pink-text text-lighten-2 bold">
                     Click the magnifying glass on the right to find something delicious!
                 </p>
                 <a href="{{ url_for('view_desserts') }}" title="View all Desserts">
-                    <i class="fas fa-search-plus material-icons small pink-text text-lighten-2 purple lighten-5 secondary-content tooltipped"
+                    <i class="fas fa-search-plus material-icons red-text text-shadow-1 secondary-content tooltipped"
                         data-position="left" data-tooltip="Search Desserts"></i>
                 </a>
             </li>

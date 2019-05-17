@@ -1,14 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
 
-{% with messages = get_flashed_messages() %}
-{% if messages %}
-{% for message in messages %}
-<span id="flashToast" class="white-text grey darken-4 center-align bold">{{ message }}</span>
-{% endfor %}
-{% endif %}
-{% endwith %}
-
 <div class="container-95">
 
     <div class="row">

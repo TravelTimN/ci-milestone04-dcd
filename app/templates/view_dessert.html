@@ -1,14 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
 
-{% with messages = get_flashed_messages() %}
-{% if messages %}
-{% for message in messages %}
-<span id="flashToast" class="white-text grey darken-4 center-align bold">{{ message }}</span>
-{% endfor %}
-{% endif %}
-{% endwith %}
-
 <div class="container-90" id="print-yes">
 
     <!-- THE RECIPE -->
@@ -23,13 +15,13 @@
 
             <div class="card-content user-buttons">
                 <!-- Print Button -->
-                    <a class="waves-effect waves-light btn bold upper pink lighten-2 text-shadow-2" id="print-btn">
+                    <a class="waves-effect waves-purple btn bold upper pink lighten-2 text-shadow-2" id="print-btn">
                         <span class="hide-on-small-and-down">Print</span>
                         <i class="fas fa-print material-icons"></i>
                     </a>
 
                 <!-- Share Button -->
-                    <a class="waves-effect waves-light btn bold upper modal-trigger purple text-shadow-2" id="share-btn"
+                    <a class="waves-effect waves-red btn bold upper modal-trigger purple text-shadow-2" id="share-btn"
                         href="#modal-share-recipe">
                         <span class="hide-on-small-and-down">Share</span>
                         <i class="fas fa-share-alt material-icons"></i></a>
@@ -39,7 +31,7 @@
                             <h4 class="purple-text bold upper">Share something Sweet</h4>
                             <input type="text" id="share-url">
                             <a id="copy-btn"
-                                class="modal-close waves-effect waves-light purple btn text-shadow-2 upper">
+                                class="modal-close waves-effect waves-red purple btn text-shadow-2 upper">
                                 <i class="fas fa-copy material-icons right"></i>Copy Link
                             </a>
                         </div>
@@ -48,14 +40,14 @@
                 <!-- only visible for session-user or Admin -->
                 {% if session.user|lower == author|lower or session.user|lower == "admin"|lower %}
                 <!-- Update Button -->
-                    <a class="waves-effect waves-light btn bold upper green text-shadow-2"
+                    <a class="waves-effect waves-yellow btn bold upper green text-shadow-2"
                         href="{{ url_for('update_dessert', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}">
                         <span class="hide-on-small-and-down">Edit</span>
                         <i class="fas fa-pencil-alt material-icons"></i>
                     </a>
                 
                 <!-- Delete Button -->
-                    <a class="waves-effect waves-light btn bold upper modal-trigger red text-shadow-2"
+                    <a class="waves-effect waves-purple btn bold upper modal-trigger red text-shadow-2"
                         href="#modal-delete-recipe">
                         <span class="hide-on-small-and-down">Delete</span>
                         <i class="far fa-trash-alt material-icons"></i></a>
@@ -67,11 +59,11 @@
                             <p class="grey-text bold">This action cannot be undone.</p>
                         </div>
                         <div class="modal-footer center-align">
-                            <a class="waves-effect waves-light red btn text-shadow-2 upper"
+                            <a class="waves-effect waves-purple red btn text-shadow-2 upper"
                                 href="{{ url_for('delete_dessert', recipe_id=recipe._id) }}">
                                 <i class="far fa-trash-alt material-icons right"></i>Yes
                             </a>
-                            <a class="modal-close waves-effect waves-light green btn text-shadow-2 upper">
+                            <a class="modal-close waves-effect waves-yellow green btn text-shadow-2 upper">
                                 <i class="fas fa-reply material-icons right"></i>No
                             </a>
                         </div>
