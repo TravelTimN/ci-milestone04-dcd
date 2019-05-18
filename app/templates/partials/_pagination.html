@@ -1,10 +1,12 @@
+{% set args = request.args.get %}
+
 <ul class="pagination">
 
     <!-- PREVIOUS PAGE -->
     <!-- *disabled* if: no url args, no 'page' in url args, or url args 'page' is 1st page -->
-    <li {% if not request.args or not request.args.get('page') or request.args.get('page')=='1' %} class="disabled" {% else %} class="tooltipped" data-position="top" data-tooltip="Previous Page" {% endif %}>
+    <li {% if not request.args or not args('page') or args('page')=='1' %} class="disabled" {% else %} class="tooltipped" data-position="top" data-tooltip="Previous Page" {% endif %}>
         <!-- capture all individual url args to retain searched items ... must remain on single line, otherwise it breaks -->
-        <a href="{{ url_for('view_desserts', page=previous_page, sort=request.args.get('sort'), order=request.args.get('order'), limit=request.args.get('limit'), search_keyword=request.args.get('search_keyword'), search_dessert=request.args.get('search_dessert'), search_allergen=request.args.get('search_allergen')) }}">
+        <a href="{{ url_for('view_desserts', page=previous_page, sort=args('sort'), order=args('order'), limit=args('limit'), search_keyword=args('search_keyword'), search_dessert=args('search_dessert'), search_allergen=args('search_allergen')) }}">
             <i class="fas fa-chevron-circle-left material-icons" aria-hidden="true"></i>
         </a>
     </li>
@@ -15,18 +17,18 @@
     {% if search_recipes_pages == "" %}
         {% for page in all_recipes_pages %}
             <!-- *active* if: url args has current page loop.index, or if page is 1 -->
-            <li {% if request.args.get('page') %}{% if page|string in request.args.get('page') %} class="active purple waves-effect waves-red" {% endif %}{% elif page==1 %} class="active purple waves-effect waves-red" {% endif %} class="waves-effect waves-purple purple lighten-5">
+            <li {% if args('page') %}{% if page|string in args('page') %} class="active purple waves-effect waves-red" {% endif %}{% elif page==1 %} class="active purple waves-effect waves-red" {% endif %} class="waves-effect waves-purple purple lighten-5">
                 <!-- capture all individual url args to retain searched items ... must remain on single line, otherwise it breaks -->
-                <a href="{{ url_for('view_desserts', page=page, sort=request.args.get('sort'), order=request.args.get('order'), limit=request.args.get('limit'), search_keyword=request.args.get('search_keyword'), search_dessert=request.args.get('search_dessert'), search_allergen=request.args.get('search_allergen')) }}">{{ loop.index }}</a>
+                <a href="{{ url_for('view_desserts', page=page, sort=args('sort'), order=args('order'), limit=args('limit'), search_keyword=args('search_keyword'), search_dessert=args('search_dessert'), search_allergen=args('search_allergen')) }}">{{ loop.index }}</a>
             </li>
         {% endfor %}
     {% else %}
     <!-- with Search -->
         {% for page in search_recipes_pages %}
             <!-- *active* if: url args has current page loop.index, or if page is 1 -->
-            <li {% if request.args.get('page') %}{% if page|string in request.args.get('page') %} class="active purple waves-effect waves-red" {% endif %}{% elif page==1 %} class="active purple waves-effect waves-red" {% endif %} class="waves-effect waves-purple purple lighten-5">
+            <li {% if args('page') %}{% if page|string in args('page') %} class="active purple waves-effect waves-red" {% endif %}{% elif page==1 %} class="active purple waves-effect waves-red" {% endif %} class="waves-effect waves-purple purple lighten-5">
                 <!-- capture all individual url args to retain searched items ... must remain on single line, otherwise it breaks -->
-                <a href="{{ url_for('view_desserts', page=page, sort=request.args.get('sort'), order=request.args.get('order'), limit=request.args.get('limit'), search_keyword=request.args.get('search_keyword'), search_dessert=request.args.get('search_dessert'), search_allergen=request.args.get('search_allergen')) }}">{{ loop.index }}</a>
+                <a href="{{ url_for('view_desserts', page=page, sort=args('sort'), order=args('order'), limit=args('limit'), search_keyword=args('search_keyword'), search_dessert=args('search_dessert'), search_allergen=args('search_allergen')) }}">{{ loop.index }}</a>
             </li>
         {% endfor %}
     {% endif %}
@@ -36,18 +38,18 @@
     <!-- without Search -->
     {% if search_recipes_pages == "" %}
     <!-- *disabled* if: 'page' in url args is last in total results page count -->
-    <li {% if request.args.get('page')==all_recipes_pages|length|string %} class="disabled" {% else %} class="tooltipped" data-position="top" data-tooltip="Next Page" {% endif %}>
+    <li {% if args('page')==all_recipes_pages|length|string %} class="disabled" {% else %} class="tooltipped" data-position="top" data-tooltip="Next Page" {% endif %}>
         <!-- capture all individual url args to retain searched items ... must remain on single line, otherwise it breaks -->
-        <a href="{{ url_for('view_desserts', page=next_page, sort=request.args.get('sort'), order=request.args.get('order'), limit=request.args.get('limit'), search_keyword=request.args.get('search_keyword'), search_dessert=request.args.get('search_dessert'), search_allergen=request.args.get('search_allergen')) }}">
+        <a href="{{ url_for('view_desserts', page=next_page, sort=args('sort'), order=args('order'), limit=args('limit'), search_keyword=args('search_keyword'), search_dessert=args('search_dessert'), search_allergen=args('search_allergen')) }}">
             <i class="fas fa-chevron-circle-right material-icons" aria-hidden="true"></i>
         </a>
     </li>
     {% else %}
     <!-- with Search -->
     <!-- *disabled* if: 'page' in url args is 1st or last in total results page count -->
-    <li {% if search_recipes_pages|length|string=='1' or request.args.get('page')==search_recipes_pages|length|string %} class="disabled" {% else %} class="tooltipped" data-position="top" data-tooltip="Next Page" {% endif %}>
+    <li {% if search_recipes_pages|length|string=='1' or args('page')==search_recipes_pages|length|string %} class="disabled" {% else %} class="tooltipped" data-position="top" data-tooltip="Next Page" {% endif %}>
         <!-- capture all individual url args to retain searched items ... must remain on single line, otherwise it breaks -->
-        <a href="{{ url_for('view_desserts', page=next_page_search, sort=request.args.get('sort'), order=request.args.get('order'), limit=request.args.get('limit'), search_keyword=request.args.get('search_keyword'), search_dessert=request.args.get('search_dessert'), search_allergen=request.args.get('search_allergen')) }}">
+        <a href="{{ url_for('view_desserts', page=next_page_search, sort=args('sort'), order=args('order'), limit=args('limit'), search_keyword=args('search_keyword'), search_dessert=args('search_dessert'), search_allergen=args('search_allergen')) }}">
             <i class="fas fa-chevron-circle-right material-icons" aria-hidden="true"></i>
         </a>
     </li>

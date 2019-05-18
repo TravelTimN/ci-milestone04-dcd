@@ -10,13 +10,12 @@
 
                 {% elif results_count==1 %}
                     <!-- 1 result found -->
-                    showing <span class="pink-text text-lighten-2 font-abril page-items text-shadow-1">1</span> recipe found
+                    <span class="pink-text text-lighten-2 font-abril page-items text-shadow-1">1</span> recipe found
                 
                 {% elif request.args.get("limit")=="" %}
                     <!-- no 'limit' args in url (ie: user selected 'All') -->
-                    showing {% if results_count != 1 %}all{% endif %}
-                    <span class="pink-text text-lighten-2 font-abril page-items text-shadow-1">{{ results_count }}</span>
-                    recipes found
+                    showing all
+                    <span class="pink-text text-lighten-2 font-abril page-items text-shadow-1">{{ results_count }}</span> recipes found
 
                 {% else %}
                     

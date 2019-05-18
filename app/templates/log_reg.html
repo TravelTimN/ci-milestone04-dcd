@@ -4,34 +4,54 @@
 
 <div class="container white z-depth-2 login-register">
 
+    <!-- top tabs -->
     <ul class="tabs tabs-fixed-width purple">
-        <li class="tab col s3 bold text-shadow-2 upper purple"><a class="white-text" href="#login">Log In</a></li>
-        <li class="tab col s3 bold text-shadow-2 upper pink lighten-2"><a class="white-text" href="#register">Register</a></li>
+        <li class="tab col s3 bold text-shadow-2 upper purple">
+            <a class="white-text" href="#login">Log In</a>
+        </li>
+        <li class="tab col s3 bold text-shadow-2 upper pink lighten-2">
+            <a class="white-text" href="#register">Register</a>
+        </li>
     </ul>
 
+
+    <!-- Log In tab -->
     <div id="login" class="col s12">
         <form class="col s12" method="POST" action="{{ url_for('login', _anchor='login') }}">
             <div class="login-form-container">
-                <h3 class="purple-text center-align bold">Existing Users</h3>
+                <h3 class="purple-text center-align bold text-shadow-1">Existing Users</h3>
 
+                <!-- existing username -->
                 <div class="row">
                     <div class="input-field col s12">
                         <i class="fas fa-user purple-text prefix" aria-hidden="true"></i>
-                        <input id="username" name="username" type="text" class="form-control validate" autocomplete="off" value="{{ request.form['username'] }}" required>
-                        <label for="username">Username <i class="fas fa-question-circle tooltipped" data-position="right" data-tooltip="3-15 alphanumeric" aria-hidden="true"></i></label>
+                        <input id="username" name="username" type="text" class="form-control validate"
+                            autocomplete="off" minlength="3" maxlength="15" value="{{ request.form['username'] }}"
+                            required>
+                        <label for="username">Username
+                            <i class="fas fa-question-circle tooltipped" data-position="right"
+                                data-tooltip="3-15 alphanumeric" aria-hidden="true"></i>
+                        </label>
                     </div>
                 </div>
 
+                <!-- password -->
                 <div class="row">
                     <div class="input-field col s12">
                         <i class="fas fa-lock purple-text prefix" aria-hidden="true"></i>
-                        <input id="password" name="password" type="password" class="form-control validate" autocomplete="off" required>
-                        <label for="password">Password <i class="fas fa-question-circle tooltipped" data-position="right" data-tooltip="5-15 characters" aria-hidden="true"></i></label>
+                        <input id="password" name="password" type="password" class="form-control validate"
+                            autocomplete="off" minlength="5" maxlength="15" required>
+                        <label for="password">Password
+                            <i class="fas fa-question-circle tooltipped" data-position="right"
+                                data-tooltip="5-15 characters" aria-hidden="true"></i>
+                        </label>
                     </div>
                 </div>
 
+                <!-- log in button -->
                 <div class="row">
-                    <button class="col s12 btn btn-large waves-effect waves-red purple bold upper text-shadow-2" type="submit">
+                    <button type="submit"
+                        class="col s12 btn btn-large waves-effect waves-red purple bold upper text-shadow-2">
                         Log In
                         <i class="fas fa-sign-in-alt material-icons" aria-hidden="true"></i>
                     </button>
@@ -41,30 +61,43 @@
     </div>
 
 
-
+    <!-- Register tab -->
     <div id="register" class="col s12">
         <form class="col s12" method="POST" action="{{ url_for('register', _anchor='register') }}">
             <div class="register-form-container">
-                <h3 class="pink-text text-lighten-2 center-align bold">Create Account</h3>
+                <h3 class="pink-text text-lighten-2 center-align bold text-shadow-1">Create Account</h3>
 
+                <!-- create username -->
                 <div class="row">
                     <div class="input-field col s12">
                         <i class="fas fa-user-plus pink-text text-lighten-2 prefix" aria-hidden="true"></i>
-                        <input id="username" name="username" type="text" class="form-control validate" autocomplete="off" value="{{ request.form['username'] }}" required>
-                        <label for="username">Username <i class="fas fa-question-circle tooltipped" data-position="right" data-tooltip="3-15 alphanumeric" aria-hidden="true"></i></label>
+                        <input id="new_username" name="new_username" type="text" class="form-control validate"
+                            autocomplete="off" minlength="3" maxlength="15" value="{{ request.form['new_username'] }}"
+                            required>
+                        <label for="new_username">Username
+                            <i class="fas fa-question-circle tooltipped" data-position="right"
+                                data-tooltip="3-15 alphanumeric" aria-hidden="true"></i>
+                        </label>
                     </div>
                 </div>
 
+                <!-- create password -->
                 <div class="row">
                     <div class="input-field col s12">
                         <i class="fas fa-key pink-text text-lighten-2 prefix" aria-hidden="true"></i>
-                        <input id="password" name="password" type="password" class="form-control validate" autocomplete="off" required>
-                        <label for="password">Password <i class="fas fa-question-circle tooltipped" data-position="right" data-tooltip="5-15 characters" aria-hidden="true"></i></label>
+                        <input id="new_password" name="new_password" type="password" class="form-control validate"
+                            autocomplete="off" minlength="5" maxlength="15" required>
+                        <label for="new_password">Password
+                            <i class="fas fa-question-circle tooltipped" data-position="right"
+                                data-tooltip="5-15 characters" aria-hidden="true"></i>
+                        </label>
                     </div>
                 </div>
 
+                <!-- register button -->
                 <div class="row">
-                    <button class="col s12 btn btn-large waves-effect waves-purple pink lighten-2 bold upper text-shadow-2" type="submit">
+                    <button type="submit"
+                        class="col s12 btn btn-large waves-effect waves-purple pink lighten-2 bold upper text-shadow-2">
                         Register
                         <i class="fas fa-user-plus material-icons" aria-hidden="true"></i>
                     </button>

@@ -57,6 +57,11 @@ body {
     color: white;
 }
 
+h1, h2, h3, h4, h5, h6 {
+    margin: 1rem 0;
+    vertical-align: middle;
+}
+
 .row .col {
     padding: 0;
 }
@@ -91,6 +96,12 @@ body {
 
 .strike {
     text-decoration: line-through;
+}
+
+.tabs .indicator {
+    height: 8px;
+    background-color: unset;
+    border-top: 5px solid rgba(255, 255, 255, 0.5);
 }
 
 .upper {

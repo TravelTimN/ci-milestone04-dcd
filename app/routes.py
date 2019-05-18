@@ -67,13 +67,13 @@ def home():
 def register():
         if request.method == "POST":
                 # check if username already taken
-                existing_user = users_collection.find_one({"username_lower": request.form.get("username").lower()})
+                existing_user = users_collection.find_one({"username_lower": request.form.get("new_username").lower()})
                 if existing_user:
-                        flash(Markup(f"<i class='fas fa-exclamation-circle red-text material-icons small'></i> <span class='pink-text text-lighten-2'>{request.form.get('username')}</span> is an excellent choice! (but it's already taken)"))
+                        flash(Markup(f"<i class='fas fa-exclamation-circle red-text material-icons small'></i> <span class='pink-text text-lighten-2'>{request.form.get('new_username')}</span> is an excellent choice! (but it's already taken)"))
                         return redirect(url_for("register"))
                 
                 # check if username is alphanumeric or contains 'test'
-                username_input = request.form.get("username").lower()
+                username_input = request.form.get("new_username").lower()
                 username_check = re.search(r"(?!\-)[\W]|t+e+s+t+", username_input, re.I)
                 if username_check:
                         if " " in {username_check.group(0)}:
@@ -84,12 +84,12 @@ def register():
                                 return redirect(url_for("register"))
                 
                 # username should be 3-5 alphanumeric
-                if len(request.form.get("username")) < 3 or len(request.form.get("username")) > 15:
+                if len(request.form.get("new_username")) < 3 or len(request.form.get("new_username")) > 15:
                         flash(Markup(f"<i class='fas fa-exclamation-circle red-text material-icons small'></i> Usernames should be <span class='pink-text text-lighten-2'>3-15 characters</span> long."))
                         return redirect(url_for("register"))
                 
                 # password should be 5-15 characters
-                if len(request.form.get("password")) < 5 or len(request.form.get("password")) > 15:
+                if len(request.form.get("new_password")) < 5 or len(request.form.get("new_password")) > 15:
                         flash(Markup(f"<i class='fas fa-exclamation-circle red-text material-icons small'></i> Passwords should be <span class='pink-text text-lighten-2'>5-15 characters</span> long."))
                         return redirect(url_for("register"))
                 
@@ -101,16 +101,16 @@ def register():
                 
                 # add successful user to database
                 register = {
-                        "username": request.form.get("username"),
-                        "username_lower": request.form.get("username").lower(),
-                        "user_password": generate_password_hash(request.form.get("password")),
+                        "username": request.form.get("new_username"),
+                        "username_lower": request.form.get("new_username").lower(),
+                        "user_password": generate_password_hash(request.form.get("new_password")),
                         "user_avatar": user_avatar,
                         "user_recipes": [],
                         "user_favs": []
                 }
                 users_collection.insert_one(register)
                 # put the user in 'session'
-                session["user"] = request.form.get("username").lower()
+                session["user"] = request.form.get("new_username").lower()
                 return redirect(url_for("profile", username=session["user"]))
 
         return render_template("log_reg.html")

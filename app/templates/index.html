@@ -87,9 +87,9 @@
                 <div class="carousel-item">
                     <div class="carousel-fixed-item center text-shadow-1">
                         <a href="{{ url_for('view_dessert', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}">
-                        <h4 class="bold font-emilys-candy mark-purple text-shadow-2">
-                            {{ recipe.recipe_name|truncate(50, True)|safe }}
-                        </h4>
+                            <h4 class="bold font-emilys-candy mark-purple text-shadow-2">
+                                {{ recipe.recipe_name|truncate(50, True)|safe }}
+                            </h4>
                         </a>
                     </div>
                     {% if recipe.img_src %}

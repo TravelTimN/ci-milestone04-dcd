@@ -17,9 +17,18 @@
 
         <!-- Card Action (stats) -->
         <div class="card-action purple lighten-3 bold activator">
-            <span><i class="far fa-clock material-icons purple-text text-shadow-1" aria-hidden="true"></i><br>{% if recipe.total_hrs %}{{ recipe.total_hrs }}h{% endif %} {{ recipe.total_mins }}m</span>
-            <span><i class="far fa-eye material-icons blue-text text-darken-2 text-shadow-1" aria-hidden="true"></i><br>{{ recipe.views }}</span>
-            <span><i class="far fa-heart material-icons pink-text text-shadow-1" aria-hidden="true"></i><br>{{ recipe.user_favs }}</span>
+            <span>
+                <i class="far fa-clock material-icons purple-text text-shadow-1" aria-hidden="true"></i><br>
+                {% if recipe.total_hrs %}{{ recipe.total_hrs }}h{% endif %} {{ recipe.total_mins }}m
+            </span>
+            <span>
+                <i class="far fa-eye material-icons blue-text text-darken-2 text-shadow-1" aria-hidden="true"></i><br>
+                {{ recipe.views }}
+            </span>
+            <span>
+                <i class="far fa-heart material-icons pink-text text-shadow-1" aria-hidden="true"></i><br>
+                {{ recipe.user_favs }}
+            </span>
         </div>
 
         <!-- Card Reveal (hidden until clicked) -->

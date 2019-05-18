@@ -20,7 +20,6 @@ $(document).ready(function () {
     // initialize dropdowns
     $(".dropdown-trigger").dropdown();
     $("select").formSelect();
-    // solution to dropdowns not enforcing validation: https://stackoverflow.com/questions/34248898/how-to-validate-select-option-for-a-materialize-dropdown
     $("select[required]").css({
         display: "block",
         height: 0,
@@ -30,7 +29,7 @@ $(document).ready(function () {
     });
 
     // initialize input character count
-    $("input#search_keyword, textarea#description").characterCounter();
+    $("input#search_keyword, input#recipe_name, textarea#description").characterCounter();
 
     // initialize carousel slider
     $(".carousel.carousel-slider").carousel({

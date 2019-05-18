@@ -31,8 +31,7 @@
                         <div class="modal-content">
                             <h4 class="purple-text bold upper">Share something Sweet</h4>
                             <input type="text" id="share-url">
-                            <a id="copy-btn"
-                                class="modal-close waves-effect waves-red purple btn text-shadow-2 upper">
+                            <a id="copy-btn" class="modal-close waves-effect waves-red purple btn text-shadow-2 upper">
                                 <i class="fas fa-copy material-icons right" aria-hidden="true"></i>Copy Link
                             </a>
                         </div>
@@ -91,7 +90,8 @@
                 by: <span class="purple-text bold">{{ author }}</span>
             </p>
             <q class="print-no">{{ recipe.description }}</q>
-            <p class="print-no"><i class="fas fa-clock" aria-hidden="true"></i>
+            <p class="print-no">
+                <i class="fas fa-clock" aria-hidden="true"></i>
                 Total Time:
                 <span class="purple-text bold">
                     {% if recipe.total_hrs %}
@@ -103,15 +103,19 @@
                     {% endif %}
                 </span>
             </p>
-            <p class="print-no"><i class="fas fa-calendar-plus" aria-hidden="true"></i> Added: <span class="purple-text bold">{{ recipe.date_added }}</span>
-            {% if recipe.date_added != recipe.date_updated %}
-            <br><i class="fas fa-calendar-check" aria-hidden="true"></i> Updated: <span class="purple-text bold">{{ recipe.date_updated }}</span></p>
+            <p class="print-no">
+                <i class="fas fa-calendar-plus" aria-hidden="true"></i> Added:
+                <span class="purple-text bold">{{ recipe.date_added }}</span>
+                {% if recipe.date_added != recipe.date_updated %}
+                <br>
+                <i class="fas fa-calendar-check" aria-hidden="true"></i> Updated:
+                <span class="purple-text bold">{{ recipe.date_updated }}</span>
+            </p>
             {% endif %}
             <p class="print-no">
                 {% for allergen in recipe.allergens %}
                 <div class="chip pink lighten-4 black-text print-no">
-                    <img src="{{ url_for('static', filename='img/allergens/'+allergen|lower+'.png') }}"
-                        alt="Allergen" lazyload="on">{{ allergen }}</div>
+                    <img src="{{ url_for('static', filename='img/allergens/'+allergen|lower+'.png') }}" alt="Allergen" lazyload="on">{{ allergen }}</div>
                 {% endfor %}
             </p>
             {% if session.user %}
@@ -149,8 +153,7 @@
 
                         {% if measurement == "not applicable" %}
                         {% else %}
-                        <span class="bold tooltipped" data-position="right"
-                            data-tooltip="{{ units[unit_loop.index-1] }}">{{ measurement }}</span> of
+                        <span class="bold tooltipped" data-position="right" data-tooltip="{{ units[unit_loop.index-1] }}">{{ measurement }}</span> of
                         {% endif %}
 
                         <span class="purple-text">{{ ingredient }}</span>
@@ -180,11 +183,6 @@
             </ol>
         </div>
     </div>
-
-    <!--<div class="row center-align">
-        <button type="reset" class="waves-effect waves-purple btn btn-large pink lighten-2 bold text-shadow-2" onclick="history.go(-1)"><i
-                class="fas fa-arrow-alt-circle-left material-icons left"></i> Back</button>
-    </div>-->
 
 </div>
 

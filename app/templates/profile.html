@@ -8,15 +8,22 @@
         <div class="col s12 l8 offset-l2 recipe-card card white profile-card center-align">
             <h2 class="purple-text purple lighten-5 font-fredericka">{{ username }}</h2>
             <h5 class="pink-text font-rye">the "{{ user_avatar|title }}"</h5>
-            <img src="{{ url_for('static', filename='img/avatars/'+user_avatar+'.png') }}" alt="User Avatar" lazyload="on"
-                id="user-avatar" class="tooltipped" data-position="top" data-tooltip="Hi {{ username }}! I'm your dessert avatar, '{{ user_avatar|title }}'!<br>I will be displayed on any recipe you submit!">
+            <img src="{{ url_for('static', filename='img/avatars/'+user_avatar+'.png') }}" alt="User Avatar"
+                lazyload="on" id="user-avatar" class="tooltipped" data-position="top"
+                data-tooltip="Hi {{ username }}! I'm your dessert avatar, '{{ user_avatar|title }}'!<br>I will be displayed on any recipe you submit!">
             <p>
                 <!-- User's Own Recipes (modal trigger) -->
                 <a class="waves-effect waves-light btn btn-large bold blue text-shadow-2 modal-trigger"
-                    href="#modal-user-recipes"><i class="fas fa-user-plus material-icons left" aria-hidden="true"></i>My Recipes</a>
+                    href="#modal-user-recipes">
+                    <i class="fas fa-user-plus material-icons left" aria-hidden="true"></i>
+                    My Recipes
+                </a>
                 <!-- User's Own Recipes (modal trigger) -->
                 <a class="waves-effect waves-light btn btn-large bold pink lighten-2 text-shadow-2 modal-trigger"
-                    href="#modal-user-favorites"><i class="fas fa-heart material-icons left" aria-hidden="true"></i>My Favorites</a>
+                    href="#modal-user-favorites">
+                    <i class="fas fa-heart material-icons left" aria-hidden="true"></i>
+                    My Favorites
+                </a>
             </p>
         </div>
     </div>
@@ -49,8 +56,7 @@
                     Good things come to those who share recipes.
                 </span>
                 <p class="pink-text text-lighten-2 bold">
-                    You haven't shared anything yet. Click the icon on the right to add your first
-                    recipe.
+                    You haven't shared anything yet. Click the icon on the right to add your first recipe.
                 </p>
                 <a href="{{ url_for('add_dessert') }}" title="Add a Recipe">
                     <i class="fas fa-plus-circle material-icons blue-text text-shadow-1 secondary-content tooltipped"
@@ -67,7 +73,9 @@
 <!-- user favorites modal -->
 <div id="modal-user-favorites" class="modal bottom-sheet pink lighten-5">
     <div class="modal-content">
-        <h4 class="bold pink-text text-lighten-2 text-shadow-1 font-rye center-align">{{ username }}'s Favorites</h4>
+        <h4 class="bold pink-text text-lighten-2 text-shadow-1 font-rye center-align">
+            {{ username }}'s Favorites
+        </h4>
         <ul class="collection">
             {% for user_fav in user_favs %}
             <li class="collection-item avatar">
