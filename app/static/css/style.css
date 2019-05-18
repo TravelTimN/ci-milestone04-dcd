@@ -407,13 +407,12 @@ footer {
     padding: 5px;
 }
 
-#search_form .search-results,
-#page-items .page-items {
-    font-size: 1.5em;
-}
-
 #search-results h5 {
     vertical-align: middle;
+}
+
+#page-items .page-items {
+    font-size: 1.5em;
 }
 
 #page-items h5 {
@@ -424,8 +423,22 @@ footer {
     overflow: visible;
 }
 
+.pagination li {
+    vertical-align: unset;
+}
+
 .pagination li a {
     font-size: 1.5rem;
+}
+
+.pagination li:first-child:not(.disabled) a,
+.pagination li:last-child:not(.disabled) a {
+    color: #9c27b0;
+}
+
+.pagination li:first-child a i,
+.pagination li:last-child a i {
+    font-size: 2em;
 }
 
 

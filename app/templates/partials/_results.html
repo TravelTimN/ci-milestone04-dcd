@@ -1,0 +1,42 @@
+<div class="row card recipe-card" id="page-items">
+    <div class="col s12 center-align">
+        <h5 class="bold purple-text">
+
+            <!-- with search -->
+            {% if recipes_search %}
+                {% if results_count==0 %}
+                    <!-- 0 search results -->
+                    <span class="pink-text text-lighten-2 font-abril page-items text-shadow-1">0</span> recipes found
+
+                {% elif results_count==1 %}
+                    <!-- 1 result found -->
+                    showing <span class="pink-text text-lighten-2 font-abril page-items text-shadow-1">1</span> recipe found
+                
+                {% elif request.args.get("limit")=="" %}
+                    <!-- no 'limit' args in url (ie: user selected 'All') -->
+                    showing {% if results_count != 1 %}all{% endif %}
+                    <span class="pink-text text-lighten-2 font-abril page-items text-shadow-1">{{ results_count }}</span>
+                    recipes found
+
+                {% else %}
+                    
+                    <!-- normal 'with search' display -->
+                    showing
+                    <span class="pink-text text-lighten-2 font-abril page-items text-shadow-1">
+                    {{ (page_args * limit_args) - (limit_args - 1) }}-{{ count_display_search }}</span> of
+                    <span class="blue-text font-abril page-items text-shadow-1">{{ results_count }}</span>
+                    recipes found
+                {% endif %}
+
+            <!-- without search -->
+            {% else %}
+                showing
+                <span class="pink-text text-lighten-2 font-abril page-items text-shadow-1">
+                {{ (page_args * limit_args) - (limit_args - 1) }}-{{ count_display }}</span> of
+                <span class="blue-text font-abril page-items text-shadow-1">{{ total_recipes() }}</span>
+                recipes
+            {% endif %}
+
+        </h5>
+    </div>
+</div>
