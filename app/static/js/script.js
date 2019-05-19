@@ -144,32 +144,32 @@ $(document).ready(function () {
     // Sorting + Order By
     // on load
     if (sort_value == "author" || sort_value == "recipe_name") {
-        $(".order-span-asc").html("<i class='fas fa-sort-alpha-down materialize-icons hide-on-small-only'></i> Alphabetical <strong>(A-Z)</strong>");
-        $(".order-span-desc").html("<i class='fas fa-sort-alpha-up materialize-icons hide-on-small-only'></i> Alphabetical <strong>(Z-A)</strong>");
+        $(".order-span-asc").html("<i class='fas fa-sort-alpha-down materialize-icons hide-on-small-only' aria-hidden='true'></i> Alphabetical <strong>(A-Z)</strong>");
+        $(".order-span-desc").html("<i class='fas fa-sort-alpha-up materialize-icons hide-on-small-only' aria-hidden='true'></i> Alphabetical <strong>(Z-A)</strong>");
     } else if (sort_value == "user_favs" || sort_value == "views") {
-        $(".order-span-asc").html("<i class='fas fa-sort-numeric-down materialize-icons hide-on-small-only'></i> Lowest first");
-        $(".order-span-desc").html("<i class='fas fa-sort-numeric-up materialize-icons hide-on-small-only'></i> Highest first");
+        $(".order-span-asc").html("<i class='fas fa-sort-numeric-down materialize-icons hide-on-small-only' aria-hidden='true'></i> Lowest first");
+        $(".order-span-desc").html("<i class='fas fa-sort-numeric-up materialize-icons hide-on-small-only' aria-hidden='true'></i> Highest first");
     } else if (sort_value == "last_edit") {
-        $(".order-span-asc").html("<i class='fas fa-calendar-check materialize-icons hide-on-small-only'></i> Oldest first");
-        $(".order-span-desc").html("<i class='far fa-calendar-check materialize-icons hide-on-small-only'></i> Newest first");
+        $(".order-span-asc").html("<i class='fas fa-calendar-check materialize-icons hide-on-small-only' aria-hidden='true'></i> Oldest first");
+        $(".order-span-desc").html("<i class='far fa-calendar-check materialize-icons hide-on-small-only' aria-hidden='true'></i> Newest first");
     } else if (sort_value == "total_time") {
-        $(".order-span-asc").html("<i class='fas fa-clock materialize-icons hide-on-small-only'></i> Shortest first");
-        $(".order-span-desc").html("<i class='far fa-clock materialize-icons hide-on-small-only'></i> Longest first");
+        $(".order-span-asc").html("<i class='fas fa-clock materialize-icons hide-on-small-only' aria-hidden='true'></i> Shortest first");
+        $(".order-span-desc").html("<i class='far fa-clock materialize-icons hide-on-small-only' aria-hidden='true'></i> Longest first");
     }
     // on selection
     $("#sort").on("change", function () {
         if ($("#sort").val() == "author" || $("#sort").val() == "recipe_name") {
-            $(".order-span-asc").html("<i class='fas fa-sort-alpha-down materialize-icons hide-on-small-only'></i> Alphabetical <strong>(A-Z)</strong>");
-            $(".order-span-desc").html("<i class='fas fa-sort-alpha-up materialize-icons hide-on-small-only'></i> Alphabetical <strong>(Z-A)</strong>");
+            $(".order-span-asc").html("<i class='fas fa-sort-alpha-down materialize-icons hide-on-small-only' aria-hidden='true'></i> Alphabetical <strong>(A-Z)</strong>");
+            $(".order-span-desc").html("<i class='fas fa-sort-alpha-up materialize-icons hide-on-small-only' aria-hidden='true'></i> Alphabetical <strong>(Z-A)</strong>");
         } else if ($("#sort").val() == "user_favs" || $("#sort").val() == "views") {
-            $(".order-span-asc").html("<i class='fas fa-sort-numeric-down materialize-icons hide-on-small-only'></i> Lowest first");
-            $(".order-span-desc").html("<i class='fas fa-sort-numeric-up materialize-icons hide-on-small-only'></i> Highest first");
+            $(".order-span-asc").html("<i class='fas fa-sort-numeric-down materialize-icons hide-on-small-only' aria-hidden='true'></i> Lowest first");
+            $(".order-span-desc").html("<i class='fas fa-sort-numeric-up materialize-icons hide-on-small-only' aria-hidden='true'></i> Highest first");
         } else if ($("#sort").val() == "last_edit") {
-            $(".order-span-asc").html("<i class='fas fa-calendar-check materialize-icons hide-on-small-only'></i> Oldest first");
-            $(".order-span-desc").html("<i class='far fa-calendar-check materialize-icons hide-on-small-only'></i> Newest first");
+            $(".order-span-asc").html("<i class='fas fa-calendar-check materialize-icons hide-on-small-only' aria-hidden='true'></i> Oldest first");
+            $(".order-span-desc").html("<i class='far fa-calendar-check materialize-icons hide-on-small-only' aria-hidden='true'></i> Newest first");
         } else if ($("#sort").val() == "total_time") {
-            $(".order-span-asc").html("<i class='fas fa-clock materialize-icons hide-on-small-only'></i> Shortest first");
-            $(".order-span-desc").html("<i class='far fa-clock materialize-icons hide-on-small-only'></i> Longest first");
+            $(".order-span-asc").html("<i class='fas fa-clock materialize-icons hide-on-small-only' aria-hidden='true'></i> Shortest first");
+            $(".order-span-desc").html("<i class='far fa-clock materialize-icons hide-on-small-only' aria-hidden='true'></i> Longest first");
         }
     });
 
@@ -205,8 +205,22 @@ $(document).ready(function () {
         copyUrl.select();
         document.execCommand("copy");
         M.toast({
-            html: "<i class='fas fa-clipboard-check material-icons left'></i> Copied to Clipboard"
-        })
+            html: "<i class='fas fa-clipboard-check material-icons left' aria-hidden='true'></i> Copied to Clipboard"
+        });
+    });
+
+
+    // advise user that recipe will be saved to their favorites (if selected)
+    $("#add_favs").on("change", function () {
+        if ($("#add_favs").prop("checked") == true) {
+            M.toast({
+                html: "<i class='fas fa-heart material-icons pink-text text-lighten-2 left' aria-hidden='true'></i> Saved to your favorites!"
+            });
+        } else {
+            M.toast({
+                html: "<i class='fas fa-heart-broken material-icons red-text left' aria-hidden='true'></i> Removed from your favorites."
+            });
+        }
     });
 
 

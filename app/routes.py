@@ -69,7 +69,7 @@ def register():
                 # check if username already taken
                 existing_user = users_collection.find_one({"username_lower": request.form.get("new_username").lower()})
                 if existing_user:
-                        flash(Markup(f"<i class='fas fa-exclamation-circle red-text material-icons small'></i> <span class='pink-text text-lighten-2'>{request.form.get('new_username')}</span> is an excellent choice! (but it's already taken)"))
+                        flash(Markup(f"<i class='fas fa-exclamation-circle red-text material-icons small' aria-hidden='true'></i> <span class='pink-text text-lighten-2'>{request.form.get('new_username')}</span> is an excellent choice! (but it's already taken)"))
                         return redirect(url_for("register"))
                 
                 # check if username is alphanumeric or contains 'test'
@@ -77,20 +77,20 @@ def register():
                 username_check = re.search(r"(?!\-)[\W]|t+e+s+t+", username_input, re.I)
                 if username_check:
                         if " " in {username_check.group(0)}:
-                                flash(Markup(f"<i class='fas fa-exclamation-circle red-text material-icons small'></i> Usernames containing <span class='pink-text text-lighten-2'>spaces</span> are not permitted."))
+                                flash(Markup(f"<i class='fas fa-exclamation-circle red-text material-icons small' aria-hidden='true'></i> Usernames containing <span class='pink-text text-lighten-2'>spaces</span> are not permitted."))
                                 return redirect(url_for("register"))
                         else:
-                                flash(Markup(f"<i class='fas fa-exclamation-circle red-text material-icons small'></i> Usernames containing <span class='pink-text text-lighten-2'>{username_check.group(0).upper()}</span> are not permitted."))
+                                flash(Markup(f"<i class='fas fa-exclamation-circle red-text material-icons small' aria-hidden='true'></i> Usernames containing <span class='pink-text text-lighten-2'>{username_check.group(0).upper()}</span> are not permitted."))
                                 return redirect(url_for("register"))
                 
                 # username should be 3-5 alphanumeric
                 if len(request.form.get("new_username")) < 3 or len(request.form.get("new_username")) > 15:
-                        flash(Markup(f"<i class='fas fa-exclamation-circle red-text material-icons small'></i> Usernames should be <span class='pink-text text-lighten-2'>3-15 characters</span> long."))
+                        flash(Markup(f"<i class='fas fa-exclamation-circle red-text material-icons small' aria-hidden='true'></i> Usernames should be <span class='pink-text text-lighten-2'>3-15 characters</span> long."))
                         return redirect(url_for("register"))
                 
                 # password should be 5-15 characters
                 if len(request.form.get("new_password")) < 5 or len(request.form.get("new_password")) > 15:
-                        flash(Markup(f"<i class='fas fa-exclamation-circle red-text material-icons small'></i> Passwords should be <span class='pink-text text-lighten-2'>5-15 characters</span> long."))
+                        flash(Markup(f"<i class='fas fa-exclamation-circle red-text material-icons small' aria-hidden='true'></i> Passwords should be <span class='pink-text text-lighten-2'>5-15 characters</span> long."))
                         return redirect(url_for("register"))
                 
                 # assign random avatar to user
@@ -134,11 +134,11 @@ def login():
                                 return redirect(url_for("profile", username=session["user"]))
                         else:
                                 # invalid password match
-                                flash(Markup(f"<i class='fas fa-exclamation-circle red-text material-icons small'></i> Whoops! Looks like the <span class='pink-text text-lighten-2'>username</span> or <span class='pink-text text-lighten-2'>password</span> is incorrect."))
+                                flash(Markup(f"<i class='fas fa-exclamation-circle red-text material-icons small' aria-hidden='true'></i> Whoops! Looks like the <span class='pink-text text-lighten-2'>username</span> or <span class='pink-text text-lighten-2'>password</span> is incorrect."))
                                 return redirect(url_for("login"))
                 else:
                         # username doesn't exist
-                        flash(Markup(f"<i class='fas fa-exclamation-circle red-text material-icons small'></i> Hmm... username <span class='pink-text text-lighten-2'>{request.form.get('username')}</span> doesn't seem to exist."))
+                        flash(Markup(f"<i class='fas fa-exclamation-circle red-text material-icons small' aria-hidden='true'></i> Hmm... username <span class='pink-text text-lighten-2'>{request.form.get('username')}</span> doesn't seem to exist."))
                         return redirect(url_for("login"))
         
         return render_template("log_reg.html")
@@ -173,7 +173,7 @@ def profile(username):
 def logout():
         # remove user from 'session' cookies
         username = users_collection.find_one({"username_lower": session["user"].lower()})["username"]
-        flash(Markup(f"<i class='far fa-sad-tear yellow-text material-icons small'></i> Missing you already, <span class='pink-text text-lighten-2 bold'>" + username + "</span>!"))
+        flash(Markup(f"<i class='far fa-sad-tear yellow-text material-icons small' aria-hidden='true'></i> Missing you already, <span class='pink-text text-lighten-2 bold'>" + username + "</span>!"))
         session.pop("user")
         return redirect(url_for("home"))
 
@@ -261,7 +261,14 @@ def add_dessert_toDB():
 
         # slugify url to be user-friendly
         slugUrl = slugify(request.form.get("recipe_name"))
-        flash(Markup(f"<i class='far fa-check-circle green-text material-icons small'></i> Sounds delicious! Thanks for adding this recipe!"))
+        flash(Markup(f"<i class='far fa-check-circle green-text material-icons small' aria-hidden='true'></i> Sounds delicious! Thanks for adding this recipe!"))
+
+        # add to user-favs if selected
+        if request.form.get("add_favs") == "on":
+                users_collection.update_one({"_id": ObjectId(author)}, {"$push": {"user_favs": newID.inserted_id}})
+                # increase number of favorites on this recipe
+                recipes_collection.update_one({"_id": newID.inserted_id}, {"$inc": {"user_favs": 1}})
+
         return redirect(url_for("view_dessert",
                                 recipe_id=newID.inserted_id,
                                 slugUrl=slugUrl))
@@ -477,7 +484,7 @@ def update_dessert(recipe_id, slugUrl):
         
         # zip the new lists into a single master list
         ingredients_list=zip(amount_list,unit_list,ingredient_list)
-        
+
         return render_template("update_dessert.html",
                                 recipe=recipe,
                                 allergens=allergen_list,
@@ -529,7 +536,7 @@ def update_dessert_toDB(recipe_id):
                 "user_favs": get_user_favs
         })
         slugUrl = slugify(request.form.get("recipe_name"))
-        flash(Markup(f"<i class='far fa-check-circle green-text material-icons small'></i> Your recipe has been updated successfully!"))
+        flash(Markup(f"<i class='far fa-check-circle green-text material-icons small' aria-hidden='true'></i> Your recipe has been updated successfully!"))
         return redirect(url_for("view_dessert",
                                 recipe_id=recipe_id,
                                 slugUrl=slugUrl))
@@ -547,7 +554,7 @@ def delete_dessert(recipe_id):
         # pull recipe from all users user_favs
         users_collection.update_many({}, {"$pull": {"user_favs": ObjectId(recipe_id)}})
 
-        flash(Markup(f"<i class='fas fa-trash-alt red-text material-icons small'></i> Your recipe has been deleted."))
+        flash(Markup(f"<i class='fas fa-trash-alt red-text material-icons small' aria-hidden='true'></i> Your recipe has been deleted."))
         return redirect(url_for("view_desserts"))
 
 
@@ -567,7 +574,7 @@ def add_favorite(recipe_id, slugUrl):
         # retain the original view-count by decrementing -1
         recipes_collection.update_one({"_id": ObjectId(recipe_id)}, {"$inc": {"views": -1}})
 
-        flash(Markup(f"<i class='fas fa-heart pink-text material-icons small'></i> Saved to your favorites!"))
+        flash(Markup(f"<i class='fas fa-heart pink-text material-icons small' aria-hidden='true'></i> Saved to your favorites!"))
         return redirect(request.referrer)
 
 
@@ -583,5 +590,5 @@ def delete_favorite(recipe_id, slugUrl):
         # retain the original view-count by decrementing -1
         recipes_collection.update_one({"_id": ObjectId(recipe_id)}, {"$inc": {"views": -1}})
 
-        flash(Markup(f"<i class='fas fa-minus-circle red-text material-icons small'></i> Removed from your favorites."))
+        flash(Markup(f"<i class='fas fa-minus-circle red-text material-icons small' aria-hidden='true'></i> Removed from your favorites."))
         return redirect(request.referrer)

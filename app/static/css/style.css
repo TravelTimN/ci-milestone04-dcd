@@ -404,6 +404,18 @@ footer {
     color: #4caf50;
 }
 
+.add-new {
+    padding: 1.5rem;
+}
+
+.add-new h6 i {
+    vertical-align: middle;
+}
+
+.toggle-text {
+    font-size: 1.25rem;
+}
+
 
 /*----- Search -----*/
 .collapsible {

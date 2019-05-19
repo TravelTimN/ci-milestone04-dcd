@@ -287,15 +287,47 @@
 
 
         <div class="row center-align">
-            <button type="submit" class="waves-effect waves-red btn btn-large green bold text-shadow-2">
-                Add
-                <i class="fas fa-plus-circle material-icons right hide-on-small-only" aria-hidden="true"></i>
-            </button>
 
-            <button type="reset" class="waves-effect waves-purple btn btn-large red bold text-shadow-2" onclick="history.go(-1)">
-                Cancel
-                <i class="fas fa-times-circle material-icons right hide-on-small-only" aria-hidden="true"></i>
-            </button>
+            <div class="col s12 m10 offset-m1 l8 offset-l2 card z-depth-2">
+                <div class="add-new">
+                    <!-- Save to Favorites immediately? -->
+                    <h6 class="bold pink-text text-lighten-2 upper">
+                        <i class="fas fa-heart pink-text text-lighten-2 material-icons" aria-hidden="true"></i>
+                        Save to favorites?
+                    </h6>
+                    <div class="switch">
+                        <label for="add_favs">
+                            <span class="red-text bold toggle-text">NO</span>
+                            <input id="add_favs" name="add_favs" type="checkbox">
+                            <span class="lever"></span>
+                            <span class="purple-text bold toggle-text">YES</span>
+                        </label>
+                    </div>
+                    <br>
+                    <div class="divider pink lighten-2"></div>
+                    <div class="divider red"></div>
+                    <div class="divider orange"></div>
+                    <div class="divider yellow"></div>
+                    <div class="divider green"></div>
+                    <div class="divider blue"></div>
+                    <div class="divider purple"></div>
+                    <div class="divider pink"></div>
+                    <br>
+
+                    <!-- Submit | Cancel buttons-->
+                    <button type="submit" class="waves-effect waves-red btn btn-large green bold text-shadow-2">
+                        Add
+                        <i class="fas fa-plus-circle material-icons right hide-on-small-only" aria-hidden="true"></i>
+                    </button>
+
+                    <button type="reset" class="waves-effect waves-purple btn btn-large red bold text-shadow-2"
+                        onclick="history.go(-1)">
+                        Cancel
+                        <i class="fas fa-times-circle material-icons right hide-on-small-only" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </div>
+
         </div>
 
     </div>
