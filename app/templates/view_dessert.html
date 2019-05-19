@@ -186,4 +186,57 @@
 
 </div>
 
+
+<div class="container-75 recommendations">
+    <!-- RECOMMENDATIONS -->
+    <div class="row">
+        <div class="col s12 card center-align">
+            <h4 class="mark-pink upper font-merienda text-shadow-1">Recommended</h4>
+
+            <div class="row">
+                <!-- previous dessert -->
+                {% for recipe in previous_recipe %}
+                <div class="col s12 m5 offset-m1">
+                    <div class="card z-depth-2 hoverable">
+                        <div class="card-image waves-effect waves-block waves-red center-align">
+                            <a href="{{ url_for('view_dessert', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}">
+                            <h5 class="card-title text-shadow-1 upper font-cabin-sketch pink-text" title="{{ recipe.recipe_name }}">
+                                {{ recipe.recipe_name }}
+                            </h5>
+                            {% if recipe.img_src %}
+                            <img src="{{ recipe.img_src }}" alt="Dessert" lazyload="on">
+                            {% else %}
+                            <img src="{{ url_for('static', filename='img/desserts/'+recipe.dessert_type|replace(' + ', '-')|replace(' ', '-')|lower+'.png') }}" alt="Dessert" lazyload="on">
+                            {% endif %}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+
+                <!-- next dessert -->
+                {% for recipe in next_recipe %}
+                <div class="col s12 m5">
+                    <div class="card z-depth-2 hoverable">
+                        <div class="card-image waves-effect waves-block waves-red center-align">
+                            <a href="{{ url_for('view_dessert', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}">
+                            <h6 class="card-title text-shadow-1 upper font-cabin-sketch pink-text" title="{{ recipe.recipe_name }}">
+                                {{ recipe.recipe_name }}
+                            </h6>
+                            {% if recipe.img_src %}
+                            <img src="{{ recipe.img_src }}" alt="Dessert" lazyload="on">
+                            {% else %}
+                            <img src="{{ url_for('static', filename='img/desserts/'+recipe.dessert_type|replace(' + ', '-')|replace(' ', '-')|lower+'.png') }}" alt="Dessert" lazyload="on">
+                            {% endif %}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+        </div>
+    </div>
+</div>
+
 {% endblock %}

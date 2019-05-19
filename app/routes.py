@@ -426,13 +426,28 @@ def view_dessert(recipe_id, slugUrl):
         
         # increment number of views by 1
         recipes_collection.update_one({"_id": ObjectId(recipe_id)}, {"$inc": {"views": 1}})
+
+        # PREVIOUS and NEXT recipes to display as recommendations
+        # get first recipe in collection if currently on last recipe in collection
+        first_recipe_id = recipes_collection.find().sort("_id", 1).limit(1)[0]["_id"]
+        first_recipe = recipes_collection.find().sort("_id", 1).limit(1)
+        # get last recipe in collection if currently on first recipe in collection
+        last_recipe_id = recipes_collection.find().sort("_id", -1).limit(1)[0]["_id"]
+        last_recipe = recipes_collection.find().sort("_id", -1).limit(1)
+        # get previous recipe based on current recipe
+        previous_recipe = recipes_collection.find({"_id": {"$lt": ObjectId(recipe_id)}}).sort([("_id", -1)]).limit(1) if str(recipe_id) != str(first_recipe_id) else last_recipe
+        # get next recipe based on current recipe
+        next_recipe = recipes_collection.find({"_id": {"$gt": ObjectId(recipe_id)}}).sort([("_id", 1)]).limit(1) if str(recipe_id) != str(last_recipe_id) else first_recipe
+
         return render_template("view_dessert.html",
                                 recipe=recipe,
                                 full_ingredient=full_ingredient,
                                 units=units,
                                 author=author,
                                 user_favs=user_favs,
-                                user_avatar=user_avatar)
+                                user_avatar=user_avatar,
+                                previous_recipe=previous_recipe,
+                                next_recipe=next_recipe)
 
 
 # (crUd) ----- UPDATE a recipe -----#
