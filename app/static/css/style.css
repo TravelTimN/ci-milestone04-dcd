@@ -282,7 +282,7 @@ footer {
 
 
 /*----- Cards -----*/
-.card:not(#search_form, .recommendations) {
+.card:not(#search_form):not(.recommendations) {
     margin-bottom: 50px;
 }
 
@@ -597,6 +597,10 @@ ul.collapsible {
     .new-direction,
     .recipe-card {
         border-radius: 8px;
+    }
+
+    .card .recommendations {
+        margin-bottom: 2rem;
     }
 
     .card-image {
