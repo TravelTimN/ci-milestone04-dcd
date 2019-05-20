@@ -214,11 +214,11 @@ $(document).ready(function () {
     $("#add_favs").on("change", function () {
         if ($("#add_favs").prop("checked") == true) {
             M.toast({
-                html: "<i class='fas fa-heart material-icons pink-text text-lighten-2 left' aria-hidden='true'></i> Saved to your favorites!"
+                html: "<i class='fas fa-heart material-icons pink-text text-lighten-2 left' aria-hidden='true'></i> Sweet! This will be saved to your favorites!"
             });
         } else {
             M.toast({
-                html: "<i class='fas fa-heart-broken material-icons red-text left' aria-hidden='true'></i> Removed from your favorites."
+                html: "<i class='fas fa-heart-broken material-icons red-text left' aria-hidden='true'></i> OK - but you can always add it later!"
             });
         }
     });
@@ -229,6 +229,28 @@ $(document).ready(function () {
         $(this).find("> .card-image > img.activator").click();
     }, function () {
         $(this).find("> .card-reveal > .card-title").click();
+    });
+
+
+    // Materialize doesn't validate select/dropdown fields, so this is my code to change it red if it's 'required'
+    $(".select-wrapper input.select-dropdown").on("focusin", function () {
+        $(this).parent(".select-wrapper").on("change", function () {
+            if ($(this).children("ul").children("li.selected:not(.disabled)").on("click", function () {})) {
+                $(this).children("input").css({"border-bottom": "1px solid #4caf50", "box-shadow": "0 1px 0 0 #4caf50"});
+            }
+        });
+    }).on("click", function () {
+        if ($(this).parent(".select-wrapper").children("ul").children("li.selected:not(.disabled)").css("background-color") == "rgba(233, 30, 99, 0.15)") {
+            $(this).parent(".select-wrapper").children("input").css({"border-bottom": "1px solid #4caf50", "box-shadow": "0 1px 0 0 #4caf50"});
+        } else {
+            $(".select-wrapper input.select-dropdown").on("focusout", function () {
+                if ($(this).parent(".select-wrapper").children("select").prop("required")) {
+                    if ($(this).css("border-bottom") != "1px solid rgb(76, 175, 80)") {
+                        $(this).parent(".select-wrapper").children("input").css({"border-bottom": "1px solid #f44336", "box-shadow": "0 1px 0 0 #f44336"});
+                    }
+                }
+            });
+        }
     });
 
 });

@@ -542,6 +542,92 @@ ul.collapsible {
 }
 
 
+/*-------------------- Custom Materialize Color overrides --------------------*/
+
+/* :focus */
+input:not([type]):focus:not([readonly]),
+input[type=text]:not(.browser-default):focus:not([readonly]),
+input[type=password]:not(.browser-default):focus:not([readonly]),
+input[type=email]:not(.browser-default):focus:not([readonly]),
+input[type=url]:not(.browser-default):focus:not([readonly]),
+input[type=time]:not(.browser-default):focus:not([readonly]),
+input[type=date]:not(.browser-default):focus:not([readonly]),
+input[type=datetime]:not(.browser-default):focus:not([readonly]),
+input[type=datetime-local]:not(.browser-default):focus:not([readonly]),
+input[type=tel]:not(.browser-default):focus:not([readonly]),
+input[type=number]:not(.browser-default):focus:not([readonly]),
+input[type=search]:not(.browser-default):focus:not([readonly]),
+textarea.materialize-textarea:focus:not([readonly]),
+.select-wrapper input.select-dropdown:focus {
+    border-bottom: 1px solid #9c27b0;
+    box-shadow: 0 1px 0 0 #9c27b0;
+}
+
+/* :focus +label */
+label,
+input:not([type]):focus:not([readonly])+label,
+input[type=text]:not(.browser-default):focus:not([readonly])+label,
+input[type=password]:not(.browser-default):focus:not([readonly])+label,
+input[type=email]:not(.browser-default):focus:not([readonly])+label,
+input[type=url]:not(.browser-default):focus:not([readonly])+label,
+input[type=time]:not(.browser-default):focus:not([readonly])+label,
+input[type=date]:not(.browser-default):focus:not([readonly])+label,
+input[type=datetime]:not(.browser-default):focus:not([readonly])+label,
+input[type=datetime-local]:not(.browser-default):focus:not([readonly])+label,
+input[type=tel]:not(.browser-default):focus:not([readonly])+label,
+input[type=number]:not(.browser-default):focus:not([readonly])+label,
+input[type=search]:not(.browser-default):focus:not([readonly])+label,
+textarea.materialize-textarea:focus:not([readonly])+label,
+/* dropdown options */
+.dropdown-content li>a, .dropdown-content li>span {
+    color: #9c27b0;
+    font-weight: bold;
+}
+
+/* checkbox:checked */
+[type="checkbox"]:checked+span:not(.lever):before {
+    border-right: 2px solid #f06292;
+    border-bottom: 2px solid #f06292;
+}
+
+/* select options */
+.select-dropdown.dropdown-content li:hover:not(.optgroup) {
+    background-color: #f3e5f5;
+}
+
+/* select options */
+.select-dropdown.dropdown-content li.selected,
+.select-dropdown.dropdown-content li:focus,
+body.keyboard-focused .select-dropdown.dropdown-content li:focus {
+    background-color: rgba(233, 30, 99, 0.15);
+}
+
+/* select optgroup */
+.select-dropdown li.optgroup,
+.select-dropdown li.optgroup:hover,
+/* switch */
+.switch label input[type=checkbox]:checked+.lever:after {
+    background-color: #9c27b0;
+}
+
+/* select optgroup text */
+.select-dropdown li.optgroup>span,
+.select-dropdown li.optgroup>span:hover {
+    color: #fff;
+}
+
+/* switch */
+.switch label input[type=checkbox]:checked+.lever {
+    background-color: #ce93d8;
+}
+
+/* switch glow */
+input[type=checkbox]:checked:not(:disabled)~.lever:active::before,
+input[type=checkbox]:checked:not(:disabled).tabbed:focus~.lever::before {
+    background-color: rgba(171, 71, 188, 0.15);
+}
+
+
 
 /*-------------------- @media queries --------------------*/
 
@@ -664,12 +750,14 @@ ul.collapsible {
 /*----- Print Recipe (plain text - limited formatting) -----*/
 @media print {
     body * {
-        visibility: hidden;
+        visibility: hidden !important;
+        page-break-after: avoid !important;
+        page-break-before: avoid !important;
     }
 
     #print-yes *,
     #print-yes *::before {
-        visibility: visible;
+        visibility: visible !important;
         font-family: Verdana, Geneva, Tahoma, sans-serif !important;
         font-size: 1em !important;
         color: #000000 !important;
@@ -693,13 +781,13 @@ ul.collapsible {
     }
 
     #print-yes {
-        position: absolute;
-        left: 0;
-        right: 0;
-        top: 0;
+        position: absolute !important;
+        left: 0 !important;
+        right: 0 !important;
+        top: 0 !important;
     }
 
-    #print-yes .print-no {
-        display: none;
+    .print-no {
+        display: none !important;
     }
 }
