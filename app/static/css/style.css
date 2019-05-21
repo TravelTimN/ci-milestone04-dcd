@@ -542,6 +542,12 @@ ul.collapsible {
 }
 
 
+/*-------------------- Errors --------------------*/
+.error-img {
+    width: 75vw;
+}
+
+
 /*-------------------- Custom Materialize Color overrides --------------------*/
 
 /* :focus */
@@ -732,6 +738,10 @@ input[type=checkbox]:checked:not(:disabled).tabbed:focus~.lever::before {
 
     .modal {
         padding: 25px;
+    }
+
+    .error-img {
+        width: 35vw;
     }
 }
 
