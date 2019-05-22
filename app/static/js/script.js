@@ -37,6 +37,9 @@ $(document).ready(function () {
         indicators: true
     });
 
+    // initialize floating action button
+    $(".fixed-action-btn").floatingActionButton({hoverEnabled: false});
+
 
     /*----- CUSTOMIZATION -----*/
 
@@ -250,6 +253,134 @@ $(document).ready(function () {
                     }
                 }
             });
+        }
+    });
+
+
+    // Weight Conversion from cup-gram or gram-cup
+    $("#convert-ingredient").on("change", function () {
+        $("#convert-method").prop("disabled", false).val("");
+        $("#convert-result").html("");
+        $("select").formSelect();
+
+        let selectedVal = $("#convert-ingredient option:selected").text();
+        let ingredientVal = $("#convert-ingredient").val();
+
+        let gramToCup1 = "<h4><strong>100 grams</strong> of <span class='purple-text'>" + selectedVal + "</span><br>=<br><strong>";
+        let gramToCup2 = " cups</strong> of <span class='purple-text'>" + selectedVal + "</span></h4>";
+        let cupToGram = "<h4><strong>1 cup</strong> of <span class='purple-text'>" + selectedVal + "</span><br>=<br><strong>" + ingredientVal + " grams</strong> of <span class='purple-text'>" + selectedVal + "</span></h4>";
+
+        switch ($("#convert-ingredient").val()) {
+            case "85":
+                $("#convert-method").on("change", function () {
+                    switch ($("#convert-method").val()) {
+                        case "g-c":
+                            $("#convert-result").html(gramToCup1 + "&frac34;" + gramToCup2);
+                            break;
+                        case "c-g":
+                            $("#convert-result").html(cupToGram);
+                            break;
+                    }
+                });
+                break;
+            case "100":
+                $("#convert-method").on("change", function () {
+                    switch ($("#convert-method").val()) {
+                        case "g-c":
+                            $("#convert-result").html(gramToCup1 + "1" + gramToCup2);
+                            break;
+                        case "c-g":
+                            $("#convert-result").html(cupToGram);
+                            break;
+                    }
+                });
+                break;
+            case "120":
+                $("#convert-method").on("change", function () {
+                    switch ($("#convert-method").val()) {
+                        case "g-c":
+                            $("#convert-result").html(gramToCup1 + "1 &frac14;" + gramToCup2);
+                            break;
+                        case "c-g":
+                            $("#convert-result").html(cupToGram);
+                            break;
+                    }
+                });
+                break;
+            case "140":
+                $("#convert-method").on("change", function () {
+                    switch ($("#convert-method").val()) {
+                        case "g-c":
+                            $("#convert-result").html(gramToCup1 + "1 &frac13;" + gramToCup2);
+                            break;
+                        case "c-g":
+                            $("#convert-result").html(cupToGram);
+                            break;
+                    }
+                });
+                break;
+            case "150":
+                $("#convert-method").on("change", function () {
+                    switch ($("#convert-method").val()) {
+                        case "g-c":
+                            $("#convert-result").html(gramToCup1 + "1 &frac12;" + gramToCup2);
+                            break;
+                        case "c-g":
+                            $("#convert-result").html(cupToGram);
+                            break;
+                    }
+                });
+                break;
+            case "200":
+                $("#convert-method").on("change", function () {
+                    switch ($("#convert-method").val()) {
+                        case "g-c":
+                            $("#convert-result").html(gramToCup1 + "2" + gramToCup2);
+                            break;
+                        case "c-g":
+                            $("#convert-result").html(cupToGram);
+                            break;
+                    }
+                });
+                break;
+            case "225":
+                $("#convert-method").on("change", function () {
+                    switch ($("#convert-method").val()) {
+                        case "g-c":
+                            $("#convert-result").html(gramToCup1 + "2 &frac14;" + gramToCup2);
+                            break;
+                        case "c-g":
+                            $("#convert-result").html(cupToGram);
+                            break;
+                    }
+                });
+                break;
+            case "325":
+                $("#convert-method").on("change", function () {
+                    switch ($("#convert-method").val()) {
+                        case "g-c":
+                            $("#convert-result").html(gramToCup1 + "3 &frac14;" + gramToCup2);
+                            break;
+                        case "c-g":
+                            $("#convert-result").html(cupToGram);
+                            break;
+                    }
+                });
+                break;
+            case "340":
+                $("#convert-method").on("change", function () {
+                    switch ($("#convert-method").val()) {
+                        case "g-c":
+                            $("#convert-result").html(gramToCup1 + "3 &frac13;" + gramToCup2);
+                            break;
+                        case "c-g":
+                            $("#convert-result").html(cupToGram);
+                            break;
+                    }
+                });
+                break;
+            default:
+                "Please Select an Ingredient";
         }
     });
 

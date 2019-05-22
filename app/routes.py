@@ -37,6 +37,17 @@ def total_recipes():
 
 #---------- APP ROUTES ----------#
 
+#----- 404 -----#
+@app.errorhandler(404)
+def client_error(error):
+        return render_template("404.html"), 404
+
+#----- 500 -----#
+@app.errorhandler(500)
+def server_error(error):
+        return render_template("500.html"), 500
+
+
 #----- HOME -----#
 @app.route("/")
 def home():
