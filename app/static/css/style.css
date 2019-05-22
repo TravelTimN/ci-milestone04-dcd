@@ -110,6 +110,14 @@ h1, h2, h3, h4, h5, h6 {
     border-top: 5px solid rgba(255, 255, 255, 0.5);
 }
 
+table {
+    font-size: 1.25rem;
+}
+
+td:hover {
+    background-color: #ce93d8;
+}
+
 .upper {
     text-transform: uppercase;
 }
@@ -235,13 +243,18 @@ footer {
 
 
 /*----- Custom Flash Toasts -----*/
-.modal {
-    margin-top: 100px;
+.modal:not(.bottom-sheet) {
     border-radius: 8px;
+    max-height: 85%;
+    max-width: 85%;
 }
 
 .modal.bottom-sheet {
     max-height: 65%;
+}
+
+#modal-convert-weight {
+    min-height: 70%;
 }
 
 #flashToast {
@@ -633,6 +646,17 @@ input[type=checkbox]:checked:not(:disabled).tabbed:focus~.lever::before {
     background-color: rgba(171, 71, 188, 0.15);
 }
 
+/* radio buttons */
+[type="radio"]:checked+span:after,
+[type="radio"].with-gap:checked+span:before,
+[type="radio"].with-gap:checked+span:after {
+    border: 2px solid #9c27b0;
+}
+
+[type="radio"]:checked+span:after,
+[type="radio"].with-gap:checked+span:after {
+    background-color: #9c27b0;
+}
 
 
 /*-------------------- @media queries --------------------*/

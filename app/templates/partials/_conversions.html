@@ -1,0 +1,276 @@
+<div class="fixed-action-btn">
+  <a class="btn-floating btn-large black pulse tooltipped" data-position="left" data-tooltip="Conversions">
+    <i class="fas fa-cog large material-icons"></i>
+  </a>
+  <ul>
+    <!-- weight -->
+    <li class="text-shadow-2 tooltipped" data-position="left" data-tooltip="Weight">
+      <a class="btn-floating btn-large green modal-trigger" href="#modal-convert-weight">
+        <i class="fas fa-balance-scale material-icons"></i>
+      </a>
+    </li>
+    <!-- volume -->
+    <li class="text-shadow-2 tooltipped" data-position="left" data-tooltip="Volume">
+      <a class="btn-floating btn-large blue modal-trigger" href="#modal-convert-volume">
+        <i class="fas fa-utensil-spoon material-icons"></i>
+      </a>
+    </li>
+    <!-- temperature -->
+    <li class="text-shadow-2 tooltipped" data-position="left" data-tooltip="Temperature">
+      <a class="btn-floating btn-large red modal-trigger" href="#modal-convert-temp">
+        <i class="fas fa-thermometer-half material-icons"></i>
+      </a>
+    </li>
+  </ul>
+</div>
+
+
+
+<!-- MODALS -->
+
+<!-- weight modal -->
+<div id="modal-convert-weight" class="modal">
+  <div class="modal-content center-align">
+    <h4 class="green-text bold upper text-shadow-1">
+      <i class="fas fa-balance-scale material-icons"></i> Weight
+    </h4>
+    <p class="grey-text bold center-align">* all conversions are rounded approximations</p>
+
+    <div class="row">
+
+      <div class="input-field col s12 m6">
+        <select id="convert-ingredient" name="convert-ingredient">
+          <option value="" disabled selected>select ingredient</option>
+          <option value="100">blueberries</option>
+          <option value="225">butter (almond)</option>
+          <option value="225">butter (nut)</option>
+          <option value="225">butter (peanut)</option>
+          <option value="225">butter / margarine</option>
+          <option value="225">buttermilk</option>
+          <option value="150">chocolate (chips)</option>
+          <option value="100">chocolate (chopped)</option>
+          <option value="100">cocoa powder</option>
+          <option value="100">coconut (flaked)</option>
+          <option value="100">corn starch / flour</option>
+          <option value="150">cornmeal</option>
+          <option value="120">cream cheese</option>
+          <option value="225">dates (pitted)</option>
+          <option value="140">flour</option>
+          <option value="340">honey</option>
+          <option value="325">jam / jelly</option>
+          <option value="200">lentils (dry)</option>
+          <option value="120">mascarpone</option>
+          <option value="225">milk</option>
+          <option value="225">mincemeat</option>
+          <option value="325">molasses</option>
+          <option value="120">nuts (chopped)</option>
+          <option value="85">nuts (flaked)</option>
+          <option value="100">nuts (ground)</option>
+          <option value="150">nuts (whole)</option>
+          <option value="140">oats</option>
+          <option value="100">parmesan cheese</option>
+          <option value="120">pasta (dry)</option>
+          <option value="150">raisins / sultanas</option>
+          <option value="120">raspberries</option>
+          <option value="200">rice (uncooked)</option>
+          <option value="200">seasoning (dry)</option>
+          <option value="200">strawberries</option>
+          <option value="200">sugar (brown)</option>
+          <option value="225">sugar (caster)</option>
+          <option value="100">sugar (granulated)</option>
+          <option value="200">sugar (muscovado)</option>
+          <option value="100">sugar (powdered)</option>
+          <option value="340">syrup (corn)</option>
+          <option value="340">syrup (golden)</option>
+          <option value="340">syrup (maple)</option>
+          <option value="325">treacle</option>
+        </select>
+        <label for="convert-ingredient">Ingredient</label>
+      </div>
+
+      <div class="input-field col s12 m6">
+        <select id="convert-method" name="convert-method" disabled>
+          <option value="" disabled selected>conversion direction</option>
+          <option value="c-g">cups to grams</option>
+          <option value="g-c">grams to cups</option>
+        </select>
+        <label for="convert-method">Direction</label>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col s12">
+        <span id="convert-result"></span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- volume modal -->
+<div id="modal-convert-volume" class="modal">
+  <div class="modal-content center-align">
+    <h4 class="blue-text bold upper text-shadow-1">
+      <i class="fas fa-utensil-spoon material-icons"></i> Volume
+    </h4>
+    <p class="grey-text bold center-align">* all conversions are rounded approximations</p>
+    <table class="striped centered responsive-table">
+      <thead class="blue lighten-4">
+        <tr>
+          <th>C</th>
+          <th>Tbsp</th>
+          <th>tsp</th>
+          <th>oz</th>
+          <th>pt</th>
+          <th>qt</th>
+          <th>ml</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>&frac14;</td>
+          <td>4</td>
+          <td>12</td>
+          <td>2</td>
+          <td>&frac18;</td>
+          <td>1/16</td>
+          <td>59</td>
+        </tr>
+        <tr>
+          <td>&frac13;</td>
+          <td>5 &frac13;</td>
+          <td>16</td>
+          <td>2 &frac23;</td>
+          <td>&frac16;</td>
+          <td>1/12</td>
+          <td>78</td>
+        </tr>
+        <tr>
+          <td>&frac12;</td>
+          <td>8</td>
+          <td>24</td>
+          <td>4</td>
+          <td>&frac14;</td>
+          <td>&frac18;</td>
+          <td>118</td>
+        </tr>
+        <tr>
+          <td>&frac23;</td>
+          <td>10 &frac23;</td>
+          <td>32</td>
+          <td>5 &frac13;</td>
+          <td>&frac13;</td>
+          <td>&frac16;</td>
+          <td>156</td>
+        </tr>
+        <tr>
+          <td>&frac34;</td>
+          <td>12</td>
+          <td>36</td>
+          <td>6</td>
+          <td>&frac38;</td>
+          <td>&frac15;</td>
+          <td>177</td>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td>16</td>
+          <td>48</td>
+          <td>8</td>
+          <td>&frac12;</td>
+          <td>&frac14;</td>
+          <td>236</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- temperature modal -->
+<div id="modal-convert-temp" class="modal">
+  <div class="modal-content center-align">
+    <h4 class="red-text bold upper text-shadow-1">
+      <i class="fas fa-thermometer-half material-icons"></i> Temperature
+    </h4>
+    <p class="grey-text bold center-align">* all conversions are rounded approximations</p>
+    <table class="striped centered responsive-table">
+      <thead class="red lighten-4">
+        <tr>
+          <th>&deg;F</th>
+          <th>&deg;C</th>
+          <th>GAS</th>
+          <th>FAN</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr>
+          <td>250 &deg;F</td>
+          <td>120 &deg;C</td>
+          <td>&frac12;</td>
+          <td>110</td>
+        </tr>
+        <tr>
+          <td>275 &deg;F</td>
+          <td>135 &deg;C</td>
+          <td>1</td>
+          <td>120</td>
+        </tr>
+        <tr>
+          <td>300 &deg;F</td>
+          <td>150 &deg;C</td>
+          <td>2</td>
+          <td>130</td>
+        </tr>
+        <tr>
+          <td>325 &deg;F</td>
+          <td>160 &deg;C</td>
+          <td>3</td>
+          <td>150</td>
+        </tr>
+        <tr>
+          <td>350 &deg;F</td>
+          <td>175 &deg;C</td>
+          <td>4</td>
+          <td>160</td>
+        </tr>
+        <tr>
+          <td>375 &deg;F</td>
+          <td>190 &deg;C</td>
+          <td>5</td>
+          <td>170</td>
+        </tr>
+        <tr>
+          <td>400 &deg;F</td>
+          <td>205 &deg;C</td>
+          <td>6</td>
+          <td>180</td>
+        </tr>
+        <tr>
+          <td>425 &deg;F</td>
+          <td>220 &deg;C</td>
+          <td>7</td>
+          <td>200</td>
+        </tr>
+        <tr>
+          <td>450 &deg;F</td>
+          <td>230 &deg;C</td>
+          <td>8</td>
+          <td>210</td>
+        </tr>
+        <tr>
+          <td>475 &deg;F</td>
+          <td>245 &deg;C</td>
+          <td>9</td>
+          <td>220</td>
+        </tr>
+        <tr>
+          <td>500 &deg;F</td>
+          <td>260 &deg;C</td>
+          <td>10</td>
+          <td>230</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
