@@ -121,14 +121,16 @@
             {% if session.user %}
             <p class="print-no">
                 {% if recipe._id in user_favs %}
-                <a class="btn btn-large red lighten-5 purple-text bold upper waves-effect waves-purple" id="love-it-yes"
-                    href="{{ url_for('delete_favorite', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}">
+                <a class="btn btn-large red lighten-5 purple-text bold upper waves-effect waves-purple tooltipped" id="love-it-yes"
+                    href="{{ url_for('delete_favorite', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}"
+                    data-position="bottom" data-tooltip="Remove from Favorites?">
                     You love it!
                     <i class="fas fa-heart material-icons pink-text text-lighten-2 text-shadow-1" aria-hidden="true"></i>
                 </a>
                 {% else %}
-                <a class="btn btn-large red lighten-5 purple-text bold upper waves-effect waves-purple" id="love-it-no"
-                    href="{{ url_for('add_favorite', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}">
+                <a class="btn btn-large red lighten-5 purple-text bold upper waves-effect waves-purple tooltipped" id="love-it-no"
+                    href="{{ url_for('add_favorite', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}"
+                    data-position="bottom" data-tooltip="Save to Favorites?">
                     Love it?
                     <i class="far fa-heart material-icons pink-text text-lighten-2 text-shadow-1" aria-hidden="true"></i>
                 </a>
@@ -247,5 +249,8 @@
         </div>
     </div>
 </div>
+
+<!-- Conversion Widget -->
+{% include "partials/_conversions.html" %}
 
 {% endblock %}
