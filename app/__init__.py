@@ -7,18 +7,25 @@ app = Flask(__name__)
 
 # whitelist sources on app for Talisman
 csp = {
-    "img-src": "*",
-    "default-src": [
-        '\'self\'',
-        "*.cloudflare.com",
-        "*.fontawesome.com",
-        "*.googleapis.com",
-        "*.gstatic.com"
+    'style-src': [
+        '\'unsafe-inline\' \'self\'',
+        '*.cloudflare.com',
+        '*.fontawesome.com',
+        '*.googleapis.com',
+        '*.gstatic.com'
     ],
-    "script-src": [
-        '\'self\'',
-        "*.jquery.com",
-        "*.cloudflare.com"
+    'img-src': '*',
+    'default-src': [
+        '\'unsafe-inline\' \'self\'',
+        '*.cloudflare.com',
+        '*.fontawesome.com',
+        '*.googleapis.com',
+        '*.gstatic.com'
+    ],
+    'script-src': [
+        '\'unsafe-inline\' \'self\'',
+        '*.jquery.com',
+        '*.cloudflare.com'
     ]
 }
 # force HTTPS security header using Flask-Talisman
