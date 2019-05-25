@@ -24,6 +24,12 @@
                     <i class="fas fa-heart material-icons left" aria-hidden="true"></i>
                     My Favorites
                 </a>
+                <!-- Change Password (modal trigger) -->
+                <a class="waves-effect waves-light btn btn-large bold green text-shadow-2 modal-trigger"
+                    href="#modal-change-password">
+                    <i class="fas fa-user-lock material-icons left" aria-hidden="true"></i>
+                    Change Password
+                </a>
             </p>
         </div>
     </div>
@@ -109,6 +115,47 @@
             </li>
             {% endfor %}
         </ul>
+    </div>
+</div>
+
+
+
+<!-- change password modal -->
+<div id="modal-change-password" class="modal bottom-sheet green lighten-5">
+    <div class="modal-content">
+        <h4 class="bold green-text text-shadow-1 font-rye center-align">Change Password</h4>
+        <form method="POST" action="{{ url_for('change_password', username=username|lower) }}">
+            <div class="row">
+                <!-- current password -->
+                <div class="input-field col s12 m8 offset-m2 l6">
+                    <i class="fas fa-lock green-text prefix" aria-hidden="true"></i>
+                    <input id="current_password" name="current_password" type="password" class="form-control validate"
+                        autocomplete="off" minlength="5" maxlength="15" required>
+                    <label for="current_password">Current Password
+                        <i class="fas fa-question-circle tooltipped" data-position="right"
+                            data-tooltip="5-15 characters" aria-hidden="true"></i>
+                    </label>
+                </div>
+                <!-- new password -->
+                <div class="input-field col s12 m8 offset-m2 l6">
+                    <i class="fas fa-key green-text prefix" aria-hidden="true"></i>
+                    <input id="new_password" name="new_password" type="password" class="form-control validate"
+                        autocomplete="off" minlength="5" maxlength="15" required>
+                    <label for="new_password">New Password
+                        <i class="fas fa-question-circle tooltipped" data-position="right"
+                            data-tooltip="5-15 characters" aria-hidden="true"></i>
+                    </label>
+                </div>
+            </div>
+            <!-- change password button -->
+            <div class="row">
+                <button type="submit"
+                    class="col s12 m8 offset-m2 l4 offset-l4 btn btn-large waves-effect waves-yellow green bold upper text-shadow-2">
+                    Change
+                    <i class="fas fa-user-lock material-icons" aria-hidden="true"></i>
+                </button>
+            </div>
+        </form>
     </div>
 </div>
 

@@ -138,10 +138,6 @@ def login():
                         # ensure hashed password matches user input
                         if check_password_hash(existing_user["user_password"], request.form.get("password")):
                                 session["user"] = request.form.get("username").lower()
-                                #if session["user"] == "admin":
-                                        #return redirect(url_for("admin"))
-                                #else:
-                                        #return redirect(url_for("profile", user=existing_user["username"]))
                                 return redirect(url_for("profile", username=session["user"]))
                         else:
                                 # invalid password match
@@ -156,7 +152,7 @@ def login():
 
 
 #----- PROFILE -----#
-@app.route("/<username>")
+@app.route("/<username>", methods=["GET", "POST"])
 def profile(username):
         # get proper username
         username = users_collection.find_one({"username_lower": session["user"].lower()})["username"]
@@ -177,6 +173,35 @@ def profile(username):
                                 user_recipes=user_recipes,
                                 user_favs=user_favs,
                                 user_avatar=user_avatar)
+
+
+#----- CHANGE PASSWORD -----#
+@app.route("/<username>/edit", methods=["GET", "POST"])
+def change_password(username):
+        # find all recipes belonging to user
+        user = users_collection.find_one({"username_lower": session["user"].lower()})["_id"]
+        user_recipes = recipes_collection.find({"author": user}).sort([("recipe_name", 1)])
+
+        # find all recipes that the user loves
+        user_favs_list = users_collection.find_one({"username_lower": session["user"].lower()})["user_favs"]
+        user_favs = recipes_collection.find({"_id": {"$in": user_favs_list}}).sort([("recipe_name", 1)])
+
+        # get user avatar
+        user_avatar = users_collection.find_one({"username_lower": session["user"].lower()})["user_avatar"]
+
+        # check if stored password matches current password in form
+        if check_password_hash(users_collection.find_one({"username_lower": session["user"].lower()})["user_password"], request.form.get("current_password")):
+                flash(Markup(f"<i class='far fa-check-circle green-text material-icons small' aria-hidden='true'></i> Your password has been updated successfully!"))
+                users_collection.update_one({"username_lower": session["user"].lower()}, {"$set": {"user_password": generate_password_hash(request.form.get("new_password"))}})
+        
+        else:
+                flash(Markup(f"<i class='fas fa-exclamation-circle red-text material-icons small' aria-hidden='true'></i> Whoops! Looks like your <span class='pink-text text-lighten-2'>password</span> is incorrect. Please try again."))
+
+        return render_template("profile.html",
+                        username=username,
+                        user_recipes=user_recipes,
+                        user_favs=user_favs,
+                        user_avatar=user_avatar)
 
 
 #----- LOGOUT -----#
