@@ -24,11 +24,18 @@
                     <i class="fas fa-heart material-icons left" aria-hidden="true"></i>
                     My Favorites
                 </a>
+                <br>
                 <!-- Change Password (modal trigger) -->
                 <a class="waves-effect waves-light btn btn-large bold green text-shadow-2 modal-trigger"
                     href="#modal-change-password">
                     <i class="fas fa-user-lock material-icons left" aria-hidden="true"></i>
                     Change Password
+                </a>
+                <!-- Delete Account (modal trigger) -->
+                <a class="waves-effect waves-light btn btn-large bold red text-shadow-2 modal-trigger"
+                    href="#modal-delete-account">
+                    <i class="fas fa-user-alt-slash material-icons left" aria-hidden="true"></i>
+                    Delete Account
                 </a>
             </p>
         </div>
@@ -122,7 +129,7 @@
 
 <!-- change password modal -->
 <div id="modal-change-password" class="modal bottom-sheet green lighten-5">
-    <div class="modal-content">
+    <div class="modal-content collection white card">
         <h4 class="bold green-text text-shadow-1 font-rye center-align">Change Password</h4>
         <form method="POST" action="{{ url_for('change_password', username=username|lower) }}">
             <div class="row">
@@ -153,6 +160,38 @@
                     class="col s12 m8 offset-m2 l4 offset-l4 btn btn-large waves-effect waves-yellow green bold upper text-shadow-2">
                     Change
                     <i class="fas fa-user-lock material-icons" aria-hidden="true"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+<!-- delete account modal -->
+<div id="modal-delete-account" class="modal bottom-sheet red lighten-5">
+    <div class="modal-content collection white card center-align">
+        <h4 class="bold red-text text-shadow-1 font-rye">Delete Account</h4>
+        <h6 class="bold red-text">By deleting your account, all of your recipes will also be deleted permanently!</h6>
+        <form method="POST" action="{{ url_for('delete_account', username=username|lower) }}">
+            <div class="row">
+                <!-- verify password -->
+                <div class="input-field col s12 m10 offset-m1 l6 offset-l3">
+                    <i class="fas fa-lock red-text prefix" aria-hidden="true"></i>
+                    <input id="verify_password" name="verify_password" type="password" class="form-control validate"
+                        autocomplete="off" autofocus minlength="5" maxlength="15" required>
+                    <label for="verify_password">Verify Password
+                        <i class="fas fa-question-circle tooltipped" data-position="right"
+                            data-tooltip="5-15 characters" aria-hidden="true"></i>
+                    </label>
+                </div>
+            </div>
+            <!-- delete account button -->
+            <div class="row">
+                <button type="submit"
+                    class="col s12 m8 offset-m2 l4 offset-l4 btn btn-large waves-effect waves-purple red bold upper text-shadow-2">
+                    Delete
+                    <i class="fas fa-user-alt-slash material-icons" aria-hidden="true"></i>
                 </button>
             </div>
         </form>
