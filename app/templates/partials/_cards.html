@@ -8,7 +8,7 @@
             {% else %}
             <img src="{{ url_for('static', filename='img/desserts/'+recipe.dessert_type|replace(' + ', '-')|replace(' ', '-')|lower+'.png') }}" class="activator" alt="Dessert" lazyload="on">
             {% endif %}
-            <a href="{{ url_for('view_dessert', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}">
+            <a href="{{ url_for('recipes.view_dessert', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}">
                 <span class="card-title center-align purple-text text-darken-4 text-shadow-1 font-emilys-candy" title="{{ recipe.recipe_name }}">
                     {{ recipe.recipe_name }}
                 </span>
@@ -35,7 +35,7 @@
         <div class="card-reveal">
             <h5 class="card-title">
                 <i class="far fa-times-circle material-icons text-shadow-1 right" aria-hidden="true"></i>
-                <a href="{{ url_for('view_dessert', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}">
+                <a href="{{ url_for('recipes.view_dessert', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}">
                     <span class="purple-text text-shadow-1 bold center-align font-emilys-candy">{{ recipe.recipe_name }}</span>
                 </a>
             </h5>
@@ -49,7 +49,7 @@
             <div class="divider pink"></div>
             <br>
             <i class="fas fa-mouse-pointer materialize-icons" title="{{ recipe.recipe_name }}" aria-hidden="true"></i> :
-            <a href="{{ url_for('view_dessert', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}">
+            <a href="{{ url_for('recipes.view_dessert', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}">
                 <span class="blue-text bold" title="{{ recipe.recipe_name }}">View Recipe</span>
             </a><br>
             <i class="fas fa-utensils materialize-icons" title="{{ recipe.dessert_type }}" aria-hidden="true"></i> :

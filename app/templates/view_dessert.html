@@ -41,7 +41,7 @@
                 {% if session.user|lower == author|lower or session.user|lower == "admin"|lower %}
                 <!-- Update Button -->
                     <a class="waves-effect waves-yellow btn bold upper green text-shadow-2"
-                        href="{{ url_for('update_dessert', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}">
+                        href="{{ url_for('recipes.update_dessert', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}">
                         <span class="hide-on-small-and-down">Edit</span>
                         <i class="fas fa-pencil-alt material-icons" aria-hidden="true"></i>
                     </a>
@@ -60,7 +60,7 @@
                         </div>
                         <div class="modal-footer center-align">
                             <a class="waves-effect waves-purple red btn text-shadow-2 upper"
-                                href="{{ url_for('delete_dessert', recipe_id=recipe._id) }}">
+                                href="{{ url_for('recipes.delete_dessert', recipe_id=recipe._id) }}">
                                 <i class="far fa-trash-alt material-icons right" aria-hidden="true"></i>Yes
                             </a>
                             <a class="modal-close waves-effect waves-yellow green btn text-shadow-2 upper">
@@ -122,14 +122,14 @@
             <p class="print-no">
                 {% if recipe._id in user_favs %}
                 <a class="btn btn-large red lighten-5 purple-text bold upper waves-effect waves-purple tooltipped" id="love-it-yes"
-                    href="{{ url_for('delete_favorite', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}"
+                    href="{{ url_for('recipes.delete_favorite', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}"
                     data-position="bottom" data-tooltip="Remove from Favorites?">
                     You love it!
                     <i class="fas fa-heart material-icons pink-text text-lighten-2 text-shadow-1" aria-hidden="true"></i>
                 </a>
                 {% else %}
                 <a class="btn btn-large red lighten-5 purple-text bold upper waves-effect waves-purple tooltipped" id="love-it-no"
-                    href="{{ url_for('add_favorite', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}"
+                    href="{{ url_for('recipes.add_favorite', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}"
                     data-position="bottom" data-tooltip="Save to Favorites?">
                     Love it?
                     <i class="far fa-heart material-icons pink-text text-lighten-2 text-shadow-1" aria-hidden="true"></i>
@@ -211,7 +211,7 @@
                 <div class="col s12 m6 l5 offset-l1">
                     <div class="card z-depth-2 hoverable recommendations">
                         <div class="card-image waves-effect waves-block waves-red center-align">
-                            <a href="{{ url_for('view_dessert', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}">
+                            <a href="{{ url_for('recipes.view_dessert', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}">
                             <h5 class="card-title text-shadow-1 upper font-cabin-sketch pink-text" title="{{ recipe.recipe_name }}">
                                 {{ recipe.recipe_name }}
                             </h5>
@@ -231,7 +231,7 @@
                 <div class="col s12 m6 l5">
                     <div class="card z-depth-2 hoverable recommendations">
                         <div class="card-image waves-effect waves-block waves-red center-align">
-                            <a href="{{ url_for('view_dessert', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}">
+                            <a href="{{ url_for('recipes.view_dessert', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}">
                             <h6 class="card-title text-shadow-1 upper font-cabin-sketch pink-text" title="{{ recipe.recipe_name }}">
                                 {{ recipe.recipe_name }}
                             </h6>

@@ -1,8 +1,9 @@
 import os
-from app import app
+from app import create_app
 
-# execute app__init__.py (development mode: debug=True)
+app = create_app()
+
+# execute app__init__.py
 if __name__ == "__main__":
-        app.run(host=os.environ.get("IP"),
-        port=os.environ.get("PORT"),
-        debug=True)
+        app.run(host=os.getenv("IP"),
+        port=os.getenv("PORT"))
