@@ -138,10 +138,6 @@ def login():
                         # ensure hashed password matches user input
                         if check_password_hash(existing_user["user_password"], request.form.get("password")):
                                 session["user"] = request.form.get("username").lower()
-                                #if session["user"] == "admin":
-                                        #return redirect(url_for("admin"))
-                                #else:
-                                        #return redirect(url_for("profile", user=existing_user["username"]))
                                 return redirect(url_for("profile", username=session["user"]))
                         else:
                                 # invalid password match
@@ -156,7 +152,7 @@ def login():
 
 
 #----- PROFILE -----#
-@app.route("/<username>")
+@app.route("/<username>", methods=["GET", "POST"])
 def profile(username):
         # get proper username
         username = users_collection.find_one({"username_lower": session["user"].lower()})["username"]
@@ -177,6 +173,53 @@ def profile(username):
                                 user_recipes=user_recipes,
                                 user_favs=user_favs,
                                 user_avatar=user_avatar)
+
+
+#----- CHANGE PASSWORD -----#
+@app.route("/<username>/edit", methods=["GET", "POST"])
+def change_password(username):
+        user = users_collection.find_one({"username_lower": session["user"].lower()})
+
+        # check if stored password matches current password in form
+        if check_password_hash(user["user_password"], request.form.get("current_password")):
+                flash(Markup(f"<i class='far fa-check-circle green-text material-icons small' aria-hidden='true'></i> Your password has been updated successfully!"))
+                users_collection.update_one({"username_lower": session["user"].lower()}, {"$set": {"user_password": generate_password_hash(request.form.get("new_password"))}})
+        
+        else:
+                flash(Markup(f"<i class='fas fa-exclamation-circle red-text material-icons small' aria-hidden='true'></i> Whoops! Looks like your <span class='pink-text text-lighten-2'>password</span> is incorrect. Please try again."))
+
+        return redirect(url_for("profile", username=username))
+
+
+#----- DELETE ACCOUNT -----#
+@app.route("/<username>/delete", methods=["GET", "POST"])
+def delete_account(username):
+        user = users_collection.find_one({"username_lower": session["user"].lower()})
+
+        # check if stored password matches current password in form
+        if check_password_hash(user["user_password"], request.form.get("verify_password")):
+                # find all recipes belonging to user
+                user_recipes = [recipe for recipe in user.get("user_recipes")]
+                for recipe in user_recipes:
+                        # remove each recipe from collection
+                        recipes_collection.remove({"_id": recipe})
+                        # pull each recipe from other user favs
+                        users_collection.update_many({}, {"$pull": {"user_favs": recipe}})
+                # find all recipes that the user likes
+                user_favs = [recipe for recipe in user.get("user_favs")]
+                for recipe in user_favs:
+                        # decrease number of favorites on each recipe not belonging to user
+                        recipes_collection.update_one({"_id": recipe}, {"$inc": {"user_favs": -1}})
+
+                flash(Markup(f"<i class='fas fa-user-times red-text material-icons small' aria-hidden='true'></i> Your account and recipes have been successfully deleted."))
+                session.pop("user")
+                # remove the user from the collection entirely
+                users_collection.remove({"_id": user.get("_id")})
+                return redirect(url_for("home"))
+        
+        else:
+                flash(Markup(f"<i class='fas fa-exclamation-circle red-text material-icons small' aria-hidden='true'></i> Whoops! Looks like your <span class='pink-text text-lighten-2'>password</span> is incorrect. Please try again."))
+                return redirect(url_for("profile", username=username))
 
 
 #----- LOGOUT -----#

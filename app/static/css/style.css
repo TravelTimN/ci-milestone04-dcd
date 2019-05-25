@@ -286,6 +286,7 @@ footer {
 /*----- Login | Register -----*/
 .login-register {
     border-radius: 8px;
+    margin-bottom: 20px;
 }
 
 .login-form-container,
@@ -295,7 +296,7 @@ footer {
 
 
 /*----- Cards -----*/
-.card:not(#search_form):not(.recommendations) {
+.card:not(#search_form):not(.recommendations):not(.modal-content) {
     margin-bottom: 50px;
 }
 
