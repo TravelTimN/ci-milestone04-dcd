@@ -1,243 +1,34 @@
 #!/usr/bin/env python3
 import html
 import math
-import random
 import re
-from app import app
-from datetime import datetime
-from flask_pymongo import PyMongo
+from app import mongo
 from bson.objectid import ObjectId
+from datetime import datetime
+from flask import Blueprint, current_app, render_template, redirect, request, url_for, flash, session, Markup
 from slugify import slugify
-from flask import Flask, render_template, redirect, request, url_for, flash, session, Markup
-from werkzeug.security import check_password_hash, generate_password_hash
 
-mongo = PyMongo(app)
+recipes = Blueprint("recipes", __name__)
 
-#----- database collections ----#
+# database collection variables
 allergens_collection = mongo.db.allergens
 desserts_collection = mongo.db.desserts
 measurements_collection = mongo.db.measurements
 recipes_collection = mongo.db.recipes
 users_collection = mongo.db.users
 
-
-
-#---------- GLOBAL HELPERS ----------#
-
-#----- Total Recipes Count -----#
+#----- Global Helper -----#
 def get_total_recipes():
         return int(recipes_collection.count())
-
-@app.context_processor
+@recipes.context_processor
 def total_recipes():
         return dict(total_recipes=get_total_recipes)
-
-
-
-
-#---------- APP ROUTES ----------#
-
-#----- 404 -----#
-@app.errorhandler(404)
-def client_error(error):
-        return render_template("404.html"), 404
-
-#----- 500 -----#
-@app.errorhandler(500)
-def server_error(error):
-        return render_template("500.html"), 500
-
-
-#----- HOME -----#
-@app.route("/")
-def home():
-        carousel = recipes_collection.aggregate([{"$sample": {"size": 8}}])
-        
-        # get recipes for random recipe link
-        random_recipe = recipes_collection.aggregate([{"$sample": {"size": 1}}])
-
-        # get desserts for random dessert link
-        categories = []
-        for dessert in desserts_collection.find().sort([("desserts", 1)]):
-                dessert_name = dessert.get("dessert_type")
-                for item in dessert_name:
-                        categories.append(item)
-
-        return render_template("index.html",
-                                carousel=carousel,
-                                categories=categories,
-                                random_recipe=random_recipe)
-
-
-
-
-#---------- USER: REGISTER | LOGIN | PROFILE | LOGOUT ----------#
-
-#----- REGISTER -----#
-@app.route("/register", methods=["GET", "POST"])
-def register():
-        if request.method == "POST":
-                # check if username already taken
-                existing_user = users_collection.find_one({"username_lower": request.form.get("new_username").lower()})
-                if existing_user:
-                        flash(Markup(f"<i class='fas fa-exclamation-circle red-text material-icons small' aria-hidden='true'></i> <span class='pink-text text-lighten-2'>{request.form.get('new_username')}</span> is an excellent choice! (but it's already taken)"))
-                        return redirect(url_for("register"))
-                
-                # check if username is alphanumeric or contains 'test'
-                username_input = request.form.get("new_username").lower()
-                username_check = re.search(r"(?!\-)[\W]|t+e+s+t+", username_input, re.I)
-                if username_check:
-                        if " " in {username_check.group(0)}:
-                                flash(Markup(f"<i class='fas fa-exclamation-circle red-text material-icons small' aria-hidden='true'></i> Usernames containing <span class='pink-text text-lighten-2'>spaces</span> are not permitted."))
-                                return redirect(url_for("register"))
-                        else:
-                                flash(Markup(f"<i class='fas fa-exclamation-circle red-text material-icons small' aria-hidden='true'></i> Usernames containing <span class='pink-text text-lighten-2'>{username_check.group(0).upper()}</span> are not permitted."))
-                                return redirect(url_for("register"))
-                
-                # username should be 3-5 alphanumeric
-                if len(request.form.get("new_username")) < 3 or len(request.form.get("new_username")) > 15:
-                        flash(Markup(f"<i class='fas fa-exclamation-circle red-text material-icons small' aria-hidden='true'></i> Usernames should be <span class='pink-text text-lighten-2'>3-15 characters</span> long."))
-                        return redirect(url_for("register"))
-                
-                # password should be 5-15 characters
-                if len(request.form.get("new_password")) < 5 or len(request.form.get("new_password")) > 15:
-                        flash(Markup(f"<i class='fas fa-exclamation-circle red-text material-icons small' aria-hidden='true'></i> Passwords should be <span class='pink-text text-lighten-2'>5-15 characters</span> long."))
-                        return redirect(url_for("register"))
-                
-                # assign random avatar to user
-                avatars = ["birthday-cake", "cherry-cake", "cherry-flan", "flan", "ice-lolly-bear", "ice-lolly-panda",
-                        "lemon-pie", "macaroon-blue", "macaroon-green", "macaroon-pink", "mousse-pie", "neapolitan-torte",
-                        "raspberry-cheesecake", "raspberry-chocolate-cream-cake", "strawberry-cream-pie", "tiramisu-mousse"]
-                user_avatar = random.choice(avatars)
-                
-                # add successful user to database
-                register = {
-                        "username": request.form.get("new_username"),
-                        "username_lower": request.form.get("new_username").lower(),
-                        "user_password": generate_password_hash(request.form.get("new_password")),
-                        "user_avatar": user_avatar,
-                        "user_recipes": [],
-                        "user_favs": []
-                }
-                users_collection.insert_one(register)
-                # put the user in 'session'
-                session["user"] = request.form.get("new_username").lower()
-                return redirect(url_for("profile", username=session["user"]))
-
-        return render_template("log_reg.html")
-
-
-#----- LOGIN ----- #
-@app.route("/login", methods=["GET", "POST"])
-def login():
-        if request.method == "POST":
-                # check if username is in database
-                existing_user = users_collection.find_one({"username_lower": request.form.get("username").lower()})
-                
-                if existing_user:
-                        # ensure hashed password matches user input
-                        if check_password_hash(existing_user["user_password"], request.form.get("password")):
-                                session["user"] = request.form.get("username").lower()
-                                return redirect(url_for("profile", username=session["user"]))
-                        else:
-                                # invalid password match
-                                flash(Markup(f"<i class='fas fa-exclamation-circle red-text material-icons small' aria-hidden='true'></i> Whoops! Looks like the <span class='pink-text text-lighten-2'>username</span> or <span class='pink-text text-lighten-2'>password</span> is incorrect."))
-                                return redirect(url_for("login"))
-                else:
-                        # username doesn't exist
-                        flash(Markup(f"<i class='fas fa-exclamation-circle red-text material-icons small' aria-hidden='true'></i> Hmm... username <span class='pink-text text-lighten-2'>{request.form.get('username')}</span> doesn't seem to exist."))
-                        return redirect(url_for("login"))
-        
-        return render_template("log_reg.html")
-
-
-#----- PROFILE -----#
-@app.route("/<username>", methods=["GET", "POST"])
-def profile(username):
-        # get proper username
-        username = users_collection.find_one({"username_lower": session["user"].lower()})["username"]
-
-        # find all recipes belonging to user
-        user = users_collection.find_one({"username_lower": session["user"].lower()})["_id"]
-        user_recipes = recipes_collection.find({"author": user}).sort([("recipe_name", 1)])
-
-        # find all recipes that the user loves
-        user_favs_list = users_collection.find_one({"username_lower": session["user"].lower()})["user_favs"]
-        user_favs = recipes_collection.find({"_id": {"$in": user_favs_list}}).sort([("recipe_name", 1)])
-
-        # get user avatar
-        user_avatar = users_collection.find_one({"username_lower": session["user"].lower()})["user_avatar"]
-
-        return render_template("profile.html",
-                                username=username,
-                                user_recipes=user_recipes,
-                                user_favs=user_favs,
-                                user_avatar=user_avatar)
-
-
-#----- CHANGE PASSWORD -----#
-@app.route("/<username>/edit", methods=["GET", "POST"])
-def change_password(username):
-        user = users_collection.find_one({"username_lower": session["user"].lower()})
-
-        # check if stored password matches current password in form
-        if check_password_hash(user["user_password"], request.form.get("current_password")):
-                flash(Markup(f"<i class='far fa-check-circle green-text material-icons small' aria-hidden='true'></i> Your password has been updated successfully!"))
-                users_collection.update_one({"username_lower": session["user"].lower()}, {"$set": {"user_password": generate_password_hash(request.form.get("new_password"))}})
-        
-        else:
-                flash(Markup(f"<i class='fas fa-exclamation-circle red-text material-icons small' aria-hidden='true'></i> Whoops! Looks like your <span class='pink-text text-lighten-2'>password</span> is incorrect. Please try again."))
-
-        return redirect(url_for("profile", username=username))
-
-
-#----- DELETE ACCOUNT -----#
-@app.route("/<username>/delete", methods=["GET", "POST"])
-def delete_account(username):
-        user = users_collection.find_one({"username_lower": session["user"].lower()})
-
-        # check if stored password matches current password in form
-        if check_password_hash(user["user_password"], request.form.get("verify_password")):
-                # find all recipes belonging to user
-                user_recipes = [recipe for recipe in user.get("user_recipes")]
-                for recipe in user_recipes:
-                        # remove each recipe from collection
-                        recipes_collection.remove({"_id": recipe})
-                        # pull each recipe from other user favs
-                        users_collection.update_many({}, {"$pull": {"user_favs": recipe}})
-                # find all recipes that the user likes
-                user_favs = [recipe for recipe in user.get("user_favs")]
-                for recipe in user_favs:
-                        # decrease number of favorites on each recipe not belonging to user
-                        recipes_collection.update_one({"_id": recipe}, {"$inc": {"user_favs": -1}})
-
-                flash(Markup(f"<i class='fas fa-user-times red-text material-icons small' aria-hidden='true'></i> Your account and recipes have been successfully deleted."))
-                session.pop("user")
-                # remove the user from the collection entirely
-                users_collection.remove({"_id": user.get("_id")})
-                return redirect(url_for("home"))
-        
-        else:
-                flash(Markup(f"<i class='fas fa-exclamation-circle red-text material-icons small' aria-hidden='true'></i> Whoops! Looks like your <span class='pink-text text-lighten-2'>password</span> is incorrect. Please try again."))
-                return redirect(url_for("profile", username=username))
-
-
-#----- LOGOUT -----#
-@app.route("/logout")
-def logout():
-        # remove user from 'session' cookies
-        username = users_collection.find_one({"username_lower": session["user"].lower()})["username"]
-        flash(Markup(f"<i class='far fa-sad-tear yellow-text material-icons small' aria-hidden='true'></i> Missing you already, <span class='pink-text text-lighten-2 bold'>" + username + "</span>!"))
-        session.pop("user")
-        return redirect(url_for("home"))
-
-
 
 
 #---------- CRUD: CREATE | READ | UPDATE | DELETE ----------#
 
 # (Crud) ----- CREATE a new dessert -----#
-@app.route("/add")
+@recipes.route("/add")
 def add_dessert():
         # creates empty lists of collections for building select options
         allergen_list = []
@@ -271,7 +62,7 @@ def add_dessert():
 
 
 # (Crud) ----- CREATE a dessert to the database -----#
-@app.route("/add_dessert", methods=["POST"])
+@recipes.route("/add_dessert", methods=["POST"])
 def add_dessert_toDB():
         # input fields to be submitted to database
         today = datetime.now().strftime("%d %B, %Y")
@@ -323,13 +114,13 @@ def add_dessert_toDB():
                 # increase number of favorites on this recipe
                 recipes_collection.update_one({"_id": newID.inserted_id}, {"$inc": {"user_favs": 1}})
 
-        return redirect(url_for("view_dessert",
+        return redirect(url_for("recipes.view_dessert",
                                 recipe_id=newID.inserted_id,
                                 slugUrl=slugUrl))
 
 
 # (cRud) ----- READ all desserts -----#
-@app.route("/desserts")
+@recipes.route("/desserts")
 def view_desserts():
         # show author on cards
         authors = []
@@ -435,7 +226,7 @@ def view_desserts():
 
 
 # (cRud) ----- READ a single dessert -----#
-@app.route("/dessert/<recipe_id>/<slugUrl>")
+@recipes.route("/dessert/<recipe_id>/<slugUrl>")
 def view_dessert(recipe_id, slugUrl):
         recipe = recipes_collection.find_one({"_id": ObjectId(recipe_id)})
         author = users_collection.find_one({"_id": ObjectId(recipe.get("author"))})["username"]
@@ -505,7 +296,7 @@ def view_dessert(recipe_id, slugUrl):
 
 
 # (crUd) ----- UPDATE a recipe -----#
-@app.route("/update/<recipe_id>/<slugUrl>")
+@recipes.route("/update/<recipe_id>/<slugUrl>")
 def update_dessert(recipe_id, slugUrl):
         recipe = recipes_collection.find_one({"_id": ObjectId(recipe_id)})
         
@@ -563,7 +354,7 @@ def update_dessert(recipe_id, slugUrl):
 
 
 # (crUd) ----- UPDATE a recipe to the database -----#
-@app.route("/update_dessert/<recipe_id>", methods=["POST"])
+@recipes.route("/update_dessert/<recipe_id>", methods=["POST"])
 def update_dessert_toDB(recipe_id):
         recipe = recipes_collection.find_one({"_id": ObjectId(recipe_id)})
 
@@ -606,13 +397,13 @@ def update_dessert_toDB(recipe_id):
         })
         slugUrl = slugify(request.form.get("recipe_name"))
         flash(Markup(f"<i class='far fa-check-circle green-text material-icons small' aria-hidden='true'></i> Your recipe has been updated successfully!"))
-        return redirect(url_for("view_dessert",
+        return redirect(url_for("recipes.view_dessert",
                                 recipe_id=recipe_id,
                                 slugUrl=slugUrl))
 
 
 # (cruD) ----- DELETE a recipe from the database -----#
-@app.route("/delete/<recipe_id>")
+@recipes.route("/delete/<recipe_id>")
 def delete_dessert(recipe_id):
         recipes_collection.remove({"_id": ObjectId(recipe_id)})
 
@@ -624,7 +415,7 @@ def delete_dessert(recipe_id):
         users_collection.update_many({}, {"$pull": {"user_favs": ObjectId(recipe_id)}})
 
         flash(Markup(f"<i class='fas fa-trash-alt red-text material-icons small' aria-hidden='true'></i> Your recipe has been deleted."))
-        return redirect(url_for("view_desserts"))
+        return redirect(url_for("recipes.view_desserts"))
 
 
 
@@ -632,7 +423,7 @@ def delete_dessert(recipe_id):
 #---------- USER ACTIONS ----------#
 
 #----- Add Favorites ----- #
-@app.route("/add_favorite/<recipe_id>/<slugUrl>")
+@recipes.route("/add_favorite/<recipe_id>/<slugUrl>")
 def add_favorite(recipe_id, slugUrl):
         # get user id
         user = users_collection.find_one({"username_lower": session["user"].lower()})["_id"]
@@ -648,7 +439,7 @@ def add_favorite(recipe_id, slugUrl):
 
 
 #----- Delete Favorites ----- #
-@app.route("/delete_favorite/<recipe_id>/<slugUrl>")
+@recipes.route("/delete_favorite/<recipe_id>/<slugUrl>")
 def delete_favorite(recipe_id, slugUrl):
         # get user id
         user = users_collection.find_one({"username_lower": session["user"].lower()})["_id"]

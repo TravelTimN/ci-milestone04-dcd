@@ -1,7 +1,7 @@
 <!-- TOP NAV -->
 <nav class="nav-extended">
     <div class="nav-wrapper">
-        <a href="{{ url_for('home') }}" class="brand-logo font-rye">
+        <a href="{{ url_for('main.home') }}" class="brand-logo font-rye">
             <img src="{{ url_for('static', filename='img/favicon.png') }}" alt="2BN-Desserts Cookie Logo" lazyload="on">
             2BN-Desserts
         </a>
@@ -10,38 +10,38 @@
         </a>
         <ul id="nav-mobile" class="right hide-on-med-and-down text-shadow-2 bold upper">
             <li>
-                <a title="Home" href="{{ url_for('home') }}">
+                <a title="Home" href="{{ url_for('main.home') }}">
                     <i class="fas fa-home material-icons" aria-hidden="true"></i>
                 </a>
             </li>
             <li>
-                <a class="waves-effect waves-red btn purple" href="{{ url_for('view_desserts') }}">
+                <a class="waves-effect waves-red btn purple" href="{{ url_for('recipes.view_desserts') }}">
                     <i class="fas fa-ice-cream material-icons left white-text" aria-hidden="true"></i>
                     Desserts ({{ total_recipes() }})
                 </a>
             </li>
             {% if session.user %}
                 <li>
-                    <a class="waves-effect waves-green btn blue" href="{{ url_for('profile', username=session['user']) }}">
+                    <a class="waves-effect waves-green btn blue" href="{{ url_for('users.profile', username=session['user']) }}">
                         <i class="fas fa-user-circle material-icons left" aria-hidden="true"></i>
                         {{ session['user']|upper }}
                     </a>
                 </li>
                 <li>
-                    <a class="waves-effect waves-yellow btn green" href="{{ url_for('add_dessert') }}">
+                    <a class="waves-effect waves-yellow btn green" href="{{ url_for('recipes.add_dessert') }}">
                         <i class="fas fa-plus material-icons left" aria-hidden="true"></i>
                         Add
                     </a>
                 </li>
                 <li>
-                    <a class="waves-effect waves-purple btn pink lighten-2" href="{{ url_for('logout') }}">
+                    <a class="waves-effect waves-purple btn pink lighten-2" href="{{ url_for('users.logout') }}">
                         <i class="fas fa-sign-out-alt material-icons left white-text" aria-hidden="true"></i>
                         Log Out
                     </a>
                 </li>
             {% else %}
                 <li>
-                    <a class="waves-effect waves-purple btn pink lighten-2" href="{{ url_for('login') }}">
+                    <a class="waves-effect waves-purple btn pink lighten-2" href="{{ url_for('users.login') }}">
                         <i class="fas fa-sign-in-alt material-icons left" aria-hidden="true"></i>
                         Log In | Register
                     </a>
@@ -58,39 +58,39 @@
         <h4 class="center-align font-rye text-shadow-2 mark-purple">2BN-Desserts</h4>
     </li>
     <li>
-        <a class="waves-effect waves-light btn black text-shadow-2 upper bold hoverable" href="{{ url_for('home') }}">
+        <a class="waves-effect waves-light btn black text-shadow-2 upper bold hoverable" href="{{ url_for('main.home') }}">
             <i class="fas fa-home material-icons left white-text" aria-hidden="true"></i>
             Home
         </a>
     </li>
     <li>
-        <a class="waves-effect waves-red btn purple text-shadow-2 upper bold hoverable" href="{{ url_for('view_desserts') }}">
+        <a class="waves-effect waves-red btn purple text-shadow-2 upper bold hoverable" href="{{ url_for('recipes.view_desserts') }}">
             <i class="fas fa-search material-icons left white-text" aria-hidden="true"></i>
             Desserts ({{ total_recipes() }})
         </a>
     </li>
     {% if session.user %}
         <li>
-            <a class="waves-effect waves-green btn blue text-shadow-2 upper bold hoverable" href="{{ url_for('profile', username=session['user']) }}">
+            <a class="waves-effect waves-green btn blue text-shadow-2 upper bold hoverable" href="{{ url_for('users.profile', username=session['user']) }}">
                 <i class="fas fa-user-circle material-icons left white-text" aria-hidden="true"></i>
                 {{ session["user"] }}
             </a>
         </li>
         <li>
-            <a class="waves-effect waves-teal btn green text-shadow-2 upper bold hoverable" href="{{ url_for('add_dessert') }}">
+            <a class="waves-effect waves-teal btn green text-shadow-2 upper bold hoverable" href="{{ url_for('recipes.add_dessert') }}">
                 <i class="fas fa-plus material-icons left white-text" aria-hidden="true"></i>
                 Add Dessert
             </a>
         </li>
         <li>
-            <a class="waves-effect waves-purple btn pink lighten-2 text-shadow-2 upper bold hoverable" href="{{ url_for('logout') }}">
+            <a class="waves-effect waves-purple btn pink lighten-2 text-shadow-2 upper bold hoverable" href="{{ url_for('users.logout') }}">
                 <i class="fas fa-sign-out-alt material-icons left white-text" aria-hidden="true"></i>
                 Log Out
             </a>
         </li>
     {% else %}
         <li>
-            <a class="waves-effect waves-purple btn pink lighten-2 text-shadow-2 upper bold hoverable" href="{{ url_for('login') }}">
+            <a class="waves-effect waves-purple btn pink lighten-2 text-shadow-2 upper bold hoverable" href="{{ url_for('users.login') }}">
                 <i class="fas fa-sign-in-alt material-icons left white-text" aria-hidden="true"></i>
                 Log In | Register
             </a>

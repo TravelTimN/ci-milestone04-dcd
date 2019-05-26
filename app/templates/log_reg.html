@@ -17,7 +17,7 @@
 
     <!-- Log In tab -->
     <div id="login" class="col s12">
-        <form class="col s12" method="POST" action="{{ url_for('login', _anchor='login') }}">
+        <form class="col s12" method="POST" action="{{ url_for('users.login', _anchor='login') }}">
             <div class="login-form-container">
                 <h3 class="purple-text center-align bold text-shadow-1">Existing Users</h3>
 
@@ -63,7 +63,7 @@
 
     <!-- Register tab -->
     <div id="register" class="col s12">
-        <form class="col s12" method="POST" action="{{ url_for('register', _anchor='register') }}">
+        <form class="col s12" method="POST" action="{{ url_for('users.register', _anchor='register') }}">
             <div class="register-form-container">
                 <h3 class="pink-text text-lighten-2 center-align bold text-shadow-1">Create Account</h3>
 

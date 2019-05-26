@@ -6,7 +6,7 @@
     <div class="center-align">
         <div class="row">
             <div class="col s12">
-                <img src="{{ url_for('static', filename='img/errors/404.png') }}" alt="Page Not Found" class="error-img responsive-img">
+                <img src="{{ url_for('static', filename='img/errors/500.png') }}" alt="Page Not Found" class="error-img responsive-img">
             </div>
         </div>
         <div class="row">
@@ -16,7 +16,7 @@
                     Something went wrong.
                     <br>
                     Let's take you
-                    <a href="{{ url_for('home') }}" class="blue-text">back home
+                    <a href="{{ url_for('main.home') }}" class="blue-text">back home
                         <i class="far fa-arrow-alt-circle-left material-icons small" aria-hidden="true"></i>
                     </a>
                 </h2>
