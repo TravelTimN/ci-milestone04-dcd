@@ -116,11 +116,15 @@ def profile(username):
         # get user avatar
         user_avatar = users_collection.find_one({"username_lower": session["user"].lower()})["user_avatar"]
 
+        # get list of users for admin profile
+        admin_list = users_collection.find().sort([("username", 1)])
+
         return render_template("profile.html",
                                 username=username,
                                 user_recipes=user_recipes,
                                 user_favs=user_favs,
-                                user_avatar=user_avatar)
+                                user_avatar=user_avatar,
+                                admin_list=admin_list)
 
 
 #----- CHANGE PASSWORD -----#
@@ -168,6 +172,30 @@ def delete_account(username):
         else:
                 flash(Markup(f"<i class='fas fa-exclamation-circle red-text material-icons small' aria-hidden='true'></i> Whoops! Looks like your <span class='pink-text text-lighten-2'>password</span> is incorrect. Please try again."))
                 return redirect(url_for("users.profile", username=username))
+
+
+#----- ADMIN DELETE USERS -----#
+@users.route("/<username>/admin-delete", methods=["GET", "POST"])
+def admin_delete_user(username):
+        user = users_collection.find_one({"username_lower": username})
+
+        # find all recipes belonging to user
+        user_recipes = [recipe for recipe in user.get("user_recipes")]
+        for recipe in user_recipes:
+                # remove each recipe from collection
+                recipes_collection.remove({"_id": recipe})
+                # pull each recipe from other user favs
+                users_collection.update_many({}, {"$pull": {"user_favs": recipe}})
+        # find all recipes that the user likes
+        user_favs = [recipe for recipe in user.get("user_favs")]
+        for recipe in user_favs:
+                # decrease number of favorites on each recipe not belonging to user
+                recipes_collection.update_one({"_id": recipe}, {"$inc": {"user_favs": -1}})
+
+        flash(Markup(f"<i class='fas fa-user-times red-text material-icons small' aria-hidden='true'></i> User has been successfully deleted."))
+        # remove the user from the collection entirely
+        users_collection.remove({"_id": user.get("_id")})
+        return redirect(url_for("users.profile", username="admin"))
 
 
 #----- LOGOUT -----#
