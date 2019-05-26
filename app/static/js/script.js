@@ -108,8 +108,8 @@ $(document).ready(function () {
         Only enable 'Search' if user selects one of two items
     -------------------------------------------------------------
     */
-    search_keyword = $("#search_keyword").val();
-    search_dessert = $("#search_dessert").val();
+    var search_keyword = $("#search_keyword").val();
+    var search_dessert = $("#search_dessert").val();
     /* on page reload */
     if (search_keyword > "" || search_dessert > "") {
         $("#search_allergen, #sort").prop("disabled", false);
@@ -147,7 +147,7 @@ $(document).ready(function () {
     ----------------------------------------------------------------------
     */
     /* on page reload */
-    sort_value = $("#sort").val();
+    var sort_value = $("#sort").val();
     switch (sort_value) {
         case "author":
         case "recipe_name":
@@ -229,8 +229,9 @@ $(document).ready(function () {
     ------------------------
     */
     /* insert URL into <input> */
+    var recipeUrl = "";
     $("#share-btn").on("click", function () {
-        recipeUrl = $(location).attr("href");
+        var recipeUrl = $(location).attr("href");
         $("#share-url").val(recipeUrl);
     });
     /* copy value of <input> */
