@@ -32,11 +32,22 @@
                     Change Password
                 </a>
                 <!-- Delete Account (modal trigger) -->
+                <!-- not shown if 'admin' -->
+                {% if session.user|lower != "admin"|lower %}
                 <a class="waves-effect waves-light btn btn-large bold red text-shadow-2 modal-trigger"
                     href="#modal-delete-account">
                     <i class="fas fa-user-alt-slash material-icons left" aria-hidden="true"></i>
                     Delete Account
                 </a>
+                {% endif %}
+                <!-- Admin: view all users (modal trigger) -->
+                {% if session.user|lower == "admin"|lower %}
+                <a class="waves-effect waves-light btn btn-large bold black text-shadow-2 modal-trigger"
+                    href="#modal-admin">
+                    <i class="fas fa-users material-icons left" aria-hidden="true"></i>
+                    All Users
+                </a>
+                {% endif %}
             </p>
         </div>
     </div>
@@ -197,5 +208,34 @@
         </form>
     </div>
 </div>
+
+
+
+<!-- admin modal -->
+{% if session.user|lower == "admin"|lower %}
+<div id="modal-admin" class="modal bottom-sheet grey lighten-2">
+    <div class="modal-content">
+        <h4 class="bold black-text text-shadow-1 font-rye center-align">All Users</h4>
+        <ul class="collection">
+            {% for user in admin_list %}
+            <!-- exclude the admin account! -->
+            {% if user.username != "admin"|lower %}
+            <li class="collection-item avatar">
+                <span class="title font-special bold black-text">
+                    <span class="purple-text">{{ user.username }}</span> :
+                    <span class="red-text">{{ user.user_recipes|length }}</span> recipes
+                </span>
+                <!-- delete specific user and their recipes -->
+                <a href="{{ url_for('users.admin_delete_user', username=user.username) }}">
+                    <i class="fas fa-user-times material-icons black-text text-shadow-1 secondary-content tooltipped"
+                        data-position="left" data-tooltip="Delete User Account" aria-hidden="true"></i>
+                </a>
+            </li>
+            {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endif %}
 
 {% endblock content %}
