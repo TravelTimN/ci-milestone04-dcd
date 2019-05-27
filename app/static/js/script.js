@@ -228,7 +228,7 @@ $(document).ready(function () {
         Share the Recipe
     ------------------------
     */
-    /* insert URL into <input> */
+     /* insert URL into <input> */
     var recipeUrl = $(location).attr("href");
     $("#share-btn").on("click", function () {
         $("#share-url").val(recipeUrl);
@@ -433,5 +433,6 @@ $(document).ready(function () {
         Current year for 'Copyright' in <footer>
     ------------------------------------------------*/
     $("#year").html(new Date().getFullYear());
+
 
 });
