@@ -9,29 +9,14 @@ desserts_collection = mongo.db.desserts
 recipes_collection = mongo.db.recipes
 
 #----- Global Helper -----#
-def get_total_recipes():
-        return int(recipes_collection.count())
 @main.context_processor
-def total_recipes():
-        return dict(total_recipes=get_total_recipes)
+def desserts_total():
+        desserts_count = recipes_collection.count
+        return dict(desserts_count=desserts_count)
 
 
 #----- HOME -----#
 @main.route("/")
 def home():
-        carousel = recipes_collection.aggregate([{"$sample": {"size": 8}}])
-        
-        # get recipes for random recipe link
-        random_recipe = recipes_collection.aggregate([{"$sample": {"size": 1}}])
-
-        # get desserts for random dessert link
-        categories = []
-        for dessert in desserts_collection.find().sort([("desserts", 1)]):
-                dessert_name = dessert.get("dessert_type")
-                for item in dessert_name:
-                        categories.append(item)
-
-        return render_template("index.html",
-                                carousel=carousel,
-                                categories=categories,
-                                random_recipe=random_recipe)
+        carousel = [recipe for recipe in recipes_collection.aggregate([{"$sample": {"size": 8}}])]
+        return render_template("index.html", carousel=carousel)

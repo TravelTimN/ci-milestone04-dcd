@@ -229,9 +229,8 @@ $(document).ready(function () {
     ------------------------
     */
     /* insert URL into <input> */
-    var recipeUrl = "";
+    var recipeUrl = $(location).attr("href");
     $("#share-btn").on("click", function () {
-        var recipeUrl = $(location).attr("href");
         $("#share-url").val(recipeUrl);
     });
     /* copy value of <input> */

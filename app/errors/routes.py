@@ -8,11 +8,10 @@ errors = Blueprint("errors", __name__)
 recipes_collection = mongo.db.recipes
 
 #----- Global Helper -----#
-def get_total_recipes():
-        return int(recipes_collection.count())
 @errors.context_processor
-def total_recipes():
-        return dict(total_recipes=get_total_recipes)
+def desserts_total():
+        desserts_count = recipes_collection.count
+        return dict(desserts_count=desserts_count)
 
 
 #----- 404 -----#
@@ -24,3 +23,8 @@ def client_error(error):
 @errors.errorhandler(500)
 def server_error(error):
         return render_template("errors/500.html"), 500
+
+#----- Generic 'catch-all' ErrorHandler -----#
+@errors.route("/<path:path>")
+def path_error(path):
+        return render_template("errors/404.html"), 404
