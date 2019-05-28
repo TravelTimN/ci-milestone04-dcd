@@ -9,7 +9,9 @@ from flask_pymongo import PyMongo
 mongo = PyMongo()
 
 
-# create the entire instance of the app
+# --------------------------------------- #
+#    Create entire instance of the app    #
+# --------------------------------------- #
 def create_app(config_class=Config):
     # app initialization + configuration
     app = Flask(__name__)
