@@ -61,7 +61,7 @@
         <ul class="collection">
             {% for user_recipe in user_recipes %}
             <li class="collection-item avatar">
-                <a href="{{ url_for('recipes.view_dessert', recipe_id=user_recipe._id, slugUrl=user_recipe.recipe_slug) }}">
+                <a href="{{ url_for('recipes.desserts_recipe', recipe_id=user_recipe._id, slugUrl=user_recipe.recipe_slug) }}">
                     {% if user_recipe.img_src %}
                     <img src="{{ user_recipe.img_src }}" alt="Dessert" class="circle" lazyload="on">
                     {% else %}
@@ -82,9 +82,9 @@
                 <p class="pink-text text-lighten-2 bold">
                     You haven't shared anything yet. Click the icon on the right to add your first recipe.
                 </p>
-                <a href="{{ url_for('recipes.add_dessert') }}" title="Add a Recipe">
+                <a href="{{ url_for('recipes.desserts_new') }}" title="New Dessert">
                     <i class="fas fa-plus-circle material-icons blue-text text-shadow-1 secondary-content tooltipped"
-                        data-position="left" data-tooltip="Add Dessert" aria-hidden="true"></i>
+                        data-position="left" data-tooltip="New Dessert" aria-hidden="true"></i>
                 </a>
             </li>
             {% endfor %}
@@ -103,7 +103,7 @@
         <ul class="collection">
             {% for user_fav in user_favs %}
             <li class="collection-item avatar">
-                <a href="{{ url_for('recipes.view_dessert', recipe_id=user_fav._id, slugUrl=user_fav.recipe_slug) }}">
+                <a href="{{ url_for('recipes.desserts_recipe', recipe_id=user_fav._id, slugUrl=user_fav.recipe_slug) }}">
                     {% if user_fav.img_src %}
                     <img src="{{ user_fav.img_src }}" alt="Dessert" class="circle" lazyload="on">
                     {% else %}
@@ -113,7 +113,7 @@
                     <span class="title font-special bold purple-text">{{ user_fav.recipe_name }}</span>
                 </a>
                 <p class="truncate pink-text text-lighten-2">{{ user_fav.description }}</p>
-                <a href="{{ url_for('recipes.delete_favorite', recipe_id=user_fav._id, slugUrl=user_fav.recipe_slug) }}">
+                <a href="{{ url_for('recipes.desserts_delete_favorite', recipe_id=user_fav._id, slugUrl=user_fav.recipe_slug) }}">
                     <i class="fas fa-minus-circle material-icons red-text text-shadow-1 secondary-content tooltipped"
                         data-position="left" data-tooltip="Remove from Favorites" aria-hidden="true"></i>
                 </a>
@@ -126,7 +126,7 @@
                 <p class="pink-text text-lighten-2 bold">
                     Click the magnifying glass on the right to find something delicious!
                 </p>
-                <a href="{{ url_for('recipes.view_desserts') }}" title="View all Desserts">
+                <a href="{{ url_for('recipes.desserts') }}" title="View all Desserts">
                     <i class="fas fa-search-plus material-icons red-text text-shadow-1 secondary-content tooltipped"
                         data-position="left" data-tooltip="Search Desserts" aria-hidden="true"></i>
                 </a>
@@ -142,7 +142,7 @@
 <div id="modal-change-password" class="modal bottom-sheet green lighten-5">
     <div class="modal-content collection white card">
         <h4 class="bold green-text text-shadow-1 font-rye center-align">Change Password</h4>
-        <form method="POST" action="{{ url_for('users.change_password', username=username|lower) }}">
+        <form method="POST" action="{{ url_for('users.profile_change_password', username=username|lower) }}">
             <div class="row">
                 <!-- current password -->
                 <div class="input-field col s12 m8 offset-m2 l6">
@@ -184,7 +184,7 @@
     <div class="modal-content collection white card center-align">
         <h4 class="bold red-text text-shadow-1 font-rye">Delete Account</h4>
         <h6 class="bold red-text">By deleting your account, all of your recipes will also be deleted permanently!</h6>
-        <form method="POST" action="{{ url_for('users.delete_account', username=username|lower) }}">
+        <form method="POST" action="{{ url_for('users.profile_delete_account', username=username|lower) }}">
             <div class="row">
                 <!-- verify password -->
                 <div class="input-field col s12 m10 offset-m1 l6 offset-l3">

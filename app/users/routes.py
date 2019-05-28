@@ -12,11 +12,10 @@ recipes_collection = mongo.db.recipes
 users_collection = mongo.db.users
 
 #----- Global Helper -----#
-def get_total_recipes():
-        return int(recipes_collection.count())
 @users.context_processor
-def total_recipes():
-        return dict(total_recipes=get_total_recipes)
+def desserts_total():
+        desserts_count = recipes_collection.count
+        return dict(desserts_count=desserts_count)
 
 
 #---------- USER: REGISTER | LOGIN | PROFILE | LOGOUT ----------#
@@ -100,7 +99,7 @@ def login():
 
 
 #----- PROFILE -----#
-@users.route("/<username>", methods=["GET", "POST"])
+@users.route("/profile/<username>", methods=["GET", "POST"])
 def profile(username):
         # get proper username
         username = users_collection.find_one({"username_lower": session["user"].lower()})["username"]
@@ -128,8 +127,8 @@ def profile(username):
 
 
 #----- CHANGE PASSWORD -----#
-@users.route("/<username>/edit", methods=["GET", "POST"])
-def change_password(username):
+@users.route("/profile/<username>/edit", methods=["GET", "POST"])
+def profile_change_password(username):
         user = users_collection.find_one({"username_lower": session["user"].lower()})
 
         # check if stored password matches current password in form
@@ -144,8 +143,8 @@ def change_password(username):
 
 
 #----- DELETE ACCOUNT -----#
-@users.route("/<username>/delete", methods=["GET", "POST"])
-def delete_account(username):
+@users.route("/profile/<username>/delete", methods=["GET", "POST"])
+def profile_delete_account(username):
         user = users_collection.find_one({"username_lower": session["user"].lower()})
 
         # check if stored password matches current password in form
@@ -175,7 +174,7 @@ def delete_account(username):
 
 
 #----- ADMIN DELETE USERS -----#
-@users.route("/<username>/admin-delete", methods=["GET", "POST"])
+@users.route("/admin/<username>/delete", methods=["GET", "POST"])
 def admin_delete_user(username):
         user = users_collection.find_one({"username_lower": username})
 

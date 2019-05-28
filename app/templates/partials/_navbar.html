@@ -15,9 +15,9 @@
                 </a>
             </li>
             <li>
-                <a class="waves-effect waves-red btn purple" href="{{ url_for('recipes.view_desserts') }}">
+                <a class="waves-effect waves-red btn purple" href="{{ url_for('recipes.desserts') }}">
                     <i class="fas fa-ice-cream material-icons left white-text" aria-hidden="true"></i>
-                    Desserts ({{ total_recipes() }})
+                    Desserts ({{ desserts_count() }})
                 </a>
             </li>
             {% if session.user %}
@@ -28,9 +28,9 @@
                     </a>
                 </li>
                 <li>
-                    <a class="waves-effect waves-yellow btn green" href="{{ url_for('recipes.add_dessert') }}">
+                    <a class="waves-effect waves-yellow btn green" href="{{ url_for('recipes.desserts_new') }}">
                         <i class="fas fa-plus material-icons left" aria-hidden="true"></i>
-                        Add
+                        New Dessert
                     </a>
                 </li>
                 <li>
@@ -64,9 +64,9 @@
         </a>
     </li>
     <li>
-        <a class="waves-effect waves-red btn purple text-shadow-2 upper bold hoverable" href="{{ url_for('recipes.view_desserts') }}">
+        <a class="waves-effect waves-red btn purple text-shadow-2 upper bold hoverable" href="{{ url_for('recipes.desserts') }}">
             <i class="fas fa-search material-icons left white-text" aria-hidden="true"></i>
-            Desserts ({{ total_recipes() }})
+            Desserts ({{ desserts_count() }})
         </a>
     </li>
     {% if session.user %}
@@ -77,9 +77,9 @@
             </a>
         </li>
         <li>
-            <a class="waves-effect waves-teal btn green text-shadow-2 upper bold hoverable" href="{{ url_for('recipes.add_dessert') }}">
+            <a class="waves-effect waves-teal btn green text-shadow-2 upper bold hoverable" href="{{ url_for('recipes.desserts_new') }}">
                 <i class="fas fa-plus material-icons left white-text" aria-hidden="true"></i>
-                Add Dessert
+                New Dessert
             </a>
         </li>
         <li>

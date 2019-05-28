@@ -18,110 +18,107 @@ recipes_collection = mongo.db.recipes
 users_collection = mongo.db.users
 
 #----- Global Helper -----#
-def get_total_recipes():
-        return int(recipes_collection.count())
 @recipes.context_processor
-def total_recipes():
-        return dict(total_recipes=get_total_recipes)
+def desserts_total():
+        desserts_count = recipes_collection.count
+        return dict(desserts_count=desserts_count)
 
 
 #---------- CRUD: CREATE | READ | UPDATE | DELETE ----------#
 
 # (Crud) ----- CREATE a new dessert -----#
-@recipes.route("/add")
-def add_dessert():
-        # creates empty lists of collections for building select options
-        allergen_list = []
-        dessert_list = []
-        measurement_list = []
-        
-        # get allergens and sort
-        for allergen in allergens_collection.find():
-                allergen_name = allergen.get("allergen_name")
-                for item in allergen_name:
-                        allergen_list.append(item)
-        allergen_list = sorted(allergen_list)
-        
-        # get desserts and sort
-        for dessert in desserts_collection.find().sort([("desserts", 1)]):
-                dessert_name = dessert.get("dessert_type")
-                for item in dessert_name:
-                        dessert_list.append(item)
-        dessert_list = sorted(dessert_list)
-        
-        # get measurements and sort
-        for measurement in measurements_collection.find().sort([("measurements", 1)]):
-                measurement_name = measurement.get("measurement_unit")
-                for item in measurement_name:
-                        measurement_list.append(item)
-        
-        return render_template("add_dessert.html",
-                                allergens=allergen_list,
-                                desserts=dessert_list,
-                                measurements=measurement_list)
+@recipes.route("/desserts/new", methods=["GET", "POST"])
+def desserts_new():
+        if request.method == "GET":
+                # creates empty lists of collections for building select options
+                allergen_list = []
+                dessert_list = []
+                measurement_list = []
+                
+                # get allergens and sort
+                for allergen in allergens_collection.find():
+                        allergen_name = allergen.get("allergen_name")
+                        for item in allergen_name:
+                                allergen_list.append(item)
+                allergen_list = sorted(allergen_list)
+                
+                # get desserts and sort
+                for dessert in desserts_collection.find().sort([("desserts", 1)]):
+                        dessert_name = dessert.get("dessert_type")
+                        for item in dessert_name:
+                                dessert_list.append(item)
+                dessert_list = sorted(dessert_list)
+                
+                # get measurements and sort
+                for measurement in measurements_collection.find().sort([("measurements", 1)]):
+                        measurement_name = measurement.get("measurement_unit")
+                        for item in measurement_name:
+                                measurement_list.append(item)
+                
+                return render_template("desserts_new.html",
+                                        allergens=allergen_list,
+                                        desserts=dessert_list,
+                                        measurements=measurement_list)
 
+        if request.method == "POST":
+                # input fields to be submitted to database
+                today = datetime.now().strftime("%d %B, %Y")
+                last_edit = int(datetime.now().strftime("%Y%m%d"))
 
-# (Crud) ----- CREATE a dessert to the database -----#
-@recipes.route("/add_dessert", methods=["POST"])
-def add_dessert_toDB():
-        # input fields to be submitted to database
-        today = datetime.now().strftime("%d %B, %Y")
-        last_edit = int(datetime.now().strftime("%Y%m%d"))
+                # get user_id
+                session_user = users_collection.find_one({"username_lower": session["user"].lower()})["username"]
+                author = users_collection.find_one({"username": session_user})["_id"]
 
-        # get user_id
-        session_user = users_collection.find_one({"username_lower": session["user"].lower()})["username"]
-        author = users_collection.find_one({"username": session_user})["_id"]
+                # get total time
+                hours = int(request.form.get("total_hrs")) * 60 if request.form.get("total_hrs") != "" else ""
+                total_time = int(request.form.get("total_mins")) + hours if hours != "" else int(request.form.get("total_mins"))
 
-        # get total time
-        hours = int(request.form.get("total_hrs")) * 60 if request.form.get("total_hrs") != "" else ""
-        total_time = int(request.form.get("total_mins")) + hours if hours != "" else int(request.form.get("total_mins"))
+                submit = {
+                        "recipe_name": request.form.get("recipe_name"),
+                        "recipe_slug": slugify(request.form.get("recipe_name")),
+                        "description": request.form.get("description"),
+                        "dessert_type": request.form.get("dessert_type"),
+                        "ingredient_amount": request.form.getlist("ingredient_amount"),
+                        "ingredient_measurement": request.form.getlist("ingredient_measurement"),
+                        "ingredient_name": request.form.getlist("ingredient_name"),
+                        "directions": request.form.getlist("directions"),
+                        "total_hrs": request.form.get("total_hrs"),
+                        "total_mins": request.form.get("total_mins"),
+                        "total_time": total_time,
+                        "allergens": request.form.getlist("allergens"),
+                        "img_src": request.form.get("img_src"),
+                        "author": author,
+                        "date_added": today,
+                        "date_updated": today,
+                        "last_edit": last_edit,
+                        "views": 0,
+                        "user_favs": 0
+                }
 
-        submit = {
-                "recipe_name": request.form.get("recipe_name"),
-                "recipe_slug": slugify(request.form.get("recipe_name")),
-                "description": request.form.get("description"),
-                "dessert_type": request.form.get("dessert_type"),
-                "ingredient_amount": request.form.getlist("ingredient_amount"),
-                "ingredient_measurement": request.form.getlist("ingredient_measurement"),
-                "ingredient_name": request.form.getlist("ingredient_name"),
-                "directions": request.form.getlist("directions"),
-                "total_hrs": request.form.get("total_hrs"),
-                "total_mins": request.form.get("total_mins"),
-                "total_time": total_time,
-                "allergens": request.form.getlist("allergens"),
-                "img_src": request.form.get("img_src"),
-                "author": author,
-                "date_added": today,
-                "date_updated": today,
-                "last_edit": last_edit,
-                "views": 0,
-                "user_favs": 0
-        }
+                # get the new _id being created on submit
+                newID = recipes_collection.insert_one(submit)
 
-        # get the new _id being created on submit
-        newID = recipes_collection.insert_one(submit)
+                # add recipe _id to user's recipe list
+                users_collection.update_one({"_id": ObjectId(author)}, {"$push": {"user_recipes": newID.inserted_id}})
 
-        # add recipe _id to user's recipe list
-        users_collection.update_one({"_id": ObjectId(author)}, {"$push": {"user_recipes": newID.inserted_id}})
+                # slugify url to be user-friendly
+                slugUrl = slugify(request.form.get("recipe_name"))
+                flash(Markup(f"<i class='far fa-check-circle green-text material-icons small' aria-hidden='true'></i> Sounds delicious! Thanks for adding this recipe!"))
 
-        # slugify url to be user-friendly
-        slugUrl = slugify(request.form.get("recipe_name"))
-        flash(Markup(f"<i class='far fa-check-circle green-text material-icons small' aria-hidden='true'></i> Sounds delicious! Thanks for adding this recipe!"))
+                # add to user-favs if selected
+                if request.form.get("add_favs") == "on":
+                        users_collection.update_one({"_id": ObjectId(author)}, {"$push": {"user_favs": newID.inserted_id}})
+                        # increase number of favorites on this recipe
+                        recipes_collection.update_one({"_id": newID.inserted_id}, {"$inc": {"user_favs": 1}})
 
-        # add to user-favs if selected
-        if request.form.get("add_favs") == "on":
-                users_collection.update_one({"_id": ObjectId(author)}, {"$push": {"user_favs": newID.inserted_id}})
-                # increase number of favorites on this recipe
-                recipes_collection.update_one({"_id": newID.inserted_id}, {"$inc": {"user_favs": 1}})
-
-        return redirect(url_for("recipes.view_dessert",
-                                recipe_id=newID.inserted_id,
-                                slugUrl=slugUrl))
+                return redirect(url_for("recipes.desserts_recipe",
+                                        recipe_id=newID.inserted_id,
+                                        slugUrl=slugUrl))
 
 
 # (cRud) ----- READ all desserts -----#
 @recipes.route("/desserts")
-def view_desserts():
+def desserts():
         # show author on cards
         authors = []
         get_authors = users_collection.find({}, {"username": 1})
@@ -202,7 +199,7 @@ def view_desserts():
                 count_display_search = page_args * limit_args if (page_args * limit_args) < search_results.count() else search_results.count()
         
         # build page and pass through all data
-        return render_template("view_desserts.html",
+        return render_template("desserts.html",
                                 recipes_start=sorting,
                                 recipes_search=search_results,
                                 authors=authors,
@@ -226,8 +223,8 @@ def view_desserts():
 
 
 # (cRud) ----- READ a single dessert -----#
-@recipes.route("/dessert/<recipe_id>/<slugUrl>")
-def view_dessert(recipe_id, slugUrl):
+@recipes.route("/desserts/<recipe_id>/<slugUrl>")
+def desserts_recipe(recipe_id, slugUrl):
         recipe = recipes_collection.find_one({"_id": ObjectId(recipe_id)})
         author = users_collection.find_one({"_id": ObjectId(recipe.get("author"))})["username"]
         user_avatar = users_collection.find_one({"_id": ObjectId(recipe.get("author"))})["user_avatar"]
@@ -284,7 +281,7 @@ def view_dessert(recipe_id, slugUrl):
         # get next recipe based on current recipe
         next_recipe = recipes_collection.find({"_id": {"$gt": ObjectId(recipe_id)}}).sort([("_id", 1)]).limit(1) if str(recipe_id) != str(last_recipe_id) else first_recipe
 
-        return render_template("view_dessert.html",
+        return render_template("desserts_recipe.html",
                                 recipe=recipe,
                                 full_ingredient=full_ingredient,
                                 units=units,
@@ -296,115 +293,115 @@ def view_dessert(recipe_id, slugUrl):
 
 
 # (crUd) ----- UPDATE a recipe -----#
-@recipes.route("/update/<recipe_id>/<slugUrl>")
-def update_dessert(recipe_id, slugUrl):
-        recipe = recipes_collection.find_one({"_id": ObjectId(recipe_id)})
+@recipes.route("/desserts/<recipe_id>/<slugUrl>/edit", methods=["GET", "POST"])
+def desserts_edit(recipe_id, slugUrl):
+        if request.method == "GET":
+                recipe = recipes_collection.find_one({"_id": ObjectId(recipe_id)})
+                
+                # creates empty lists of collections for building select options
+                allergen_list = []
+                dessert_list = []
+                measurement_list = []
+                
+                # get allergens and sort
+                for allergen in allergens_collection.find():
+                        allergen_name = allergen.get("allergen_name")
+                        for item in allergen_name:
+                                allergen_list.append(item)
+                allergen_list = sorted(allergen_list)
+                
+                # get desserts and sort
+                for dessert in desserts_collection.find().sort([("desserts", 1)]):
+                        dessert_name = dessert.get("dessert_type")
+                        for item in dessert_name:
+                                dessert_list.append(item)
+                dessert_list = sorted(dessert_list)
+                
+                # get measurements and sort
+                for measurement in measurements_collection.find().sort([("measurements", 1)]):
+                        measurement_name = measurement.get("measurement_unit")
+                        for item in measurement_name:
+                                measurement_list.append(item)
+
+                # creates empty lists for ingredient options
+                ingredients_list = []
+                amount_list = []
+                unit_list = []
+                ingredient_list = []
+
+                # add each array into new list
+                amounts = recipe.get("ingredient_amount")
+                units = recipe.get("ingredient_measurement")
+                ingredients = recipe.get("ingredient_name")
+                for amount in amounts:
+                        amount_list.append(amount)
+                for unit in units:
+                        unit_list.append(unit)
+                for ingredient in ingredients:
+                        ingredient_list.append(ingredient)
+                
+                # zip the new lists into a single master list
+                ingredients_list=zip(amount_list,unit_list,ingredient_list)
+
+                return render_template("desserts_edit.html",
+                                        recipe=recipe,
+                                        allergens=allergen_list,
+                                        desserts=dessert_list,
+                                        measurements=measurement_list,
+                                        ingredients=ingredients_list,
+                                        recipe_id=recipe_id,
+                                        slugUrl=slugUrl)
         
-        # creates empty lists of collections for building select options
-        allergen_list = []
-        dessert_list = []
-        measurement_list = []
-        
-        # get allergens and sort
-        for allergen in allergens_collection.find():
-                allergen_name = allergen.get("allergen_name")
-                for item in allergen_name:
-                        allergen_list.append(item)
-        allergen_list = sorted(allergen_list)
-        
-        # get desserts and sort
-        for dessert in desserts_collection.find().sort([("desserts", 1)]):
-                dessert_name = dessert.get("dessert_type")
-                for item in dessert_name:
-                        dessert_list.append(item)
-        dessert_list = sorted(dessert_list)
-        
-        # get measurements and sort
-        for measurement in measurements_collection.find().sort([("measurements", 1)]):
-                measurement_name = measurement.get("measurement_unit")
-                for item in measurement_name:
-                        measurement_list.append(item)
+        if request.method == "POST":
+                recipe = recipes_collection.find_one({"_id": ObjectId(recipe_id)})
 
-        # creates empty lists for ingredient options
-        ingredients_list = []
-        amount_list = []
-        unit_list = []
-        ingredient_list = []
+                # get today for date_updated
+                today = datetime.now().strftime("%d %B, %Y")
+                last_edit = int(datetime.now().strftime("%Y%m%d"))
 
-        # add each array into new list
-        amounts = recipe.get("ingredient_amount")
-        units = recipe.get("ingredient_measurement")
-        ingredients = recipe.get("ingredient_name")
-        for amount in amounts:
-                amount_list.append(amount)
-        for unit in units:
-                unit_list.append(unit)
-        for ingredient in ingredients:
-                ingredient_list.append(ingredient)
-        
-        # zip the new lists into a single master list
-        ingredients_list=zip(amount_list,unit_list,ingredient_list)
+                # get current hidden values
+                get_author = recipe.get("author")
+                get_date_added = recipe.get("date_added")
+                get_views = recipe.get("views")
+                get_user_favs = recipe.get("user_favs")
 
-        return render_template("update_dessert.html",
-                                recipe=recipe,
-                                allergens=allergen_list,
-                                desserts=dessert_list,
-                                measurements=measurement_list,
-                                ingredients=ingredients_list)
+                # get total time
+                hours = int(request.form.get("total_hrs")) * 60 if request.form.get("total_hrs") != "" else ""
+                total_time = int(request.form.get("total_mins")) + hours if hours != "" else int(request.form.get("total_mins"))
 
-
-# (crUd) ----- UPDATE a recipe to the database -----#
-@recipes.route("/update_dessert/<recipe_id>", methods=["POST"])
-def update_dessert_toDB(recipe_id):
-        recipe = recipes_collection.find_one({"_id": ObjectId(recipe_id)})
-
-        # get today for date_updated
-        today = datetime.now().strftime("%d %B, %Y")
-        last_edit = int(datetime.now().strftime("%Y%m%d"))
-
-        # get current hidden values
-        get_author = recipe.get("author")
-        get_date_added = recipe.get("date_added")
-        get_views = recipe.get("views")
-        get_user_favs = recipe.get("user_favs")
-
-        # get total time
-        hours = int(request.form.get("total_hrs")) * 60 if request.form.get("total_hrs") != "" else ""
-        total_time = int(request.form.get("total_mins")) + hours if hours != "" else int(request.form.get("total_mins"))
-
-        # find recipe to be updated, then push updates
-        recipes_collection.update( {"_id": ObjectId(recipe_id)},
-        {
-                "recipe_name": request.form.get("recipe_name"),
-                "recipe_slug": slugify(request.form.get("recipe_name")),
-                "description": request.form.get("description"),
-                "dessert_type": request.form.get("dessert_type"),
-                "ingredient_amount": request.form.getlist("ingredient_amount"),
-                "ingredient_measurement": request.form.getlist("ingredient_measurement"),
-                "ingredient_name": request.form.getlist("ingredient_name"),
-                "directions": request.form.getlist("directions"),
-                "total_hrs": request.form.get("total_hrs"),
-                "total_mins": request.form.get("total_mins"),
-                "total_time": total_time,
-                "allergens": request.form.getlist("allergens"),
-                "img_src": request.form.get("img_src"),
-                "author": get_author,
-                "date_added": get_date_added,
-                "date_updated": today,
-                "last_edit": last_edit,
-                "views": get_views,
-                "user_favs": get_user_favs
-        })
-        slugUrl = slugify(request.form.get("recipe_name"))
-        flash(Markup(f"<i class='far fa-check-circle green-text material-icons small' aria-hidden='true'></i> Your recipe has been updated successfully!"))
-        return redirect(url_for("recipes.view_dessert",
-                                recipe_id=recipe_id,
-                                slugUrl=slugUrl))
+                # find recipe to be updated, then push updates
+                recipes_collection.update( {"_id": ObjectId(recipe_id)},
+                {
+                        "recipe_name": request.form.get("recipe_name"),
+                        "recipe_slug": slugify(request.form.get("recipe_name")),
+                        "description": request.form.get("description"),
+                        "dessert_type": request.form.get("dessert_type"),
+                        "ingredient_amount": request.form.getlist("ingredient_amount"),
+                        "ingredient_measurement": request.form.getlist("ingredient_measurement"),
+                        "ingredient_name": request.form.getlist("ingredient_name"),
+                        "directions": request.form.getlist("directions"),
+                        "total_hrs": request.form.get("total_hrs"),
+                        "total_mins": request.form.get("total_mins"),
+                        "total_time": total_time,
+                        "allergens": request.form.getlist("allergens"),
+                        "img_src": request.form.get("img_src"),
+                        "author": get_author,
+                        "date_added": get_date_added,
+                        "date_updated": today,
+                        "last_edit": last_edit,
+                        "views": get_views,
+                        "user_favs": get_user_favs
+                })
+                slugUrl = slugify(request.form.get("recipe_name"))
+                flash(Markup(f"<i class='far fa-check-circle green-text material-icons small' aria-hidden='true'></i> Your recipe has been updated successfully!"))
+                return redirect(url_for("recipes.desserts_recipe",
+                                        recipe_id=recipe_id,
+                                        slugUrl=slugUrl))
 
 
 # (cruD) ----- DELETE a recipe from the database -----#
-@recipes.route("/delete/<recipe_id>")
-def delete_dessert(recipe_id):
+@recipes.route("/desserts/<recipe_id>")
+def desserts_delete(recipe_id):
         recipes_collection.remove({"_id": ObjectId(recipe_id)})
 
         # pull deleted recipe from user's recipe list
@@ -415,7 +412,7 @@ def delete_dessert(recipe_id):
         users_collection.update_many({}, {"$pull": {"user_favs": ObjectId(recipe_id)}})
 
         flash(Markup(f"<i class='fas fa-trash-alt red-text material-icons small' aria-hidden='true'></i> Your recipe has been deleted."))
-        return redirect(url_for("recipes.view_desserts"))
+        return redirect(url_for("recipes.desserts"))
 
 
 
@@ -423,8 +420,8 @@ def delete_dessert(recipe_id):
 #---------- USER ACTIONS ----------#
 
 #----- Add Favorites ----- #
-@recipes.route("/add_favorite/<recipe_id>/<slugUrl>")
-def add_favorite(recipe_id, slugUrl):
+@recipes.route("/desserts/<recipe_id>/<slugUrl>/add_favorite")
+def desserts_add_favorite(recipe_id, slugUrl):
         # get user id
         user = users_collection.find_one({"username_lower": session["user"].lower()})["_id"]
         # push recipe to user_favs
@@ -439,8 +436,8 @@ def add_favorite(recipe_id, slugUrl):
 
 
 #----- Delete Favorites ----- #
-@recipes.route("/delete_favorite/<recipe_id>/<slugUrl>")
-def delete_favorite(recipe_id, slugUrl):
+@recipes.route("/desserts/<recipe_id>/<slugUrl>/delete_favorite")
+def desserts_delete_favorite(recipe_id, slugUrl):
         # get user id
         user = users_collection.find_one({"username_lower": session["user"].lower()})["_id"]
         # pull recipe from user_favs

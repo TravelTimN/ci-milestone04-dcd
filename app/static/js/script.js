@@ -228,10 +228,9 @@ $(document).ready(function () {
         Share the Recipe
     ------------------------
     */
-    /* insert URL into <input> */
-    var recipeUrl = "";
+     /* insert URL into <input> */
+    var recipeUrl = $(location).attr("href");
     $("#share-btn").on("click", function () {
-        var recipeUrl = $(location).attr("href");
         $("#share-url").val(recipeUrl);
     });
     /* copy value of <input> */
@@ -434,5 +433,6 @@ $(document).ready(function () {
         Current year for 'Copyright' in <footer>
     ------------------------------------------------*/
     $("#year").html(new Date().getFullYear());
+
 
 });

@@ -1,6 +1,9 @@
 {% extends "base.html" %}
 {% block content %}
 
+<!-- get a random recipe from the carousel -->
+{% set random_recipe = carousel|random %}
+
 <div class="container-95">
 
     <div class="row">
@@ -32,10 +35,9 @@
                     <span class="green-text">(eggs, milk, nuts, etc.)</span>
                     <br><br>
                     Be sure to check out the
-                    <!-- get random dessert category and replace characters for proper URL -->
-                    {% set random_category = categories|random %}
-                    {% set convert_category = random_category|replace('+', '%2B')|replace(' ', '+') %}
-                    <a href="desserts?search_dessert={{convert_category}}&limit=" class="blue-text">{{ random_category }}</a>
+                    <!-- use the random recipe from above, get the dessert category, and replace characters for proper URL -->
+                    {% set convert_dessert_type = random_recipe.dessert_type|replace('+', '%2B')|replace(' ', '+') %}
+                    <a href="desserts?search_dessert={{convert_dessert_type}}&limit=" class="blue-text">{{ random_recipe.dessert_type }}</a>
                     recipes!
                 </p>
             </div>
@@ -53,7 +55,7 @@
             <!-- Quick Links -->
             <div class="center-align quick-links">
                 <h5 class="bold purple-text font-special upper">Quick Links</h5>
-                <a href="{{ url_for('recipes.view_desserts') }}" class="btn bold purple white-text text-shadow-2">
+                <a href="{{ url_for('recipes.desserts') }}" class="btn bold purple white-text text-shadow-2">
                     <i class="fas fa-search material-icons left" aria-hidden="true"></i> Search
                 </a>
                 <!-- only if user in session -->
@@ -61,8 +63,8 @@
                 <a href="{{ url_for('users.profile', username=session['user']) }}" class="btn bold blue white-text text-shadow-2">
                     <i class="fas fa-user-circle material-icons left" aria-hidden="true"></i> Profile
                 </a>
-                <a href="{{ url_for('recipes.add_dessert') }}" class="btn bold green white-text text-shadow-2">
-                    <i class="fas fa-plus material-icons left" aria-hidden="true"></i> Add
+                <a href="{{ url_for('recipes.desserts_new') }}" class="btn bold green white-text text-shadow-2">
+                    <i class="fas fa-plus material-icons left" aria-hidden="true"></i> New
                 </a>
                 <!-- if no user in session -->
                 {% else %}
@@ -70,12 +72,10 @@
                     <i class="fas fa-user-plus material-icons left" aria-hidden="true"></i> Log In | Register
                 </a>
                 {% endif %}
-                <!-- get random recipe -->
-                {% for recipe in random_recipe %}
-                <a href="{{ url_for('recipes.view_dessert', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}" class="btn bold red white-text text-shadow-2">
+                <!-- use the random recipe from above -->
+                <a href="{{ url_for('recipes.desserts_recipe', recipe_id=random_recipe._id, slugUrl=random_recipe.recipe_slug) }}" class="btn bold red white-text text-shadow-2">
                     <i class="fas fa-random material-icons left" aria-hidden="true"></i> Random
                 </a>
-                {% endfor %}
             </div>
         </div>
 
@@ -86,7 +86,7 @@
                 {% for recipe in carousel %}
                 <div class="carousel-item">
                     <div class="carousel-fixed-item center text-shadow-1">
-                        <a href="{{ url_for('recipes.view_dessert', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}">
+                        <a href="{{ url_for('recipes.desserts_recipe', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}">
                             <h4 class="bold font-emilys-candy mark-purple text-shadow-2">
                                 {{ recipe.recipe_name|truncate(50, True)|safe }}
                             </h4>
