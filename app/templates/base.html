@@ -11,9 +11,11 @@
 
     <link rel='icon' sizes="192x192" href="{{ url_for('static', filename='img/favicon.png') }}" type="image/x-icon">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" type="text/css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+        type="text/css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
-        integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous" type="text/css">
+        integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous"
+        type="text/css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" type="text/css">
 
 </head>
@@ -21,22 +23,22 @@
 <body>
 
     <header>
-    <!-- NAVBAR -->
-    {% include "partials/_navbar.html" %}
+        <!-- NAVBAR -->
+        {% include "partials/_navbar.html" %}
     </header>
 
     <main>
-    <!-- MESSAGES -->
-    {% include "partials/_messages.html" %}
+        <!-- MESSAGES -->
+        {% include "partials/_messages.html" %}
 
-    <!-- MAIN CONTENT -->
-    {% block content %}
-    {% endblock %}
+        <!-- MAIN CONTENT -->
+        {% block content %}
+        {% endblock %}
     </main>
 
     <footer class="purple white-text">
-    <!-- FOOTER -->
-    {% include "partials/_footer.html" %}
+        <!-- FOOTER -->
+        {% include "partials/_footer.html" %}
     </footer>
 
     <script src="https://code.jquery.com/jquery-3.4.0.slim.js"

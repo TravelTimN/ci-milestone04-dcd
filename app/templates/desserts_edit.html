@@ -124,7 +124,7 @@
 
             <div class="col s12">
                 {% if recipe.img_src %}
-                <div id="recipe-img-small" style="background: url('{{ recipe.img_src }}') center/cover no-repeat;" alt="Dessert"></div>
+                <div id="recipe-img-small" style="background: url('{{ recipe.img_src }}') center/cover no-repeat;"></div>
                 {% endif %}
             </div>
 
@@ -290,9 +290,8 @@
                 <!-- direction -->
                 <div class="input-field col s12">
                     <i class="fas fa-list-ol purple-text material-icons prefix" aria-hidden="true"></i>
-                    <textarea id="directions" name="directions" type="text"
+                    <textarea id="directions" name="directions" minlength="5" maxlength="500"
                         class="directions validate materialize-textarea" autocomplete="off"
-                        pattern="^.{5,500}$" minlength="5" maxlength="500"
                         placeholder="list each direction one per line" required>{{ direction }}</textarea>
                     <label for="directions">
                         <span class="red-text">*</span>
