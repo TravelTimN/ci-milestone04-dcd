@@ -1,6 +1,6 @@
 # 2BN-Desserts
 
-_TBD_
+<img src="https://github.com/TravelTimN/ci-milestone04-dcd/blob/master/app/wireframes/mockups.png" alt="2BN-Desserts" width="400">
 
 ---
 
