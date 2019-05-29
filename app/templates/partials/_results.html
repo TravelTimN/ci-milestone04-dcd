@@ -4,36 +4,36 @@
 
             <!-- with search -->
             {% if recipes_search %}
-                {% if results_count==0 %}
-                    <!-- 0 search results -->
-                    <span class="pink-text text-lighten-2 font-abril page-items text-shadow-1">0</span> recipes found
+            {% if results_count==0 %}
+            <!-- 0 search results -->
+            <span class="pink-text text-lighten-2 font-abril page-items text-shadow-1">0</span> recipes found
 
-                {% elif results_count==1 %}
-                    <!-- 1 result found -->
-                    <span class="pink-text text-lighten-2 font-abril page-items text-shadow-1">1</span> recipe found
-                
-                {% elif request.args.get("limit")=="" %}
-                    <!-- no 'limit' args in url (ie: user selected 'All') -->
-                    showing all
-                    <span class="pink-text text-lighten-2 font-abril page-items text-shadow-1">{{ results_count }}</span> recipes found
+            {% elif results_count==1 %}
+            <!-- 1 result found -->
+            <span class="pink-text text-lighten-2 font-abril page-items text-shadow-1">1</span> recipe found
 
-                {% else %}
-                    
-                    <!-- normal 'with search' display -->
-                    showing
-                    <span class="pink-text text-lighten-2 font-abril page-items text-shadow-1">
-                    {{ (page_args * limit_args) - (limit_args - 1) }}-{{ count_display_search }}</span> of
-                    <span class="blue-text font-abril page-items text-shadow-1">{{ results_count }}</span>
-                    recipes found
-                {% endif %}
+            {% elif request.args.get("limit")=="" %}
+            <!-- no 'limit' args in url (ie: user selected 'All') -->
+            showing all
+            <span class="pink-text text-lighten-2 font-abril page-items text-shadow-1">{{ results_count }}</span>
+            recipes found
+
+            {% else %}
+            <!-- normal 'with search' display -->
+            showing
+            <span class="pink-text text-lighten-2 font-abril page-items text-shadow-1">
+                {{ (page_args * limit_args) - (limit_args - 1) }}-{{ count_display_search }}</span> of
+            <span class="blue-text font-abril page-items text-shadow-1">{{ results_count }}</span>
+            recipes found
+            {% endif %}
 
             <!-- without search -->
             {% else %}
-                showing
-                <span class="pink-text text-lighten-2 font-abril page-items text-shadow-1">
+            showing
+            <span class="pink-text text-lighten-2 font-abril page-items text-shadow-1">
                 {{ (page_args * limit_args) - (limit_args - 1) }}-{{ count_display }}</span> of
-                <span class="blue-text font-abril page-items text-shadow-1">{{ desserts_count() }}</span>
-                recipes
+            <span class="blue-text font-abril page-items text-shadow-1">{{ desserts_count() }}</span>
+            recipes
             {% endif %}
 
         </h5>
