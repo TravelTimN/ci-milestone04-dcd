@@ -1,6 +1,8 @@
 # 2BN-Desserts
 
-<img src="https://github.com/TravelTimN/ci-milestone04-dcd/blob/master/app/wireframes/mockups.png" alt="2BN-Desserts" width="400">
+<img src="https://github.com/TravelTimN/ci-milestone04-dcd/blob/master/app/wireframes/mockups.png" alt="2BN-Desserts" width="600">
+
+Looking for something sweet? You've come to the right place! [2BN-Desserts](https://desserts-2bn.herokuapp.com) is a place to find tasty recipes that will satisfy any sweet tooth. Do you have recipes that you'd like to share as well? Great news! You can create your own account and add an unlimited number of delicious desserts to share with the world! If you like some of the recipes that other's have submitted, you can save them to your favorites for easier access later. You can even print and share recipes directly from the site!
 
 ---
 
@@ -10,6 +12,7 @@
     - [**Design**](#design)
         - [**Framework**](#framework)
         - [**Color Scheme**](#color-scheme)
+        - [**Icons**](#icons)
         - [**Typography**](#typography)
     - [**Wireframes**](#wireframes)
 
@@ -41,16 +44,17 @@
 
 ## UX
 
-_TBD_
+This project is part of my [Code Institute](https://codeinstitute.net/) Full Stack Software Development studies, specifically the **Data Centric Development** module. The objective for this milestone project is to "*Create a web application that allows users to store and easily access cooking recipes*", using the **CRUD** operations of **C**reate, **R**ead, **U**pdate, and **D**elete for their recipes.
+
+I have decided to build a desserts-only project, since I personally bake quite regularly, and several of my own recipes are compiled in different places (kitchen cabinet, saved online, printed and shoved in a drawer, etc.). This was the perfect opportunity to finally have a single application to contain all of my own recipes in one source. A lot of people often ask me for specific recipes, so now I can quickly provide a single source for all of my recipes that can easily be shared or printed. It also allows others to store their own recipes securely.
 
 ### User Stories
 
 "**_As a user, I would like to_** _____________________________"
 
-- *view the site* from **any device** *(mobile, tablet, desktop)*.
+- *view the site* from **any device** *(mobile, tablet, desktop)*. :white_check_mark:
 - *view all recipes* as a **Guest**. :white_check_mark:
 - *filter recipes* by **dessert type**. :white_check_mark:
-- *filter recipes* by **author**. :white_check_mark:
 - *filter recipes* by **allergen**. :white_check_mark:
 - *sort/order recipes* by **author, favorites, last updated, recipe name, total time, and views**. :white_check_mark:
 - **limit** the number of *recipes* to display, or see *all recipes*. :white_check_mark:
@@ -59,42 +63,68 @@ _TBD_
 - *edit* my **own recipes**. :white_check_mark:
 - *delete* my **own recipes**. :white_check_mark:
 - be able to **log out**. :white_check_mark:
+- be able to **change my password**. :white_check_mark:
+- be able to **delete my account**. :white_check_mark:
 - *save recipes* in **my favorites**. :white_check_mark:
 - *remove recipes* from **my favorites**. :white_check_mark:
-- *see instructions* on how to **add a recipe**.
-- **print** a *particular recipe*.
-- *see* **recommended recipes** after *viewing a recipe*.
+- *see instructions* on how to **add a recipe**. :white_check_mark:
+- **print** a *particular recipe*. :white_check_mark:
+- **share** a *particular recipe*. :white_check_mark:
+- *see* **recommended recipes** after *viewing a recipe*. :white_check_mark:
 - *see* the **total views** of *a recipe*. :white_check_mark:
 - *see* how many people **like** my *recipes*. :white_check_mark:
-- *see* a cooking/baking **conversion table**.
+- *see* a cooking/baking **conversion table**. :white_check_mark:
+
+:white_check_mark: *denotes items that have been successfully implemented*
 
 ### Design
 
-_TBD_
+When it comes to dessert, I think of *sweet* and *sugary* treats, so this is why I have designed my project using an overall *cute* and *sweet* concept, with cheerful avatars and bright colors.
 
 #### Framework
 
 - [Materialize 1.0.0](https://materializecss.com/)
     - I really like the modern and clean layout of Materialize as a framework, with its simple-to-understand documentation.
 - [jQuery 3.4.0](https://code.jquery.com/jquery/)
-    - _tbd_ (javascript framework)
+    - In an effort to keep the JavaScript minimal, I have decided to use jQuery as foundation to my scripts framework.
 - [Flask 1.0.2](http://flask.pocoo.org/)
-    - _tbd_ (microframework)
+    - Flask is a microframework that I've used to render the back-end Python with the front-end Materialize.
 
 #### Color Scheme
 
-_TBD_
+In keeping with the overall *sweet* theme, I have opted for a bright and colorful color scheme. The standard [Materialize Colors](https://materializecss.com/color.html) work quite well for my project.
+
+- ![#9C27B0](https://placehold.it/15/9C27B0/9C27B0) `#9C27B0` (**purple** - *primary color*)
+- ![#F06292](https://placehold.it/15/F06292/F06292) `#F06292` (**pink** - *secondary color*)
+- ![#2196F3](https://placehold.it/15/2196F3/2196F3) `#2196F3` (**blue** - *tertiary color*)
+- ![#4CAF50](https://placehold.it/15/4CAF50/4CAF50) `#4CAF50` (**green** - *quaternary color*)
+
+#### Icons
+
+- [Materialize Icons](https://materializecss.com/icons.html)
+    - I've retained only a select few of the standard Materialize Icons, as these are built-in to some of their components. However, on mobile devices, clicking buttons like 'close' **X**, the browser thinks you're wanting to perform a search for that text, so I have replaced some of them with Font Awesome icons.
+- [Font Awesome 5.8.1](https://fontawesome.com/)
+    - Although Materialize Icons have nearly 1,000 free-to-use icons, I prefer the look of Font Awesome's icons, and they have more to suit my specific needs for this project. They aren't called using text, but rather classes, so use on mobile devices isn't affected.
 
 #### Typography
 
-- [Materialize Icons](https://materializecss.com/icons.html)
-    - I've retained some of the standard Materialize Icons that are used in certain components.
-- [Font Awesome 5.8.1](https://fontawesome.com/)
-    - Although Materialize Icons have nearly 1,000 free-to-use icons, I prefer the look of Font Awesome's icons, and they have more to suit my specific needs for this project.
+- I have incorporated a number of [Google Fonts](https://fonts.google.com/) throughout the entire application. The font I have selected for all recipe names is called [Emilys Candy](https://fonts.google.com/specimen/Emilys+Candy), because it fits perfectly into the overall *cute* and *sweet* theme. Aside from the built-in Materialize fonts, I have imported these Google Fonts:
+    - [Abril Fatface](https://fonts.google.com/specimen/Abril+Fatface)
+    - [Amatic SC](https://fonts.google.com/specimen/Amatic+SC)
+    - [Cabin Sketch](https://fonts.google.com/specimen/Cabin+Sketch)
+    - [Emilys Candy](https://fonts.google.com/specimen/Emilys+Candy)
+    - [Fredericka the Great](https://fonts.google.com/specimen/Fredericka+the+Great)
+    - [Merienda One](https://fonts.google.com/specimen/Merienda+One)
+    - [Rye](https://fonts.google.com/specimen/Rye)
+    - [Special Elite](https://fonts.google.com/specimen/Special+Elite)
 
 ### Wireframes
 
-_TBD_
+For my wireframes, I have used [Balsamiq Wireframes](https://balsamiq.com/) for a couple reasons:
+- Code Institute have provided all students with free access until the end of 2019.
+- The simplicity and ease of use. I actually found Balsamiq much easier and quicker to use than my former preferred wireframe program, Adobe XD.
+
+All of my wireframes for this project can be found [here](https://github.com/TravelTimN/ci-milestone04-dcd/tree/master/app/wireframes).
 
 ##### back to [top](#table-of-contents)
 
@@ -102,46 +132,63 @@ _TBD_
 
 ## Features
 
-**Register Account**
-- _TBD_ (Authentication & Authorization)
+I've added a few extra features to my project that weren't part of the requirements, because I felt they made the project 'complete' for better user interaction.
 
-**Log In to Account**
-- _TBD_ (Authentication & Authorization)
-
-**Log Out of Account**
-- _TBD_
-
-**View All Desserts**
-- _TBD_
-
-**Search Desserts**
-- _TBD_
-
-**Add a Recipe**
-- _TBD_ (C in Crud)
-
-**View a Recipe**
-- _TBD_ (R in cRud)
-
-**Update a Recipe**
-- _TBD_ (U in crUd)
-
-**Delete a Recipe**
-- _TBD_ (D in cruD)
-
-**Save a Recipe to Favorites**
-- _TBD_
-
-**Remove a Recipe from Favorites**
-- _TBD_
- 
 ### Existing Features
 
-_TBD_
+**Register Account**
+- Anybody can register for free and create their own unique account. I have built-in authentication and authorization to check certain criteria is met before an account is validated. All passwords are hashed for security purposes!
+
+**Log In to Account**
+- For existing users, I have more authentication and authorization incorporated to check that the hashed passwords and username match the database.
+
+**Change Password**
+- Users can update their passwords if they'd like from their profile page, after first validating the existing password.
+
+**Log Out of Account**
+- Users can easily log out of their account with the click of a button.
+
+**Delete Account**
+- Users can delete their entire account if they'd like, but a warning is provided to first validate their password, and advise that all of their own recipes and favorites will also be deleted.
+
+**View All Desserts**
+- On the *desserts* page, all recipes are initially displayed in an alphabetical order, with a standard 12-items per page using pagination.
+
+**Search Desserts**
+- If a user would like to search for something specific, whether it's a particular recipe, a certain dessert category, or for recipes that exclude certain allergens, then the Search button is perfect! There's also an option to sort the results by a number of different options, order them by either ascending or descending, and even limit the number of results that are displayed per page.
+
+**Add a Recipe**
+- [**C**RUD] Create or 'add' a new recipe. Defensive programming in place means users must adhere to minimal requirements when adding a new recipe. If a user doesn't have a photo to accompany their recipe, I have a built-in function that will automatically assign a cute placeholder image based on the type of dessert category they've selected.
+
+**View a Recipe**
+- [C**R**UD] Read or 'review' recipes, either from the main page, or the user profile. From here, users also have additional options:
+    - Print the recipe.
+    - Share the recipe.
+    - Check ingredients / directions as 'complete' if making the recipe themselves.
+    - View two additional recipe suggestions.
+    - View a *conversion chart* either by temperature, volume, or weight.
+
+**Update a Recipe**
+- [CR**U**D] Update or 'edit' their own user recipes on this page.
+
+**Delete a Recipe**
+- [CRU**D**] Delete or 'remove' a user's own recipes. The *admin* account also has access to delete recipes, should they be inappropriate for example.
+
+**Save a Recipe to Favorites**
+- Users can save their own recipes, or recipes submitted by other users, directly into their profile for quicker access next time.
+
+**Remove a Recipe from Favorites**
+- If a user no longer likes a recipe, or simply wants to remove it from their favorites, a single click can remove a recipe.
 
 ### Features Left to Implement
 
-_TBD_
+In an ideal world, there are a couple items that I would've loved to have completed as well, but just didn't have the time or knowledge just yet as to how to implement these features.
+
+**Pagination Truncation**
+- I have core functionality to properly paginate, but should my database start to expand with several dozen more recipes, then the current pagination will display every page number that exists. If pagination gets too long, ideally it should truncate the middle section of page numbers, so that only the first and last page numbers are displayed, leaving the center section as an ellipse (...) to not clog up too much space on the page.
+
+**Add / Delete individual Ingredients / Directions**
+- Currently, I have a single add / delete button for the Ingredients and Directions sections of the recipe. Once a user clicks to add a new ingredient for example, then the previous line is cloned just below that. The same functionality for directions is in place. However, if a user needs to delete something, it will only delete the absolute last item in the list. This means that if the user needs to delete ingredient #2 for example, they cannot currently delete that line independently without going through all other items in the list that come after it. Eventually I would like to append an add / delete button for each item that's generated.
 
 ##### back to [top](#table-of-contents)
 
@@ -149,31 +196,35 @@ _TBD_
 
 ## Technologies Used
 
-- [VS Code](https://code.visualstudio.com/) - (ide)
-- [GitHub](https://github.com/) - (remote storage of code)
-- [Photoshop CS6](https://www.adobe.com/Photoshop) - (image editing)
+- [VS Code](https://code.visualstudio.com/) - Used as my primary IDE for coding.
+- [GitHub](https://github.com/) - Used as remote storage of my code online.
+- [Photoshop CS6](https://www.adobe.com/Photoshop) - Used for editing images.
+- [TinyPNG](https://tinypng.com/) - Used to compress images for faster loading.
 
 ### Front-End Technologies
 
-- [HTML](https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5) - (markup text)
-- [CSS](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS3) - (cascading styles)
-- [jQuery 3.4.0](https://code.jquery.com/jquery/) - (javascript framework)
-- [Materialize 1.0.0](https://materializecss.com/) - (design framework)
+- [HTML](https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5) - Used as the base for markup text.
+- [CSS](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS3) - Used as the base for cascading styles.
+- [jQuery 3.4.0](https://code.jquery.com/jquery/) - Used as the primary JavaScript functionality.
+- [Materialize 1.0.0](https://materializecss.com/) - Used as the overall design framework.
 
 
 ### Back-End Technologies
 
 - **Flask**
-    - [Flask 1.0.2](http://flask.pocoo.org/) - (microframework)
-    - [Jinja 2.10](http://jinja.pocoo.org/docs/2.10/) - (templating)
-    - [Werkzeug 0.14](https://werkzeug.palletsprojects.com/en/0.14.x/) - (login + password hashing)
+    - [Flask 1.0.2](http://flask.pocoo.org/) - Used as a microframework.
+    - [Flask Blueprints](http://flask.pocoo.org/docs/1.0/blueprints/) - Used to split the python code for routes.
+    - [Flask Talisman](https://github.com/GoogleCloudPlatform/flask-talisman) - Used for security headers (HTTPS vs HTTP).
+    - [Jinja 2.10](http://jinja.pocoo.org/docs/2.10/) - Used for templating with Flask.
+    - [Werkzeug 0.14](https://werkzeug.palletsprojects.com/en/0.14.x/) - Used for password hashing, authentication, and authorization.
 - **Heroku**
-    - [Heroku](https://www.heroku.com) - (app hosting)
+    - [Heroku](https://www.heroku.com) - Used for app hosting.
 - **Python**    
-    - [Python 3.6.7](https://www.python.org/) - (back-end programming language)
-    - [MongoDB Atlas](https://www.mongodb.com/) - (cloud database)
-    - [PyMongo 3.8.0](https://api.mongodb.com/python/current/) - (python api for mongodb)
-    - [Python Slugify 3.0.2](https://pypi.org/project/python-slugify/) - (user-friendly url)
+    - [Python 3.6.7](https://www.python.org/) - Used as the back-end programming language.
+    - [MongoDB Atlas](https://www.mongodb.com/) - Used to store my database in the 'cloud'.
+    - [PyMongo 3.8.0](https://api.mongodb.com/python/current/) - Used as the Python API for MongoDB.
+    - [Python Slugify 3.0.2](https://pypi.org/project/python-slugify/) - Used to generate user-friendly URLs.
+    - [Python dotenv](https://github.com/theskumar/python-dotenv) - Used to get/set values in `.env` file.
 
 ##### back to [top](#table-of-contents)
 
@@ -239,7 +290,46 @@ With the Search function, the user has the option to sort, order, and limit the 
 
 ### Validators
 
-_TBD_
+**HTML**
+- [W3C HTML Validator](https://validator.w3.org) - Unfortunately the W3C Validator for HTML does not understand the Jinja templating syntax, so it therefore shows a lot of errors with regards to `{{ variables }}`, `{% for %} {% endfor %}`, etc. Aside from the Jinja warnings and errors, all of the remaining code is perfectly validating. Also due to the Jinja templating, certain elements cannot be 'beautified' across multiple lines, and must remain on a single line. An example of this is the `<select>` element, which is rather long with specific Materialize classes, and Jinja templating.
+
+**CSS**
+- [W3C CSS Validator](https://jigsaw.w3.org/css-validator/) - I am using `:root{}` variables in my CSS, which isn't [yet?] recognized by the validator. This is causing several **Parsing Errors**, when in fact they are not errors, and work perfectly fine.
+- **Parse Error** *[ li)]* - for some reason, the validator does not recognize the `<li>` element in my `:not(#search_form li)` code, but everything else breaks that particular code, so I've left it alone.
+
+```css
+.collapsible-collection li:nth-child(odd):not(#search_form li) {
+    background-color: rgba(var(--purpleLight5), 0.75);
+}
+.collapsible-collection li:nth-child(even):not(#search_form li) {
+    background-color: rgba(var(--pinkLight5), 0.75);
+}
+```
+
+- **Same color for background-color and border-bottom-color** - The code below overrides the Materialize color for the checkbox animation effect, so the validator thinks this is an error, but is correct in order to override the color with my own.
+
+```css
+[type="radio"].with-gap:checked + span:after
+[type="radio"]:checked + span:after
+```
+
+**JavaScript**
+- [JShint](https://jshint.com/)
+    - "There are **37** functions in this file.
+    Function with the largest signature take **0** arguments, while the median is **0**.
+    Largest function has **41** statements in it, while the median is **1**.
+    The most complex function has a cyclomatic complexity value of **10** while the median is **2**."
+    Six undefined variables:
+        - `$` (141 times)
+        - `M` (4 times)
+- [JSesprima](http://esprima.org/demo/validate.html)
+    - "Code is syntactically valid."
+- [Beautify Tools](http://beautifytools.com/javascript-validator.php)
+    - `M` is not defined. (4 times)
+
+**Python**
+- [PEP8 Online](http://pep8online.com/)
+    - All `.py` files are completely PEP8 compliant!
 
 ### Compatibility
 
@@ -271,13 +361,26 @@ _TBD_
 
 - [*"How to Write a Git Commit Message"*](https://chris.beams.io/posts/git-commit/) by **Chris Beams** (*as recommended by Code Institute assessors on previous projects*)
 
+- Converting **Cups** to **Grams** : [ErrensKitchen](https://www.errenskitchen.com/cooking-conversions/cups-to-grams-and-oz/)
+
 ### Media
 
 Sources of the images used on this site:
 
 - **favicon** : [Clipart-Library](http://clipart-library.com/kawaii-cookie-cliparts.html)
+
 - **recipe placeholder image** : [Pixabay](https://pixabay.com/photos/waffles-waffles-bake-ingredients-2190961/)
+
 - **profile avatars** : [123rf](https://www.123rf.com/photo_40610865_stock-vector-cute-kawaii-dessert-cake-macaroon-ice-cream-icons.html)
+
+- **background image** : [vecteezy](https://www.vecteezy.com/vector-art/113872-polka-dots-vector-pattern)
+
+- **error 404 | 500 images** :
+    - [freepik - 0](https://www.freepik.com/free-vector/kawaii-food-collection_4237785.htm)
+    - [freepik - 4](https://www.freepik.com/premium-vector/number-four-kawaii-comic-character_2632836.htm)
+    - [freepik - 5](https://www.freepik.com/premium-vector/number-five-kawaii-comic-character_2632838.htm)
+
+- **mockup image in README** : [techsini](https://techsini.com/multi-mockup/)
 
 ### Code
 
@@ -286,6 +389,16 @@ Sources of the images used on this site:
 - **Custom Toast** on *page load* (instead of **Materialize Toasts** with an *onclick* event) for my Flask Flash Messages: [StackOverflow](https://stackoverflow.com/questions/43345678/how-to-display-the-snack-bar-on-page-load)
 
 - **Custom list item** attributes (instead of standard bullet points) for my recipe *Directions*: [CSS Tricks](https://css-tricks.com/custom-list-number-styling/)
+
+- **Auto-Open '.card-reveal'** on *:hover* - [StackOverflow](https://stackoverflow.com/questions/36290110/open-card-reveal-content-by-hover-the-activator-in-materializecss)
+
+- **Print** only certain elements - [StackOverflow](https://stackoverflow.com/a/2618980)
+
+- **Copy to Clipboard** - [w3schools](https://www.w3schools.com/howto/howto_js_copy_clipboard.asp)
+
+- **Enforce Validation on Materialize Dropdowns** - [StackOverflow](https://stackoverflow.com/questions/34248898/how-to-validate-select-option-for-a-materialize-dropdown)
+
+- **Flask Blueprints walkthrough** - [Corey Schafer on YouTube](https://youtu.be/Wfx4YBzg16s)
 
 ### Acknowledgements
 

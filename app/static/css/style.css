@@ -1,5 +1,5 @@
 /*----- @imports -----*/
-@import url("https://fonts.googleapis.com/css?family=Abril+Fatface|Akronim|Amatic+SC|Cabin+Sketch|Emilys+Candy|Fredericka+the+Great|Merienda+One|Rye|Special+Elite");
+@import url("https://fonts.googleapis.com/css?family=Abril+Fatface|Amatic+SC|Cabin+Sketch|Emilys+Candy|Fredericka+the+Great|Merienda+One|Rye|Special+Elite");
 
 
 /*----- :root Variables -----*/
@@ -29,10 +29,6 @@
 .font-abril {
     font-family: "Abril Fatface", var(--fontDefault);
     letter-spacing: 1px;
-}
-
-.font-akronim {
-    font-family: "Akronim", var(--fontDefault);
 }
 
 .font-cabin-sketch {
