@@ -1,27 +1,13 @@
 #!/usr/bin/env python3
-from app import mongo
 from flask import Blueprint, render_template
+from app import mongo
+from app.utils import recipes_collection
 
 
 # --------------------- #
 #    Flask Blueprint    #
 # --------------------- #
 errors = Blueprint("errors", __name__)
-
-
-# -------------------- #
-#    DB Collections    #
-# -------------------- #
-recipes_collection = mongo.db.recipes
-
-
-# ------------------- #
-#    Global Helper    #
-# ------------------- #
-@errors.context_processor
-def desserts_total():
-    desserts_count = recipes_collection.count
-    return dict(desserts_count=desserts_count)
 
 
 # ---------------- #

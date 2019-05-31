@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-from app.config import Config
 from flask import Flask
-from flask_talisman import Talisman
 from flask_pymongo import PyMongo
+from flask_talisman import Talisman
+from app.config import Config
 
 
 # reusable extension for PyMongo
@@ -15,7 +15,7 @@ mongo = PyMongo()
 def create_app(config_class=Config):
     # app initialization + configuration
     app = Flask(__name__)
-    app.config.from_object(Config)
+    app.config.from_object(config_class)
 
     # extensions for app init from above
     mongo.init_app(app)
