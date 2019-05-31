@@ -360,6 +360,15 @@ I wanted to incorporate a way to share the recipe, without having any social med
 
 ### Compatibility
 
+To ensure a broad range of users can successfully use this site, I tested it across the 6 major browsers in both desktop and mobile configuration.
+
+- Chrome *v.74*
+- Edge *v.18*
+- Firefox *v.67*
+- Safari *v.12*
+- Opera *v.56*
+- Internet Explorer *v.11*
+
 For testing compatibility, I created a testing matrix to test across multiple devices and browsers. The test matrix can be found [here](https://github.com/TravelTimN/ci-milestone04-dcd/blob/master/app/testing/test-matrix.png). A brief overview:
 
 <img src="https://github.com/TravelTimN/ci-milestone04-dcd/blob/master/app/testing/test-matrix.png" alt="Test Matrix" width="800">
@@ -379,15 +388,104 @@ During development, I discovered two issues after committing to GitHub. For both
 
 ## Deployment
 
-_TBD_
-
 ### Local Deployment
 
-_TBD_
+Please note - in order to run this project locally on your own system, you will need the following installed:
+- [Python3](https://www.python.org/downloads) to run the application.
+- [PIP](https://pip.pypa.io/en/stable/installing) to install all app requirements.
+- Any IDE such as [Microsoft Visual Studio Code](https://code.visualstudio.com).
+- [GIT](https://www.atlassian.com/git/tutorials/install-git) for cloning and version control.
+- [MongoDB](https://www.mongodb.com) to develop your own database either locally or remotely on MongoDB Atlas.
+
+Next, there's a series of steps to take in order to proceed with local deployment:
+
+- Clone this GitHub repository by either clicking the green *Clone or download* button and downloading the project as a zip-file (remember to unzip it first), or by entering the following into the Git CLI terminal:
+    - `git clone https://github.com/TravelTimN/ci-milestone04-dcd.git`.
+- Navigate to the correct file location after unpacking the files.
+    - `cd <path to folder>`
+- Create a `.env` file with your credentials. An example can be found [here](https://github.com/TravelTimN/ci-milestone04-dcd/blob/master/.env_sample). Be sure to include your *MONGO_URI* and *SECRET_KEY* values.
+- Create a `.flaskenv` file and add the following entries:
+    - `FLASK_APP=run.py`
+    - `FLASK_ENV=development`
+- Install all requirements from the [requirements.txt](https://github.com/TravelTimN/ci-milestone04-dcd/blob/master/requirements.txt) file using this command:
+    - `sudo -H pip3 -r requirements.txt`
+- Sign up for a free account on [MongoDB](https://www.mongodb.com) and create a new Database called **2BN-Desserts**. The *Collections* in that database should be as follows:
+
+**ALLERGENS**
+```
+_id: <ObjectId>
+allergen_name: <array>
+```
+
+**DESSERTS**
+```
+_id: <ObjectId>
+dessert_type: <array>
+```
+
+**MEASUREMENTS**
+```
+_id: <ObjectId>
+measurement_unit: <array>
+```
+
+**RECIPES**
+```
+_id: <ObjectId>
+recipe_name: <string>
+recipe_slug: <string>
+description: <string>
+dessert_type: <string>
+ingredient_amount: <array>
+ingredient_measurement: <array>
+ingredient_name: <array>
+directions: <array>
+total_hrs: <string>
+total_mins: <string>
+total_time: <int32>
+allergens: <array>
+img_src: <string>
+author: <ObjectId>
+date_added: <string>
+date_updated: <string>
+last_edit: <int32>
+views: <int32>
+user_favs: <int32>
+```
+
+**USERS**
+```
+_id: <ObjectId>
+username: <string>
+username_lower: <string>
+user_password: <string>
+user_avatar: <string>
+user_recipes: <array>
+user_favs: <array>
+```
+
+- You should now be able to launch your app using the following command in your terminal:
+    - `flask run`
+- The app should now be running on *localhost* on an address similar to `http://127.0.0.1:5000`. Simply copy/paste this into the browser of your choice!
 
 ### Remote Deployment
 
-_TBD_
+This site is currently deployed on [Heroku](https://www.heroku.com/) using the **master** branch on GitHub. To implement this project on Heroku, the following steps were taken:
+
+1. Create a **requirements.txt** file so Heroku can install the required dependencies to run the app.
+    - `sudo pip3 freeze --local > requirements.txt`
+    - My file can be found [here](https://github.com/TravelTimN/ci-milestone04-dcd/blob/master/requirements.txt).
+2. Create a **Procfile** to tell Heroku what type of application is being deployed, and how to run it.
+    - `echo web: python run.py > Procfile`
+    - My file can be found [here](https://github.com/TravelTimN/ci-milestone04-dcd/blob/master/Procfile).
+3. Sign up for a free Heroku account, create your project app, and click the **Deploy** tab, at which point you can *Connect GitHub* as the Deployment Method, and select *Enable Automatic Deployment*.
+4. In the Heroku **Settings** tab, click on the *Reveal Config Vars* button to configure environmental variables as follows:
+    - **IP** : `0.0.0.0`
+    - **PORT** : `8080`
+    - **MONGO_URI** : `<link to your Mongo DB>`
+    - **SECRET_KEY** : `<your own secret key>`
+5. Your app should be successfully deployed to Heroku at this point.
+
 
 ##### back to [top](#table-of-contents)
 
