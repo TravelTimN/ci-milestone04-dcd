@@ -284,7 +284,7 @@ $(document).ready(function () {
             }
         });
     }).on("click", function () {
-        if ($(this).parent(".select-wrapper").children("ul").children("li.selected:not(.disabled)").css("background-color") == "rgba(233, 30, 99, 0.15)") {
+        if ($(this).parent(".select-wrapper").children("ul").children("li.selected:not(.disabled)").css("background-color") === "rgba(233, 30, 99, 0.15)") {
             $(this).parent(".select-wrapper").children("input").css({"border-bottom": "1px solid #4caf50", "box-shadow": "0 1px 0 0 #4caf50"});
         } else {
             $(".select-wrapper input.select-dropdown").on("focusout", function () {

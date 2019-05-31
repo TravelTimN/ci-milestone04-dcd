@@ -8,7 +8,6 @@ from flask import (
     Blueprint, render_template, redirect,
     request, url_for, flash, session, Markup)
 from slugify import slugify
-from app import mongo
 from app.utils import (
     recipes_collection, users_collection,
     dropdown_allergens, dropdown_dessert_type, dropdown_measurement,

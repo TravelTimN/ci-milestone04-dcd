@@ -65,7 +65,7 @@
 /*----- Global Settings -----*/
 body {
     background-color: rgba(var(--purpleLight5), 0.5);
-    background: linear-gradient(90deg, rgba(var(--purpleLight4), 1) 0%, rgba(var(--purpleLight5), 1) 50%, rgba(var(--purpleLight4), 1) 100%);
+    /*background: linear-gradient(90deg, rgba(var(--purpleLight4), 1) 0%, rgba(var(--purpleLight5), 1) 50%, rgba(var(--purpleLight4), 1) 100%);*/
     display: flex;
     min-height: 100vh;
     flex-direction: column;

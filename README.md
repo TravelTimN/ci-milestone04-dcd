@@ -1,8 +1,8 @@
-# 2BN-Desserts
+# [2BN-Desserts](https://desserts-2bn.herokuapp.com)
 
-<img src="https://github.com/TravelTimN/ci-milestone04-dcd/blob/master/app/wireframes/mockups.png" alt="2BN-Desserts" width="600">
+<img src="https://github.com/TravelTimN/ci-milestone04-dcd/blob/master/app/wireframes/mockups.png" alt="2BN-Desserts" width="800">
 
-Looking for something sweet? You've come to the right place! [2BN-Desserts](https://desserts-2bn.herokuapp.com) is a place to find tasty recipes that will satisfy any sweet tooth. Do you have recipes that you'd like to share as well? Great news! You can create your own account and add an unlimited number of delicious desserts to share with the world! If you like some of the recipes that other's have submitted, you can save them to your favorites for easier access later. You can even print and share recipes directly from the site!
+Looking for something sweet? You've come to the right place! [2BN-Desserts](https://desserts-2bn.herokuapp.com) is a place to find tasty recipes that will satisfy any sweet tooth. Do you have recipes that you'd like to share as well? Great news! You can create your own free account and add an unlimited number of delicious desserts to share with the world! If you like some of the recipes that other's have submitted, you can save them to your favorites for easier access later. You can even print and share recipes directly from the site!
 
 ---
 
@@ -25,10 +25,9 @@ Looking for something sweet? You've come to the right place! [2BN-Desserts](http
     - [**Back-End Technologies**](#back-end-technologies)
 
 4. [**Testing**](#testing)
-    - [**Automated Testing**](#automated-testing)
-    - [**Manual Testing**](#manual-testing)
     - [**Validators**](#validators)
     - [**Compatibility**](#compatibility)
+    - [**Known Issues**](#known-issues)
 
 5. [**Deployment**](#deployment)
     - [**Local Deployment**](#local-deployment)
@@ -92,10 +91,10 @@ When it comes to dessert, I think of *sweet* and *sugary* treats, so this is why
 
 #### Color Scheme
 
-In keeping with the overall *sweet* theme, I have opted for a bright and colorful color scheme. The standard [Materialize Colors](https://materializecss.com/color.html) work quite well for my project.
+In keeping with the overall *sweet* theme, I have opted for a bright and colorful color scheme. These standard [Materialize Colors](https://materializecss.com/color.html) work quite well for my project.
 
 - ![#9C27B0](https://placehold.it/15/9C27B0/9C27B0) `#9C27B0` (**purple** - *primary color*)
-- ![#F06292](https://placehold.it/15/F06292/F06292) `#F06292` (**pink** - *secondary color*)
+- ![#F06292](https://placehold.it/15/F06292/F06292) `#F06292` (**pink lighten-2** - *secondary color*)
 - ![#2196F3](https://placehold.it/15/2196F3/2196F3) `#2196F3` (**blue** - *tertiary color*)
 - ![#4CAF50](https://placehold.it/15/4CAF50/4CAF50) `#4CAF50` (**green** - *quaternary color*)
 
@@ -104,7 +103,7 @@ In keeping with the overall *sweet* theme, I have opted for a bright and colorfu
 - [Materialize Icons](https://materializecss.com/icons.html)
     - I've retained only a select few of the standard Materialize Icons, as these are built-in to some of their components. However, on mobile devices, clicking buttons like 'close' **X**, the browser thinks you're wanting to perform a search for that text, so I have replaced some of them with Font Awesome icons.
 - [Font Awesome 5.8.1](https://fontawesome.com/)
-    - Although Materialize Icons have nearly 1,000 free-to-use icons, I prefer the look of Font Awesome's icons, and they have more to suit my specific needs for this project. They aren't called using text, but rather classes, so use on mobile devices isn't affected.
+    - Although Materialize Icons have nearly 1,000 free-to-use icons, I prefer the look of Font Awesome's icons, and they have more to suit my specific needs for this project. They aren't displayed using *text*, but rather *classes*, so use on mobile devices isn't affected.
 
 #### Typography
 
@@ -124,7 +123,7 @@ For my wireframes, I have used [Balsamiq Wireframes](https://balsamiq.com/) for 
 - Code Institute have provided all students with free access until the end of 2019.
 - The simplicity and ease of use. I actually found Balsamiq much easier and quicker to use than my former preferred wireframe program, Adobe XD.
 
-All of my wireframes for this project can be found [here](https://github.com/TravelTimN/ci-milestone04-dcd/tree/master/app/wireframes).
+All of my wireframes for this project can be found [here](https://github.com/TravelTimN/ci-milestone04-dcd/tree/master/app/wireframes) in the *wireframes* sub-directory.
 
 ##### back to [top](#table-of-contents)
 
@@ -143,13 +142,13 @@ I've added a few extra features to my project that weren't part of the requireme
 - For existing users, I have more authentication and authorization incorporated to check that the hashed passwords and username match the database.
 
 **Change Password**
-- Users can update their passwords if they'd like from their profile page, after first validating the existing password.
+- Users can update their passwords from their profile page, after first validating their existing password.
 
 **Log Out of Account**
 - Users can easily log out of their account with the click of a button.
 
 **Delete Account**
-- Users can delete their entire account if they'd like, but a warning is provided to first validate their password, and advise that all of their own recipes and favorites will also be deleted.
+- Users can delete their entire account, but a warning is provided to first validate their password, and advise that all of their own recipes will also be deleted, and their favorites removed.
 
 **View All Desserts**
 - On the *desserts* page, all recipes are initially displayed in an alphabetical order, with a standard 12-items per page using pagination.
@@ -232,13 +231,17 @@ In an ideal world, there are a couple items that I would've loved to have comple
 
 ## Testing
 
-_TBD_
+**Creating an Account**
 
-### Automated Testing
+I've created my own personal account, along with the master *Admin* account. In addition to these two primary accounts, I've tested with about 20 fake accounts in order to confirm authentication and validation worked as expected.
 
-_TBD_
+**Add | Edit | Delete a Recipe**
 
-### Manual Testing
+In addition to my personal recipes, I've created about 50 test recipes, mostly *Aaaaa*, *Bbbbb*, *Ccccc* in order to prepare for pagination building. These recipes were created using my actual account, the admin account, and several test accounts.
+
+For several recipes, I've edited minor things like the recipe description, adding additional ingredients or directions, to test the functionality of updating a recipe to the database.
+
+After successfully implementing pagination, I've deleted all of my test recipes. To properly test the admin functionality, I didn't delete all of the recipes as the test-user; several were deleted by the admin account.
 
 **Pagination**
 
@@ -288,6 +291,30 @@ With the Search function, the user has the option to sort, order, and limit the 
     - Show *All* results on single page:
         - No matter how many results are found, if user selects *All*, it will show all results on a single page without Pagination.
 
+**Profile**
+
+As a **standard user**, there are four profile buttons.
+
+- *View your own submitted recipes*:
+    - If a user hasn't submitted anything yet, a cute quote is displayed to encourage the user to submit their own. As aforementioned, I've created and deleted several recipes to test this functionality works when logged in as any user.
+- *View recipes you've saved*:
+    - This can be the user's own recipes, or recipes submitted by other users. Again, if the user hasn't yet saved anything to their favorites, then a cute quote is displayed to encourage them to check out some of the delicious desserts that others have already submitted. I have saved and removed dozens of recipes in my test accounts and my live accounts in order to test this functionality works perfectly.
+- *Change your password*:
+    - Users can change their password, but will first need to validate their current password for authentication. Along with my test accounts, I constantly changed the passwords to ensure everything was successful.
+- *Delete account*:
+    - Users can delete their account entirely, and will need to confirm deletion by inputting their password for verification. A prompt is shown to warn the user that their submitted recipes and anything they've saved will also be removed permanently. When I was done testing with my test accounts, I deleted them using this function without any problems. Some of these were deleted using my admin account though, since admin can delete recipes and/or users where applicable.
+
+As the **Admin**, the first three buttons are identical to a standard user. The fourth button however, is purely for the admin profile, which can delete users if required. Some of the test accounts that I had were deleted by the admin account to test this functionality. It will find all recipes that the user submitted and remove them, pull any 'likes' on those recipes, find all recipes that the user saved and decrement their 'likes' by -1, and finally remove the user entirely from the database.
+
+**Printing a Recipe**
+
+Some people like to print things still, especially recipes that they may want to save in their kitchen cabinet (I speak from person experience as a baker). There's a lot of fluff built into the page that is purely for visual purposes, not needed for a printed recipe, which just wastes ink and paper. I tested numerous recipes and the print function, to ensure everything was being stripped out completely except the important things: **a)** the recipe title, **b)** the ingredients list, and **c)** the directions required.
+
+**Share a Recipe**
+
+I wanted to incorporate a way to share the recipe, without having any social media imbedded links, so *Copy to Clipboard* was implemented. This was tested on a lot of the recipes. Eventually I 'broke' the code by refactoring some elements later in the development stage, but due to the numerous testing I did after each commit, it was quickly found and fixed.
+
+
 ### Validators
 
 **HTML**
@@ -319,13 +346,13 @@ With the Search function, the user has the option to sort, order, and limit the 
     Function with the largest signature take **0** arguments, while the median is **0**.
     Largest function has **41** statements in it, while the median is **1**.
     The most complex function has a cyclomatic complexity value of **10** while the median is **2**."
-    Six undefined variables:
-        - `$` (141 times)
-        - `M` (4 times)
+    Two undefined variables:
+        - `$` (141 times - this is for jQuery)
+        - `M` (4 times - this is for Materialize)
 - [JSesprima](http://esprima.org/demo/validate.html)
     - "Code is syntactically valid."
 - [Beautify Tools](http://beautifytools.com/javascript-validator.php)
-    - `M` is not defined. (4 times)
+    - `M` is not defined. (4 times - for Materialize)
 
 **Python**
 - [PEP8 Online](http://pep8online.com/)
@@ -334,6 +361,15 @@ With the Search function, the user has the option to sort, order, and limit the 
 ### Compatibility
 
 _TBD_
+
+### Known Issues
+
+During development, I discovered two issues after committing to GitHub. For both of these bugs, I opened and *issue* on GitHub so I could come back and properly fix them.
+
+- **[Flaw when updating a recipe to database](https://github.com/TravelTimN/ci-milestone04-dcd/issues/1)**
+    - Found the bug, refactored my code, and pushed.
+- **[404 + 500 error handlers (fault)](https://github.com/TravelTimN/ci-milestone04-dcd/issues/8)**
+    - Helpful recommendation from my mentor to read about *Flask Blueprints + Error-Handlers*. Eventually I had to create a catch-all generic error handler.
 
 ##### back to [top](#table-of-contents)
 
@@ -360,7 +396,6 @@ _TBD_
 ### Content
 
 - [*"How to Write a Git Commit Message"*](https://chris.beams.io/posts/git-commit/) by **Chris Beams** (*as recommended by Code Institute assessors on previous projects*)
-
 - Converting **Cups** to **Grams** : [ErrensKitchen](https://www.errenskitchen.com/cooking-conversions/cups-to-grams-and-oz/)
 
 ### Media
@@ -368,36 +403,24 @@ _TBD_
 Sources of the images used on this site:
 
 - **favicon** : [Clipart-Library](http://clipart-library.com/kawaii-cookie-cliparts.html)
-
 - **recipe placeholder image** : [Pixabay](https://pixabay.com/photos/waffles-waffles-bake-ingredients-2190961/)
-
 - **profile avatars** : [123rf](https://www.123rf.com/photo_40610865_stock-vector-cute-kawaii-dessert-cake-macaroon-ice-cream-icons.html)
-
 - **background image** : [vecteezy](https://www.vecteezy.com/vector-art/113872-polka-dots-vector-pattern)
-
 - **error 404 | 500 images** :
     - [freepik - 0](https://www.freepik.com/free-vector/kawaii-food-collection_4237785.htm)
     - [freepik - 4](https://www.freepik.com/premium-vector/number-four-kawaii-comic-character_2632836.htm)
     - [freepik - 5](https://www.freepik.com/premium-vector/number-five-kawaii-comic-character_2632838.htm)
-
 - **mockup image in README** : [techsini](https://techsini.com/multi-mockup/)
 
 ### Code
 
 - Suggested **.gitignore** files from [GitHub/gitignore](https://github.com/github/gitignore)
-
 - **Custom Toast** on *page load* (instead of **Materialize Toasts** with an *onclick* event) for my Flask Flash Messages: [StackOverflow](https://stackoverflow.com/questions/43345678/how-to-display-the-snack-bar-on-page-load)
-
 - **Custom list item** attributes (instead of standard bullet points) for my recipe *Directions*: [CSS Tricks](https://css-tricks.com/custom-list-number-styling/)
-
 - **Auto-Open '.card-reveal'** on *:hover* - [StackOverflow](https://stackoverflow.com/questions/36290110/open-card-reveal-content-by-hover-the-activator-in-materializecss)
-
 - **Print** only certain elements - [StackOverflow](https://stackoverflow.com/a/2618980)
-
 - **Copy to Clipboard** - [w3schools](https://www.w3schools.com/howto/howto_js_copy_clipboard.asp)
-
 - **Enforce Validation on Materialize Dropdowns** - [StackOverflow](https://stackoverflow.com/questions/34248898/how-to-validate-select-option-for-a-materialize-dropdown)
-
 - **Flask Blueprints walkthrough** - [Corey Schafer on YouTube](https://youtu.be/Wfx4YBzg16s)
 
 ### Acknowledgements
