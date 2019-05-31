@@ -5,7 +5,6 @@ from flask import (
     Blueprint, render_template, redirect,
     request, url_for, flash, session, Markup)
 from werkzeug.security import check_password_hash, generate_password_hash
-from app import mongo
 from app.utils import recipes_collection, users_collection, get_user_lower
 
 

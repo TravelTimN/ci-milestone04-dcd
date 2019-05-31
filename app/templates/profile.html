@@ -219,7 +219,7 @@
         <ul class="collection">
             {% for user in admin_list %}
             <!-- exclude the admin account! -->
-            {% if user.username != "admin"|lower %}
+            {% if user.username_lower != "admin"|lower %}
             <li class="collection-item avatar">
                 <span class="title font-special bold black-text">
                     <span class="purple-text">{{ user.username }}</span> :

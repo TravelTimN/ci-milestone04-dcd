@@ -16,18 +16,19 @@
                 
                 <!-- Search Input Fields -->
                 <div class="collapsible-body collection collapsible-collection white">
-                    <p>
+                    <div>
                         <h6 class="center-align pink-text text-lighten-2 bold">
                             Search by keyword and/or category, then you may exclude specific recipes with allergens.
                         </h6>
-                    </p>
+                    </div>
                     
                     <div class="row">
                         <!-- Search Keywords -->
                         <div class="input-field col s12 l4">
                             <i class="fas fa-search purple-text material-icons prefix" aria-hidden="true"></i>
-                            <input id="search_keyword" name="search_keyword" type="text" class="form-control validate" autocomplete="off"
-                                pattern="^[\w '.-]{3,50}$" minlength="3" maxlength="50" data-length="50" placeholder="enter search keyword" value="{% if search_keyword_args %}{{ search_keyword_args }}{% endif %}">
+                            <input id="search_keyword" name="search_keyword" type="text" class="form-control validate"
+                                autocomplete="off" pattern="^[\w '.-]{3,50}$" minlength="3" maxlength="50" data-length="50"
+                                placeholder="enter search keyword" value="{% if search_keyword_args %}{{ search_keyword_args }}{% endif %}">
                             <label for="search_keyword">
                                 Keyword <i class="fas fa-question-circle tooltipped" data-position="right" data-tooltip="3-50 alpha characters" aria-hidden="true"></i>
                             </label>
