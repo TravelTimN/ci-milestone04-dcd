@@ -360,7 +360,9 @@ I wanted to incorporate a way to share the recipe, without having any social med
 
 ### Compatibility
 
-_TBD_
+For testing compatibility, I created a testing matrix to test across multiple devices and browsers. The test matrix can be found [here](https://github.com/TravelTimN/ci-milestone04-dcd/blob/master/app/testing/test-matrix.png). A brief overview:
+
+<img src="https://github.com/TravelTimN/ci-milestone04-dcd/blob/master/app/testing/test-matrix.png" alt="Test Matrix" width="800">
 
 ### Known Issues
 
