@@ -215,7 +215,7 @@ In an ideal world, there are a couple items that I would've loved to have comple
     - [Flask Blueprints](http://flask.pocoo.org/docs/1.0/blueprints/) - Used to split the python code for routes.
     - [Flask Talisman](https://github.com/GoogleCloudPlatform/flask-talisman) - Used for security headers (HTTPS vs HTTP).
     - [Jinja 2.10](http://jinja.pocoo.org/docs/2.10/) - Used for templating with Flask.
-    - [Werkzeug 0.14](https://werkzeug.palletsprojects.com/en/0.14.x/) - Used for password hashing, authentication, and authorization.
+    - [Werkzeug 0.16](https://werkzeug.palletsprojects.com/en/0.16.x/) - Used for password hashing, authentication, and authorization.
 - **Heroku**
     - [Heroku](https://www.heroku.com) - Used for app hosting.
 - **Python**    
