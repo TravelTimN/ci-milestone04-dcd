@@ -424,12 +424,13 @@ def desserts_delete(recipe_id):
     Remove the recipe from the collection, pull the recipe from the
     user's recipe list, and pull the recipe from all other users' favorites.
     """
-    recipes_collection.remove({"_id": ObjectId(recipe_id)})
-    users_collection.find_one_and_update(
-        {"username_lower": session["user"].lower()},
+    recipe = get_recipe(recipe_id)
+    author = users_collection.find_one_and_update(
+        {"_id": ObjectId(recipe.get("author"))},
         {"$pull": {"user_recipes": ObjectId(recipe_id)}})
     users_collection.update_many(
         {}, {"$pull": {"user_favs": ObjectId(recipe_id)}})
+    recipes_collection.remove({"_id": ObjectId(recipe_id)})
     flash(Markup(
         f"<i class='fas fa-trash-alt red-text'></i>\
         Your recipe has been deleted."))
