@@ -217,16 +217,20 @@
     <div class="modal-content">
         <h4 class="bold black-text text-shadow-1 font-rye center-align">All Users</h4>
         <ul class="collection">
-            {% for user in admin_list %}
+            {% for admin_list, date_joined in zip_data %}
             <!-- exclude the admin account! -->
-            {% if user.username_lower != "admin"|lower %}
+            {% if admin_list.username_lower != "admin"|lower %}
             <li class="collection-item avatar">
                 <span class="title font-special bold black-text">
-                    <span class="purple-text">{{ user.username }}</span> :
-                    <span class="red-text">{{ user.user_recipes|length }}</span> recipes
+                    <span class="purple-text">{{ admin_list.username }}</span>
+                    <h6>
+                        recipes: <span class="red-text bold">{{ admin_list.user_recipes|length }}</span> |
+                        favorites: <span class="red-text bold">{{ admin_list.user_favs|length }}</span> |
+                        joined: <span class="red-text bold">{{ date_joined }}</span>
+                    </h6>
                 </span>
                 <!-- delete specific user and their recipes -->
-                <a href="{{ url_for('users.admin_delete_user', username=user.username) }}">
+                <a href="{{ url_for('users.admin_delete_user', username=admin_list.username) }}">
                     <i class="fas fa-user-times material-icons black-text text-shadow-1 secondary-content tooltipped"
                         data-position="left" data-tooltip="Delete User Account" aria-hidden="true"></i>
                 </a>
