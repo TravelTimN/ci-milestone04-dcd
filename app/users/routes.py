@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import copy
 import random
 import re
 from flask import (
@@ -6,6 +7,7 @@ from flask import (
     request, url_for, flash, session, Markup)
 from werkzeug.security import check_password_hash, generate_password_hash
 from app.utils import recipes_collection, users_collection, get_user_lower
+from copy import deepcopy
 
 
 # --------------------- #
@@ -166,14 +168,19 @@ def profile(username):
     # get the user's avatar
     user_avatar = get_user_lower(session["user"])["user_avatar"]
     # ADMIN-only: get list of all database users
-    admin_list = users_collection.find().sort([("username", 1)])
+    admin_list = users_collection.find().sort([("_id", 1)])
+    date_joined = [user["_id"].generation_time.date().strftime(
+        "%d %b %Y") for user in deepcopy(admin_list)]
+    zip_data = zip(admin_list, date_joined)
     return render_template(
         "profile.html",
         username=username,
         user_recipes=user_recipes,
         user_favs=user_favs,
         user_avatar=user_avatar,
-        admin_list=admin_list)
+        admin_list=admin_list,
+        date_joined=date_joined,
+        zip_data=zip_data)
 
 
 # ----- CHANGE PASSWORD ----- #
