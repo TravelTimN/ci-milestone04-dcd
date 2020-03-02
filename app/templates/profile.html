@@ -230,10 +230,34 @@
                     </h6>
                 </span>
                 <!-- delete specific user and their recipes -->
-                <a href="{{ url_for('users.admin_delete_user', username=admin_list.username) }}">
+                {% set user_modal = "#modal-admin-delete-user " + admin_list.username %}
+                <!-- setting the modal id to be: #modal-name + loop-index-variable -->
+                <a href="{{ user_modal }}" class="modal-trigger">
                     <i class="fas fa-user-times material-icons black-text text-shadow-1 secondary-content tooltipped"
                         data-position="left" data-tooltip="Delete User Account" aria-hidden="true"></i>
                 </a>
+                <!-- nested modal within bottom-sheet modal -->
+                <!-- |replace # from user_modal with nothing, so proper modal-id is called -->
+                <div id="{{ user_modal|replace('#', '') }}" class="modal">
+                    {% set extracted_user = user_modal|replace('#modal-admin-delete-user ', '') %}
+                    <div class="modal-content">
+                        <h4 class="red-text bold upper">Confirm Deletion of<br>
+                            <span class="purple-text font-special bold">{{ extracted_user }}</span>
+                        </h4>
+                        <h5 class="bold">Are you sure you want to delete this user?</h5>
+                        <p class="grey-text bold">This action cannot be undone.</p>
+                    </div>
+                    <div class="modal-footer center-align">
+                        <a class="waves-effect waves-purple red btn text-shadow-2 upper"
+                            href="{{ url_for('users.admin_delete_user', username=extracted_user) }}">
+                            <i class="far fa-trash-alt material-icons right" aria-hidden="true"></i>Yes
+                        </a>
+                        <a class="modal-close waves-effect waves-yellow green btn text-shadow-2 upper">
+                            <i class="fas fa-reply material-icons right" aria-hidden="true"></i>No
+                        </a>
+                    </div>
+                </div>
+                <!-- end of nested modal -->
             </li>
             {% endif %}
             {% endfor %}
