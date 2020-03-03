@@ -99,12 +99,15 @@
             <div class="input-field col s12">
                 <i class="fas fa-image purple-text material-icons prefix" aria-hidden="true"></i>
                 <input id="img_src" name="img_src" class="validate" type="url" minlength="15"
-                    placeholder="Recipe Photo URL" pattern="https?://.+" autocomplete="off">
+                    placeholder="Recipe Photo URL" pattern="https?:\/\/.+.(jpg|jpeg|gif|bmp|png|tiff)" autocomplete="off">
                 <label for="img_src">optional
                     <i class="fas fa-question-circle tooltipped" data-position="right"
                         data-tooltip="If you don't have one, we'll add one<br>for you based on your dessert category!" aria-hidden="true"></i>
                 </label>
+                <h5 id="img_error" class="red-text bold center-align"></h5>
             </div>
+
+            <div id="img_new" class="col s12 center-align"></div>
 
         </div>
 
