@@ -389,7 +389,7 @@ footer {
 }
 
 .ing-dir h5 {
-  letter-spacing: 0.25em;
+    letter-spacing: 0.25em;
 }
 
 .ing-dir-divider {
@@ -398,6 +398,12 @@ footer {
 
 .recipe-card .ing-dir {
     padding: 0 0.75rem;
+}
+
+#recipe-img-small {
+    height: 20vh;
+    max-width: 60vw;
+    margin: 0 auto;
 }
 
 .user-buttons a {
