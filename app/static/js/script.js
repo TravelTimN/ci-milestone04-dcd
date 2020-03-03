@@ -430,8 +430,52 @@ $(document).ready(function () {
 
     /*
     ------------------------------------------------
+        Show image if valid on entry
+    ------------------------------------------------
+    */
+    // on image url source focus-out
+    $("input#img_src.validate").blur(function () {
+        // show error if invalid image type / url
+        if ($("input#img_src.validate").hasClass("invalid")) {
+            $("#img_error").html(`Invalid Image URL <a id="clearUrl" class="btn btn-small red text-shadow-2">Fix Error?</a>`);
+            // fix error to remove invalid text/class for submit
+            $("#clearUrl").click(function () {
+                $("input#img_src.validate").val("").focusout().removeClass("invalid");
+                $("#img_error").text("");
+            });
+        } else {
+            $("#img_error").empty();
+        }
+        // update picture based on category
+        let dessertCategory;
+        if ($("#dessert_type option:selected").text() == "Dessert Category") {
+            dessertCategory = "other-desserts";
+        } else {
+            dessertCategory = $("#dessert_type option:selected").text().replace(" + ", "-").replace(" + ", "-").replace(" ", "-").toLowerCase();
+        }
+        // add image tag, with fallback option for dessert-category default image
+        $("#img_new").empty().prepend(`<img id="recipe-img-small" src="${$(this).val()}" onError="this.onerror=null;this.src='../static/img/desserts/${dessertCategory}.png';">`);
+    });
+
+    // on dessert-type change
+    $("#dessert_type").change(function () {
+        $("input#img_src.validate").focus(); // focus back on img_src url to check if already a valid image
+        let dessertCategory;
+        if ($("#dessert_type option:selected").text() == "Dessert Category") {
+            dessertCategory = "other-desserts";
+        } else {
+            dessertCategory = $("#dessert_type option:selected").text().replace(" + ", "-").replace(" + ", "-").replace(" ", "-").toLowerCase();
+        }
+        // add image tag, with fallback option for dessert-category default image
+        $("#img_new").empty().prepend(`<img id="recipe-img-small" src="${$(this).val()}" onError="this.onerror=null;this.src='../static/img/desserts/${dessertCategory}.png';">`);
+    });
+
+
+    /*
+    ------------------------------------------------
         Current year for 'Copyright' in <footer>
-    ------------------------------------------------*/
+    ------------------------------------------------
+    */
     $("#year").html(new Date().getFullYear());
 
 
