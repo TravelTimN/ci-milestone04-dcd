@@ -400,7 +400,7 @@ footer {
     padding: 0 0.75rem;
 }
 
-#recipe-img-small {
+.recipe-img-small {
     height: 20vh;
     max-width: 60vw;
     margin: 0 auto;
@@ -770,7 +770,7 @@ input[type=checkbox]:checked:not(:disabled).tabbed:focus~.lever::before {
         margin: 0.75rem auto;
     }
 
-    #recipe-img-small {
+    .recipe-img-small {
         height: 10em;
         max-width: 19em;
         margin: 0 auto;

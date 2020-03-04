@@ -437,11 +437,13 @@ $(document).ready(function () {
     $("input#img_src.validate").blur(function () {
         // show error if invalid image type / url
         if ($("input#img_src.validate").hasClass("invalid")) {
-            $("#img_error").html(`Invalid Image URL <a id="clearUrl" class="btn btn-small red text-shadow-2">Fix Error?</a>`);
+            $("#img_error").html(`Invalid Image URL Type<br>
+                <small>.jpg .jpeg .gif .bmp .png .tiff</small><br>
+                <a id="clearUrl" class="btn btn-small red text-shadow-2">Fix Error?</a>`);
             // fix error to remove invalid text/class for submit
             $("#clearUrl").click(function () {
                 $("input#img_src.validate").val("").focusout().removeClass("invalid");
-                $("#img_error").text("");
+                $("#img_error").empty();
             });
         } else {
             $("#img_error").empty();
@@ -454,7 +456,7 @@ $(document).ready(function () {
             dessertCategory = $("#dessert_type option:selected").text().replace(" + ", "-").replace(" + ", "-").replace(" ", "-").toLowerCase();
         }
         // add image tag, with fallback option for dessert-category default image
-        $("#img_new").empty().prepend(`<img id="recipe-img-small" src="${$(this).val()}" onError="this.onerror=null;this.src='../static/img/desserts/${dessertCategory}.png';">`);
+        $("#img_new").empty().prepend(`<img class="recipe-img-small" src="${$(this).val()}" onError="this.onerror=null;this.src='../../../static/img/desserts/${dessertCategory}.png';">`);
     });
 
     // on dessert-type change
@@ -467,7 +469,7 @@ $(document).ready(function () {
             dessertCategory = $("#dessert_type option:selected").text().replace(" + ", "-").replace(" + ", "-").replace(" ", "-").toLowerCase();
         }
         // add image tag, with fallback option for dessert-category default image
-        $("#img_new").empty().prepend(`<img id="recipe-img-small" src="${$(this).val()}" onError="this.onerror=null;this.src='../static/img/desserts/${dessertCategory}.png';">`);
+        $("#img_new").empty().prepend(`<img class="recipe-img-small" src="${$(this).val()}" onError="this.onerror=null;this.src='../../../static/img/desserts/${dessertCategory}.png';">`);
     });
 
 
