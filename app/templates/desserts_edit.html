@@ -2,6 +2,8 @@
 {% block title %}Tweaking the Taste of {{ recipe.recipe_name }} | {% endblock %}
 {% block content %}
 
+{% if session.user %}
+<!-- user must be logged in -->
 <form action="{{ url_for('recipes.desserts_edit', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}" method="POST">
 
     <div class="container-75">
@@ -370,5 +372,17 @@
     </div>
 
 </form>
+{% else %}
+<!-- user is not logged-in -->
+<div class="container-75 white recipe-card">
+    <h1 class="center-align bold font-cabin-sketch">
+        Please 
+        <a class="pink-text text-lighten-2 text-shadow-2" href="{{ url_for('users.login') }}">
+            Log In
+        </a>
+        to edit this recipe!
+    </h1>
+</div>
+{% endif %}
 
 {% endblock %}
