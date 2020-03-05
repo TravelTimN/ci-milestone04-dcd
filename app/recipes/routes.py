@@ -14,6 +14,19 @@ from app.utils import (
     get_recipe, get_user_lower)
 
 
+# ----- EMAIL SETTINGS ----- #
+import os
+import smtplib  # SMTP protocol client (sending emails)
+from email.mime.multipart import MIMEMultipart  # MIME (sending emails)
+from email.mime.text import MIMEText  # Multipurpose Internet Mail Extensions
+if os.path.exists(".env"):
+    from dotenv import load_dotenv
+    load_dotenv()
+MY_ADDRESS = os.getenv("MY_ADDRESS")
+SEND_TO = os.getenv("SEND_TO")
+PASSWORD = os.getenv("PASSWORD")
+
+
 # --------------------- #
 #    Flask Blueprint    #
 # --------------------- #
@@ -103,6 +116,22 @@ def desserts_new():
             recipes_collection.update_one(
                 {"_id": newID.inserted_id},
                 {"$inc": {"user_favs": 1}})
+
+        # send me an email when a recipe gets added (personal backup)
+        msg = MIMEMultipart()
+        msg["From"] = MY_ADDRESS
+        msg["To"] = SEND_TO
+        msg["Subject"] = "2BN-Desserts | New Recipe Added: " + slugUrl
+        formatEmail = "<br><br>".join(["%s: %s" % kv for kv in submit.items()])
+        msg.attach(MIMEText(str(formatEmail), "html"))  # must convert to str()
+        smtpserver = smtplib.SMTP("smtp.gmail.com", 587)  # access server
+        smtpserver.ehlo()  # identify ourselves to smtp gmail client
+        smtpserver.starttls()  # secure our email with tls encryption
+        smtpserver.ehlo()  # re-identify ourselves as an encrypted connection
+        smtpserver.login(MY_ADDRESS, PASSWORD)  # login to the server
+        smtpserver.send_message(msg)  # send the message
+        smtpserver.quit()  # quit the server
+
         return redirect(url_for(
             "recipes.desserts_recipe",
             recipe_id=newID.inserted_id,
@@ -124,7 +153,7 @@ def desserts():
     allergen_list = dropdown_allergens()
     dessert_list = dropdown_dessert_type()
 
-	# arg variables
+    # arg variables
     args = request.args.get
     args_list = request.args.getlist
 
@@ -384,7 +413,7 @@ def desserts_edit(recipe_id, slugUrl):
         # slugify url to be user-friendly
         slugUrl = slugify(request.form.get("recipe_name"))
         # push form data to recipe on submit
-        recipes_collection.update({"_id": ObjectId(recipe_id)}, {
+        submit = {
             "recipe_name": request.form.get("recipe_name"),
             "recipe_slug": slugUrl,
             "description": request.form.get("description"),
@@ -405,10 +434,27 @@ def desserts_edit(recipe_id, slugUrl):
             "last_edit": last_edit,
             "views": get_views,
             "user_favs": get_user_favs
-        })
+        }
+        recipes_collection.update({"_id": ObjectId(recipe_id)}, submit)
         flash(Markup(
             f"<i class='far fa-check-circle green-text'></i>\
             Your recipe has been updated successfully!"))
+
+        # send me an email when a recipe gets updated (personal backup)
+        msg = MIMEMultipart()
+        msg["From"] = MY_ADDRESS
+        msg["To"] = SEND_TO
+        msg["Subject"] = "2BN-Desserts | Recipe Updated: " + slugUrl
+        formatEmail = "<br><br>".join(["%s: %s" % kv for kv in submit.items()])
+        msg.attach(MIMEText(str(formatEmail), "html"))  # must convert to str()
+        smtpserver = smtplib.SMTP("smtp.gmail.com", 587)  # access server
+        smtpserver.ehlo()  # identify ourselves to smtp gmail client
+        smtpserver.starttls()  # secure our email with tls encryption
+        smtpserver.ehlo()  # re-identify ourselves as an encrypted connection
+        smtpserver.login(MY_ADDRESS, PASSWORD)  # login to the server
+        smtpserver.send_message(msg)  # send the message
+        smtpserver.quit()  # quit the server
+
         return redirect(url_for(
             "recipes.desserts_recipe",
             recipe_id=recipe_id,
@@ -416,24 +462,38 @@ def desserts_edit(recipe_id, slugUrl):
 
 
 # ----- DELETE ----- #
-@recipes.route("/desserts/<recipe_id>")
-def desserts_delete(recipe_id):
+@recipes.route("/desserts/<recipe_id>/<slugUrl>/delete")
+def desserts_delete(recipe_id, slugUrl):
     """
     Delete recipe from database.
 
     Remove the recipe from the collection, pull the recipe from the
     user's recipe list, and pull the recipe from all other users' favorites.
     """
-    recipe = get_recipe(recipe_id)
-    author = users_collection.find_one_and_update(
-        {"_id": ObjectId(recipe.get("author"))},
-        {"$pull": {"user_recipes": ObjectId(recipe_id)}})
-    users_collection.update_many(
-        {}, {"$pull": {"user_favs": ObjectId(recipe_id)}})
-    recipes_collection.remove({"_id": ObjectId(recipe_id)})
-    flash(Markup(
-        f"<i class='fas fa-trash-alt red-text'></i>\
-        Your recipe has been deleted."))
+    if "user" in session:  # users must be logged in
+        recipe = get_recipe(recipe_id)
+        session_user = get_user_lower(session["user"])["username"]
+        recipe_author = users_collection.find_one(
+            {"_id": ObjectId(recipe.get("author"))})["username"]
+        # check that someone isn't brute-forcing the url to delete recipes
+        if session_user == recipe_author or session_user == "Admin":
+            author = users_collection.find_one_and_update(
+                {"_id": ObjectId(recipe.get("author"))},
+                {"$pull": {"user_recipes": ObjectId(recipe_id)}})
+            users_collection.update_many(
+                {}, {"$pull": {"user_favs": ObjectId(recipe_id)}})
+            recipes_collection.remove({"_id": ObjectId(recipe_id)})
+            flash(Markup(
+                f"<i class='fas fa-trash-alt red-text'></i>\
+                Your recipe has been deleted."))
+        else:
+            flash(Markup(
+                f"<i class='far fa-sad-tear yellow-text'></i>\
+                You are not authorized to delete this recipe!"))
+    else:  # no user in session
+        flash(Markup(
+            f"<i class='far fa-sad-tear yellow-text'></i>\
+            You must be logged in to delete this recipe."))
     return redirect(url_for("recipes.desserts"))
 
 
