@@ -60,7 +60,7 @@
                         </div>
                         <div class="modal-footer center-align">
                             <a class="waves-effect waves-purple red btn text-shadow-2 upper"
-                                href="{{ url_for('recipes.desserts_delete', recipe_id=recipe._id) }}">
+                                href="{{ url_for('recipes.desserts_delete', recipe_id=recipe._id, slugUrl=recipe.recipe_slug) }}">
                                 <i class="far fa-trash-alt material-icons right" aria-hidden="true"></i>Yes
                             </a>
                             <a class="modal-close waves-effect waves-yellow green btn text-shadow-2 upper">
