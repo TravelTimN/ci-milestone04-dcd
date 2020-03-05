@@ -487,7 +487,16 @@ This site is currently deployed on [Heroku](https://www.heroku.com/) using the *
     - **MY_ADDRESS** : `<your own email address>`
     - **SEND_TO** : `<recipient email address>`
     - **PASSWORD** : `<you own email password>`
-5. Your app should be successfully deployed to Heroku at this point.
+5. Your app should be successfully deployed to Heroku at this point. :tada:
+
+**NOTE** : You might receive errors sending emails if you have your Google Account setup with **2-Factor Authentication**, **Less Secure Apps** disabled, or **DisplayUnlockCaptcha** disabled.
+
+**Plausible Fix** *(which has worked for me)*
+- Turn Off [2-Factor Authentication](https://myaccount.google.com/signinoptions/two-step-verification/enroll-welcome)
+- Turn On [Less Secure Apps](https://myaccount.google.com/lesssecureapps)
+- Turn On [DisplayUnlockCaptcha](https://accounts.google.com/DisplayUnlockCaptcha)
+
+I would recommend to create a secondary Google account for this purpose, instead of using your actual account (keep your actual account secure!). This is purely used for sending emails as a backup when new recipes are created or updated, in case the database somehow accidentally has an item deleted.
 
 
 ##### back to [top](#table-of-contents)
