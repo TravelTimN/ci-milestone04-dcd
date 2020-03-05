@@ -1,6 +1,6 @@
 # [2BN-Desserts](https://desserts-2bn.herokuapp.com)
 
-<img src="https://github.com/TravelTimN/ci-milestone04-dcd/blob/master/app/wireframes/mockups.png" alt="2BN-Desserts" width="800">
+<img src="https://github.com/TravelTimN/ci-milestone04-dcd/blob/master/app/wireframes/mockups.png?raw=true" alt="2BN-Desserts" width="800">
 
 Looking for something sweet? You've come to the right place! [2BN-Desserts](https://desserts-2bn.herokuapp.com) is a place to find tasty recipes that will satisfy any sweet tooth. Do you have recipes that you'd like to share as well? Great news! You can create your own free account and add an unlimited number of delicious desserts to share with the world! If you like some of the recipes that other's have submitted, you can save them to your favorites for easier access later. You can even print and share recipes directly from the site!
 
@@ -51,30 +51,30 @@ I have decided to build a desserts-only project, since I personally bake quite r
 
 "**_As a user, I would like to_** _____________________________"
 
-- *view the site* from **any device** *(mobile, tablet, desktop)*. :white_check_mark:
-- *view all recipes* as a **Guest**. :white_check_mark:
-- *filter recipes* by **dessert type**. :white_check_mark:
-- *filter recipes* by **allergen**. :white_check_mark:
-- *sort/order recipes* by **author, favorites, last updated, recipe name, total time, and views**. :white_check_mark:
-- **limit** the number of *recipes* to display, or see *all recipes*. :white_check_mark:
-- *create* my **own profile**. :white_check_mark:
-- *add* my **own recipes**. :white_check_mark:
-- *edit* my **own recipes**. :white_check_mark:
-- *delete* my **own recipes**. :white_check_mark:
-- be able to **log out**. :white_check_mark:
-- be able to **change my password**. :white_check_mark:
-- be able to **delete my account**. :white_check_mark:
-- *save recipes* in **my favorites**. :white_check_mark:
-- *remove recipes* from **my favorites**. :white_check_mark:
-- *see instructions* on how to **add a recipe**. :white_check_mark:
-- **print** a *particular recipe*. :white_check_mark:
-- **share** a *particular recipe*. :white_check_mark:
-- *see* **recommended recipes** after *viewing a recipe*. :white_check_mark:
-- *see* the **total views** of *a recipe*. :white_check_mark:
-- *see* how many people **like** my *recipes*. :white_check_mark:
-- *see* a cooking/baking **conversion table**. :white_check_mark:
-
 :white_check_mark: *denotes items that have been successfully implemented*
+
+- :white_check_mark: *view the site* from **any device** *(mobile, tablet, desktop)*.
+- :white_check_mark: *view all recipes* as a **Guest**.
+- :white_check_mark: *filter recipes* by **dessert type**.
+- :white_check_mark: *filter recipes* by **allergen**.
+- :white_check_mark: *sort/order recipes* by **author, favorites, last updated, recipe name, total time, and views**.
+- :white_check_mark: **limit** the number of *recipes* to display, or see *all recipes*.
+- :white_check_mark: *create* my **own profile**.
+- :white_check_mark: *add* my **own recipes**.
+- :white_check_mark: *edit* my **own recipes**.
+- :white_check_mark: *delete* my **own recipes**.
+- :white_check_mark: be able to **log out**.
+- :white_check_mark: be able to **change my password**.
+- :white_check_mark: be able to **delete my account**.
+- :white_check_mark: *save recipes* in **my favorites**.
+- :white_check_mark: *remove recipes* from **my favorites**.
+- :white_check_mark: *see instructions* on how to **add a recipe**.
+- :white_check_mark: **print** a *particular recipe*.
+- :white_check_mark: **share** a *particular recipe*.
+- :white_check_mark: *see* **recommended recipes** after *viewing a recipe*.
+- :white_check_mark: *see* the **total views** of *a recipe*.
+- :white_check_mark: *see* how many people **like** my *recipes*.
+- :white_check_mark: *see* a cooking/baking **conversion table**.
 
 ### Design
 
@@ -120,7 +120,7 @@ In keeping with the overall *sweet* theme, I have opted for a bright and colorfu
 ### Wireframes
 
 For my wireframes, I have used [Balsamiq Wireframes](https://balsamiq.com/) for a couple reasons:
-- Code Institute have provided all students with free access until the end of 2019.
+- Code Institute have provided all students with free access until the end of ~~2019~~ 2020.
 - The simplicity and ease of use. I actually found Balsamiq much easier and quicker to use than my former preferred wireframe program, Adobe XD.
 
 All of my wireframes for this project can be found [here](https://github.com/TravelTimN/ci-milestone04-dcd/tree/master/app/wireframes) in the *wireframes* sub-directory.
@@ -371,7 +371,7 @@ To ensure a broad range of users can successfully use this site, I tested it acr
 
 For testing compatibility, I created a testing matrix to test across multiple devices and browsers. The test matrix can be found [here](https://github.com/TravelTimN/ci-milestone04-dcd/blob/master/app/testing/test-matrix.png). A brief overview:
 
-<img src="https://github.com/TravelTimN/ci-milestone04-dcd/blob/master/app/testing/test-matrix.png" alt="Test Matrix" width="800">
+<img src="https://github.com/TravelTimN/ci-milestone04-dcd/blob/master/app/testing/test-matrix.png?raw=true" alt="Test Matrix" width="800">
 
 ### Known Issues
 
@@ -484,6 +484,9 @@ This site is currently deployed on [Heroku](https://www.heroku.com/) using the *
     - **PORT** : `8080`
     - **MONGO_URI** : `<link to your Mongo DB>`
     - **SECRET_KEY** : `<your own secret key>`
+    - **MY_ADDRESS** : `<your own email address>`
+    - **SEND_TO** : `<recipient email address>`
+    - **PASSWORD** : `<you own email password>`
 5. Your app should be successfully deployed to Heroku at this point.
 
 
@@ -515,13 +518,18 @@ Sources of the images used on this site:
 ### Code
 
 - Suggested **.gitignore** files from [GitHub/gitignore](https://github.com/github/gitignore)
-- **Custom Toast** on *page load* (instead of **Materialize Toasts** with an *onclick* event) for my Flask Flash Messages: [StackOverflow](https://stackoverflow.com/questions/43345678/how-to-display-the-snack-bar-on-page-load)
-- **Custom list item** attributes (instead of standard bullet points) for my recipe *Directions*: [CSS Tricks](https://css-tricks.com/custom-list-number-styling/)
-- **Auto-Open '.card-reveal'** on *:hover* - [StackOverflow](https://stackoverflow.com/questions/36290110/open-card-reveal-content-by-hover-the-activator-in-materializecss)
-- **Print** only certain elements - [StackOverflow](https://stackoverflow.com/a/2618980)
-- **Copy to Clipboard** - [w3schools](https://www.w3schools.com/howto/howto_js_copy_clipboard.asp)
-- **Enforce Validation on Materialize Dropdowns** - [StackOverflow](https://stackoverflow.com/questions/34248898/how-to-validate-select-option-for-a-materialize-dropdown)
-- **Flask Blueprints walkthrough** - [Corey Schafer on YouTube](https://youtu.be/Wfx4YBzg16s)
+- **Custom Toast** on *page load* (instead of **Materialize Toasts** with an *onclick* event) for my Flask Flash Messages : [StackOverflow](https://stackoverflow.com/questions/43345678/how-to-display-the-snack-bar-on-page-load)
+- **Custom list item** attributes (instead of standard bullet points) for my recipe *Directions* : [CSS Tricks](https://css-tricks.com/custom-list-number-styling/)
+- **Auto-Open '.card-reveal'** on *:hover* : [StackOverflow](https://stackoverflow.com/questions/36290110/open-card-reveal-content-by-hover-the-activator-in-materializecss)
+- **Print** only certain elements : [StackOverflow](https://stackoverflow.com/a/2618980)
+- **Copy to Clipboard** : [w3schools](https://www.w3schools.com/howto/howto_js_copy_clipboard.asp)
+- **Enforce Validation on Materialize Dropdowns** : [StackOverflow](https://stackoverflow.com/questions/34248898/how-to-validate-select-option-for-a-materialize-dropdown)
+- **Flask Blueprints walkthrough** : [Corey Schafer on YouTube](https://youtu.be/Wfx4YBzg16s)
+- **Sending Emails using Python** :
+    - [freeCodeCamp](https://www.freecodecamp.org/news/send-emails-using-code-4fcea9df63f/)
+    - [StackOverflow](https://stackoverflow.com/a/17596848)
+    - [StackOverflow](https://stackoverflow.com/q/16512592)
+    - [StackOverflow](https://stackoverflow.com/a/8519646)
 
 ### Acknowledgements
 
