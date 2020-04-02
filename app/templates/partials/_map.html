@@ -31,7 +31,8 @@
     {% for visitor in visitor_list %}
         // set each marker to the country flag (https://www.countryflags.io/)
         flagIcon = new L.Icon({
-            iconUrl: "https://www.countryflags.io/{{ visitor.iso2 }}/flat/24.png"
+            iconUrl: "https://www.countryflags.io/{{ visitor.iso2 }}/flat/24.png",
+            iconAnchor: [12, 18],
         });
         marker = L.marker([{{ visitor.latitude }}, {{ visitor.longitude }}])
             .bindTooltip("IP: {{ visitor.ip }}<br>{{ visitor.city }}, {{ visitor.country }}")
