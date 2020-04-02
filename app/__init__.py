@@ -54,6 +54,12 @@ def create_app(config_class=Config):
             '*.jquery.com',
             '*.cloudflare.com',
             'unpkg.com',
+        ],
+        'script-src-elem': [
+            '\'unsafe-inline\' \'self\'',
+            '*.jquery.com',
+            '*.cloudflare.com',
+            'unpkg.com',
         ]
     }
     # force HTTPS security header using Flask-Talisman
