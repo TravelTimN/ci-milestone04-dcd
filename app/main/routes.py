@@ -24,15 +24,23 @@ def home():
         [recipe for recipe in recipes_collection.aggregate([
             {"$sample": {"size": 8}}])])
 
-    """ Add site user to list of visitors. """
+    """
+        Get visitor's IP and Location for Admin tracking.
+        Get last item in 'X-Forwarded-For' list to avoid
+        getting the Heroku server IP address instead
+        https://stackoverflow.com/a/37061471
+    """
+    # https://stackoverflow.com/a/35123097 (excellent!!)
+    # http://httpbin.org/ip | https://ipinfo.io/<ip> | http://icanhazip.com
+    # https://ipapi.co/json/ or https://ipapi.co/<ip>/json/
     client_ip = request.access_route[-1]
     if not os.environ.get("DEVELOPMENT"):
-        # http://httpbin.org/ip
         url = "https://ipapi.co/" + client_ip + "/json/"
         response = requests.get(url).json()
         if response:
             # check if existing ip visitor already exists
-            if visitors_collection.count_documents({"ip": client_ip}, limit=1) == 0:
+            if visitors_collection.count_documents(
+                    {"ip": client_ip}, limit=1) == 0:
                 submit = {
                     "ip": client_ip,
                     "city": response["city"],
@@ -45,4 +53,4 @@ def home():
                 }
                 visitors_collection.insert_one(submit)
 
-    return render_template("index.html", carousel=carousel, ip=client_ip)
+    return render_template("index.html", carousel=carousel)

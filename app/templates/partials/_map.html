@@ -18,18 +18,23 @@
     // generate the map
     let map = L.map("map", {
         layers: L.tileLayer("http://services.arcgisonline.com/arcgis/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}"),
-        center: [23.5, 12],
-        zoom: 2,
         maxBounds: [[-75, -225], [90, 225]],
-        maxBoundsViscosity: 0.5
+        maxBoundsViscosity: 0.5,
+        minZoom: 2,
+        maxZoom: 18
     });
 
-    // add marker per visitor to the map
+    // add each visitor marker to the map
+    let markers = [];
+    let marker;
     {% for visitor in visitor_list %}
-        L.marker([{{ visitor.latitude }}, {{ visitor.longitude }}])
-            .addTo(map)
-            .bindTooltip("IP: {{ visitor.ip }}<br>{{ visitor.city }}, {{ visitor.country }}");
+        marker = L.marker([{{ visitor.latitude }}, {{ visitor.longitude }}])
+            .bindTooltip("IP: {{ visitor.ip }}<br>{{ visitor.city }}, {{ visitor.country }}")
+            .addTo(map);
+        markers.push(marker);
     {% endfor %}
+    let featureGroup = L.featureGroup(markers);
+    map.fitBounds(featureGroup.getBounds());
 
 </script>
 {% endblock %}
