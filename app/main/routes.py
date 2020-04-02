@@ -28,11 +28,11 @@ def home():
 
     # http://httpbin.org/ip
     client_ip = request.access_route[-1]
-    if not ip.startswith("192."):
+    if not client_ip.startswith("192."):
     # print(ip)
     # if request.headers.get("X-Forwarded-For"):
     #     ip = request.headers.getlist("X-Forwarded-For")[-1]
-        url = "https://ipapi.co/" + ip + "json/"
+        url = "https://ipapi.co/" + client_ip + "json/"
     # # else:
     #     # ip = request.remote_addr
     # # print(ip)
@@ -42,9 +42,9 @@ def home():
         if response:
     #         # ip = response["ip"]
     #         # check if existing ip visitor already exists
-            if visitors_collection.count_documents({"ip": ip}, limit=1) == 0:
+            if visitors_collection.count_documents({"ip": client_ip}, limit=1) == 0:
                 submit = {
-                    "ip": ip,
+                    "ip": client_ip,
                     "city": response["city"],
                     "region": response["region"],
                     "country": response["country_name"],
