@@ -24,9 +24,15 @@ def home():
             {"$sample": {"size": 8}}])])
 
     """ Add site user to list of visitors. """
-    response = requests.get("https://ipapi.co/json/").json()  # get ip data
+    # http://httpbin.org/ip
+    if request.headers.getlist("X-Forwarded-For"):
+        ip = request.headers.getlist("X-Forwarded-For")[-1]
+    else:
+        ip = request.remote_addr
+    response = requests.get("https://ipapi.co/" + ip + "json/").json()
+    # print(response)
     if response:
-        ip = response["ip"]
+        # ip = response["ip"]
         # check if existing ip visitor already exists
         if visitors_collection.count_documents({"ip": ip}, limit=1) == 0:
             submit = {
