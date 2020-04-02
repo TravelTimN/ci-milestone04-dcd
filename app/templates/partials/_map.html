@@ -27,14 +27,20 @@
     // add each visitor marker to the map
     let markers = [];
     let marker;
+    let flagIcon;
     {% for visitor in visitor_list %}
+        // set each marker to the country flag (https://www.countryflags.io/)
+        flagIcon = new L.Icon({
+            iconUrl: "https://www.countryflags.io/{{ visitor.iso2 }}/flat/24.png"
+        });
         marker = L.marker([{{ visitor.latitude }}, {{ visitor.longitude }}])
             .bindTooltip("IP: {{ visitor.ip }}<br>{{ visitor.city }}, {{ visitor.country }}")
             .addTo(map);
-        markers.push(marker);
+        markers.push(marker);  // push marker to markers array
+        marker.setIcon(flagIcon);  // set flag icon to marker
     {% endfor %}
     let featureGroup = L.featureGroup(markers);
-    map.fitBounds(featureGroup.getBounds());
+    map.fitBounds(featureGroup.getBounds());  // get bounds of all markers
 
 </script>
 {% endblock %}

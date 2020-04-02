@@ -46,6 +46,8 @@ def home():
                     "city": response["city"],
                     "region": response["region"],
                     "country": response["country_name"],
+                    "iso2": response["country_code"].lower(),
+                    "iso3": response["country_code_iso3"].lower(),
                     "latitude": response["latitude"],
                     "longitude": response["longitude"],
                     "timezone": response["timezone"],
