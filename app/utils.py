@@ -11,6 +11,7 @@ desserts_collection = mongo.db.desserts
 measurements_collection = mongo.db.measurements
 recipes_collection = mongo.db.recipes
 users_collection = mongo.db.users
+visitors_collection = mongo.db.visitors
 
 
 # ---------------------- #

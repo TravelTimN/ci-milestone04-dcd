@@ -6,7 +6,9 @@ from flask import (
     Blueprint, render_template, redirect,
     request, url_for, flash, session, Markup)
 from werkzeug.security import check_password_hash, generate_password_hash
-from app.utils import recipes_collection, users_collection, get_user_lower
+from app.utils import (
+    recipes_collection, users_collection,
+    get_user_lower, visitors_collection)
 from copy import deepcopy
 
 
@@ -167,11 +169,12 @@ def profile(username):
         .sort([("recipe_name", 1)])
     # get the user's avatar
     user_avatar = get_user_lower(session["user"])["user_avatar"]
-    # ADMIN-only: get list of all database users
+    # ADMIN-only: get list of all database users and visitors
     admin_list = users_collection.find().sort([("_id", 1)])
     date_joined = [user["_id"].generation_time.date().strftime(
         "%d %b %Y") for user in deepcopy(admin_list)]
     zip_data = zip(admin_list, date_joined)
+    visitor_list = list(visitors_collection.find())
     return render_template(
         "profile.html",
         username=username,
@@ -180,7 +183,8 @@ def profile(username):
         user_avatar=user_avatar,
         admin_list=admin_list,
         date_joined=date_joined,
-        zip_data=zip_data)
+        zip_data=zip_data,
+        visitor_list=visitor_list)
 
 
 # ----- CHANGE PASSWORD ----- #
