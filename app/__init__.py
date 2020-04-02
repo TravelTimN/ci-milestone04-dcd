@@ -35,6 +35,7 @@ def create_app(config_class=Config):
         'img-src': '*',
         'default-src': [
             '\'unsafe-inline\' \'self\'',
+            '*.herokuapp.com',
             '*.cloudflare.com',
             '*.fontawesome.com',
             '*.googleapis.com',
@@ -43,6 +44,7 @@ def create_app(config_class=Config):
         ],
         'style-src': [
             '\'unsafe-inline\' \'self\'',
+            '*.herokuapp.com',
             '*.cloudflare.com',
             '*.fontawesome.com',
             '*.googleapis.com',
@@ -51,12 +53,14 @@ def create_app(config_class=Config):
         ],
         'script-src': [
             '\'unsafe-inline\' \'self\'',
+            '*.herokuapp.com',
             '*.jquery.com',
             '*.cloudflare.com',
             'unpkg.com',
         ],
         'script-src-elem': [
             '\'unsafe-inline\' \'self\'',
+            '*.herokuapp.com',
             '*.jquery.com',
             '*.cloudflare.com',
             'unpkg.com',
