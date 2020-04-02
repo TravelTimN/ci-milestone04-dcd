@@ -49,6 +49,10 @@
                 </a>
                 {% endif %}
             </p>
+            <!-- Visitor's Map for Admin -->
+            {% if session.user|lower == "admin"|lower %}
+                {% include "partials/_map.html" %}
+            {% endif %}
         </div>
     </div>
 </div>

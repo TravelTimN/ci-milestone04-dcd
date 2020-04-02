@@ -1,0 +1,35 @@
+{% block css %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+        integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+        crossorigin="" type="text/css">
+{% endblock %}
+
+
+<!-- the map -->
+<div id="map"></div>
+
+
+{% block js %}
+<script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+        integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+        crossorigin=""></script>
+
+<script>
+    // generate the map
+    let map = L.map("map", {
+        layers: L.tileLayer("http://services.arcgisonline.com/arcgis/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}"),
+        center: [23.5, 12],
+        zoom: 2,
+        maxBounds: [[-75, -225], [90, 225]],
+        maxBoundsViscosity: 0.5
+    });
+
+    // add marker per visitor to the map
+    {% for visitor in visitor_list %}
+        L.marker([{{ visitor.latitude }}, {{ visitor.longitude }}])
+            .addTo(map)
+            .bindTooltip("IP: {{ visitor.ip }}<br>{{ visitor.city }}, {{ visitor.country }}");
+    {% endfor %}
+
+</script>
+{% endblock %}
