@@ -25,18 +25,19 @@ def home():
 
     """ Add site user to list of visitors. """
     # http://httpbin.org/ip
-    if request.headers.get("X-Forwarded-For"):
-        ip = request.headers.getlist("X-Forwarded-For")[-1]
+    ip = request.access_route[-1]
+    # if request.headers.get("X-Forwarded-For"):
+    #     ip = request.headers.getlist("X-Forwarded-For")[-1]
         url = "https://ipapi.co/" + ip + "json/"
-    # else:
-        # ip = request.remote_addr
-    # print(ip)
+    # # else:
+    #     # ip = request.remote_addr
+    # # print(ip)
         response = requests.getlist(url).json()
-        # response = requests.get("https://ipapi.co/" + ip + "json/").json()
-        # print(response)
+    #     # response = requests.get("https://ipapi.co/" + ip + "json/").json()
+    #     # print(response)
         if response:
-            # ip = response["ip"]
-            # check if existing ip visitor already exists
+    #         # ip = response["ip"]
+    #         # check if existing ip visitor already exists
             if visitors_collection.count_documents({"ip": ip}, limit=1) == 0:
                 submit = {
                     "ip": ip,
