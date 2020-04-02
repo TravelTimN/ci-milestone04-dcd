@@ -25,7 +25,7 @@ def home():
 
     """ Add site user to list of visitors. """
     # http://httpbin.org/ip
-    ip = request.access_route[-1]
+    client_ip = request.access_route[-1]
     # if not ip.startswith("192."):
     # print(ip)
     # if request.headers.get("X-Forwarded-For"):
@@ -53,4 +53,4 @@ def home():
             #     }
             #     visitors_collection.insert_one(submit)
 
-    return render_template("index.html", carousel=carousel, ip=ip)
+    return render_template("index.html", carousel=carousel, ip=client_ip)
