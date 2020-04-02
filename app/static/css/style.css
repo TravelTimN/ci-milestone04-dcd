@@ -582,6 +582,13 @@ ul.collapsible {
     background-color: rgba(var(--white), 1);
 }
 
+#map {
+    height: 75vh;
+    margin: 1em;
+    z-index: 25;
+    border-radius: var(--radius8px);
+}
+
 
 /*-------------------- Errors --------------------*/
 .error-img {
