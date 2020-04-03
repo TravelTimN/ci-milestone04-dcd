@@ -2,6 +2,7 @@
 from flask import Blueprint, render_template, request
 from app import mongo
 from app.utils import recipes_collection, visitors_collection
+from datetime import datetime
 import os
 import requests
 
@@ -51,7 +52,8 @@ def home():
                     "latitude": response["latitude"],
                     "longitude": response["longitude"],
                     "timezone": response["timezone"],
-                    "utc_offset": response["utc_offset"]
+                    "utc_offset": response["utc_offset"],
+                    "datetime": datetime.now().strftime("%d %B, %Y @ %H:%M")
                 }
                 visitors_collection.insert_one(submit)
 

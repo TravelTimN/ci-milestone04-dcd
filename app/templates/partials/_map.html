@@ -2,6 +2,10 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
         integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
         crossorigin="" type="text/css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.4.1/MarkerCluster.css"
+    integrity="sha256-+bdWuWOXMFkX0v9Cvr3OWClPiYefDQz9GGZP/7xZxdc=" crossorigin="anonymous" type="text/css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.4.1/MarkerCluster.Default.css"
+    integrity="sha256-LWhzWaQGZRsWFrrJxg+6Zn8TT84k0/trtiHBc6qcGpY=" crossorigin="anonymous" type="text/css">
 {% endblock %}
 
 
@@ -13,6 +17,7 @@
 <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
         integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
         crossorigin=""></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.4.1/leaflet.markercluster.js" integrity="sha256-WL6HHfYfbFEkZOFdsJQeY7lJG/E5airjvqbznghUzRw=" crossorigin="anonymous"></script>
 
 <script>
     // generate the map
@@ -25,23 +30,21 @@
     });
 
     // add each visitor marker to the map
-    let markers = [];
-    let marker;
-    let flagIcon;
+    let markersArray = [];
+    let markerCluster = L.markerClusterGroup();
     {% for visitor in visitor_list %}
         // set each marker to the country flag (https://www.countryflags.io/)
         flagIcon = new L.Icon({
-            iconUrl: "https://www.countryflags.io/{{ visitor.iso2 }}/flat/24.png",
-            iconAnchor: [12, 18],
+            iconUrl: "https://www.countryflags.io/{{ visitor.iso2 }}/flat/32.png",
+            iconAnchor: [16, 24],
         });
-        marker = L.marker([{{ visitor.latitude }}, {{ visitor.longitude }}])
-            .bindTooltip("IP: {{ visitor.ip }}<br>{{ visitor.city }}, {{ visitor.country }}")
-            .addTo(map);
-        markers.push(marker);  // push marker to markers array
-        marker.setIcon(flagIcon);  // set flag icon to marker
+        marker = L.marker([{{ visitor.latitude }}, {{ visitor.longitude }}], {icon: flagIcon})
+            .bindTooltip("IP: {{ visitor.ip }}<br>{{ visitor.city }}, {{ visitor.country }}<br>{{ visitor.datetime }}");
+        markersArray.push(marker);  // push marker to markerArray
+        markerCluster.addLayer(marker);  // add marker to markerCluster
     {% endfor %}
-    let featureGroup = L.featureGroup(markers);
-    map.fitBounds(featureGroup.getBounds());  // get bounds of all markers
+    let featureGroup = L.featureGroup(markersArray);  // add all markers to featureGroup
+    map.addLayer(markerCluster).fitBounds(featureGroup.getBounds());  // get bounds of all markers and cluster them
 
 </script>
 {% endblock %}

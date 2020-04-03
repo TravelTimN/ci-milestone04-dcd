@@ -583,10 +583,19 @@ ul.collapsible {
 }
 
 #map {
-    height: 75vh;
-    margin: 1em;
+    height: 70vh;
+    margin: 1em 0;
     z-index: 25;
     border-radius: var(--radius8px);
+}
+
+.chip.chip-flag {
+    background-color: rgba(var(--purple), 1);
+    color: rgba(var(--white), 1);
+}
+
+.chip.chip-flag > img {
+    margin: 0 5px 0 -5px;
 }
 
 
