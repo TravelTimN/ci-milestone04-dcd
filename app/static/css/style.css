@@ -822,6 +822,13 @@ input[type=checkbox]:checked:not(:disabled).tabbed:focus~.lever::before {
     .login-register {
         max-width: 50vw;
     }
+
+    button.add-ingredient,
+    button.remove-ingredient,
+    button.add-direction,
+    button.remove-direction {
+        margin-top: 5px;
+    }
 }
 
 

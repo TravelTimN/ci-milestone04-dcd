@@ -40,26 +40,52 @@ $(document).ready(function () {
         Clone a new 'Ingredient' line on user-click event
     ---------------------------------------------------------
     */
-    let ingredientCount = $(".ingredient").length;
-    // add new cloned item //
+    // add new cloned 'ingredient'
     $(".add-ingredient").on("click", function () {
-        // 'destroy' is required to clone <select> elements //
+        addIngredient($(this).parent(".new-ingredient"));
+    });
+    function addIngredient(thisObj) {
+        // 'destroy' is required to clone <select> elements
         $("select").formSelect("destroy");
-        // clone and remove existing values //
-        $(".new-ingredient:first").clone().insertBefore(".add-ingredient").find("input[type='text'], select, textarea").val("");
+        // clone and remove existing values
+        $(".new-ingredient:first").clone(true, true).insertAfter(thisObj).find("input[type='text'], select, textarea").val("").addClass("invalid");
         $("select").formSelect();
-        // increase counter so original ingredient is never removed //
         ingredientCount += 1;
-    });
-    // delete last cloned item //
-    $(".remove-ingredient").on("click", function () {
-        if (ingredientCount > 1) {
-            // only remove the :last item //
-            $(this).siblings(".new-ingredient:last").remove();
-            // ensure original ingredient line never gets deleted //
-            ingredientCount -= 1;
+        // custom Materialize validation (not built-in natively)
+        let thisMeasurement = thisObj.closest("div").find(".dropdown-trigger").dropdown();
+        let classInvalid = {"border-bottom": "1px solid #f44336", "box-shadow": "0 1px 0 0 #f44336"};
+        let classValid = {"border-bottom": "1px solid #4caf50", "box-shadow": "0 1px 0 0 #4caf50"};
+        if ($(thisMeasurement).val() != "unit of measurement") {
+            $(thisMeasurement).css(classValid);
+        } else {
+            $(thisMeasurement).css(classInvalid);
         }
+        thisObj.closest("div").find("input").focus();
+        thisObj.next("div").find(".dropdown-trigger").dropdown().css(classInvalid);
+        disableRemoveIngredient();
+        validateMaterializeSelect();
+        thisObj.next("div").find("input:first").focus();
+        // end custom validation
+    }
+    // delete selected 'ingredient'
+    $(".remove-ingredient").on("click", function () {
+        removeIngredient($(this).parent(".new-ingredient"));
     });
+    function removeIngredient(thisObj) {
+        $(thisObj).remove();
+        ingredientCount -= 1;
+        disableRemoveIngredient();
+    }
+    // disable 'remove-ingredient' if only one ingredient exists
+    let ingredientCount = $(".ingredient").length;
+    disableRemoveIngredient();
+    function disableRemoveIngredient() {
+        if (ingredientCount === 1) {
+            $("button.remove-ingredient").prop("disabled", true);
+        } else {
+            $("button.remove-ingredient").prop("disabled", false);
+        }
+    }
 
 
     /*
@@ -67,23 +93,40 @@ $(document).ready(function () {
         Clone a new 'Direction' line on user-click event
     ---------------------------------------------------------
     */
-    let directionCount = $(".direction").length;
-    // add new cloned item //
+    // add new cloned 'direction'
     $(".add-direction").on("click", function () {
-        // clone and remove existing values //
-        $(".new-direction:first").clone().insertBefore(".add-direction").find("input[type='text'], select, textarea").val("");
-        // increase counter so original direction is never removed //
+        addDirection($(this).parent(".new-direction"));
+    });
+    function addDirection(thisObj) {
+        // clone and remove existing values
+        $(".new-direction:first").clone(true, true).insertAfter(thisObj).find("textarea").val("");
         directionCount += 1;
-    });
-    // delete last cloned item //
+        // custom Materialize validation (not built-in natively)
+        thisObj.closest("div").find("textarea").focus();
+        disableRemoveDirection();
+        validateMaterializeSelect();
+        thisObj.next("div").find("textarea").focus();
+        // end custom validation
+    }
+    // delete selected 'direction'
     $(".remove-direction").on("click", function () {
-        if (directionCount > 1) {
-            // only remove the :last item //
-            $(this).siblings(".new-direction:last").remove();
-            // ensure original direction line never gets deleted //
-            directionCount -= 1;
-        }
+        removeDirection($(this).parent(".new-direction"));
     });
+    function removeDirection(thisObj) {
+        $(thisObj).remove();
+        directionCount -= 1;
+        disableRemoveDirection();
+    }
+    // disable 'remove-direction' if only one direction exists
+    let directionCount = $(".direction").length;
+    disableRemoveDirection();
+    function disableRemoveDirection() {
+        if (directionCount === 1) {
+            $("button.remove-direction").prop("disabled", true);
+        } else {
+            $("button.remove-direction").prop("disabled", false);
+        }
+    }
 
 
     /*
@@ -91,12 +134,12 @@ $(document).ready(function () {
         Mark ingredients / directions as 'Complete' on user-click event
     -----------------------------------------------------------------------
     */
-    // ingredients //
+    // ingredients
     $(".ingredient-item").on("click", function () {
         $(this).children("i").toggleClass("fa-circle fa-check-circle green-text");
         $(this).closest("li").find("span").toggleClass("grey-text strike");
     });
-    // directions //
+    // directions
     $(".direction-item").on("click", function () {
         $(this).toggleClass("grey-text strike completed");
     });
@@ -109,13 +152,13 @@ $(document).ready(function () {
     */
     let search_keyword = $("#search_keyword").val();
     let search_dessert = $("#search_dessert").val();
-    // on page reload //
+    // on page reload
     if (search_keyword > "" || search_dessert > "") {
         $("#search_allergen, #sort").prop("disabled", false);
         $("i.fa-ban, i.fa-sort-amount-down").removeClass("grey-text").addClass("purple-text");
         $("select").formSelect();
         $("#search_btn").prop("disabled", false).addClass("text-shadow-2");
-        // collapsible should be 'open' if search function used //
+        // collapsible should be 'open' if search function used
         let instance = M.Collapsible.getInstance($(".collapsible"));
         instance.open();
     } else {
@@ -124,7 +167,7 @@ $(document).ready(function () {
         $("select").formSelect();
         $("#search_btn").prop("disabled", true).removeClass("text-shadow-2");
     }
-    // on user interaction //
+    // on user interaction
     $("#search_keyword, #search_dessert").on("keyup input change", function () {
         if ($("#search_keyword").val().length >= 3 || $("#search_dessert").val().length > 0) {
             $("#search_allergen, #sort").prop("disabled", false);
@@ -145,9 +188,9 @@ $(document).ready(function () {
         Populate the 'Order By' text and icons based on user-selection
     ----------------------------------------------------------------------
     */
-    // on page reload //
+    // on page reload
     sortIcons();
-    // on user selection //
+    // on user selection
     $("#sort").on("change", function () {
         sortIcons();
     });
@@ -180,12 +223,12 @@ $(document).ready(function () {
         Carousel 'auto-play' function
     -------------------------------------
     */
-    // slides every 4 seconds //
+    // slides every 4 seconds
     let timer = 4000;
     let autoplay = setInterval(function () {
         $(".carousel.carousel-slider").carousel("next");
     }, timer);
-    // pause carousel if user hovers //
+    // pause carousel if user hovers
     $(".carousel").mouseover(function () {
         clearInterval(autoplay);
     }).mouseout(function () {
@@ -210,12 +253,12 @@ $(document).ready(function () {
         Share the Recipe
     ------------------------
     */
-     // insert URL into <input> //
+     // insert URL into <input>
     let recipeUrl = $(location).attr("href");
     $("#share-btn").on("click", function () {
         $("#share-url").val(recipeUrl);
     });
-    // copy value of <input> //
+    // copy value of <input>
     $("#copy-btn").on("click", function () {
         let copyUrl = $("#share-url").val(recipeUrl);
         copyUrl.select();
@@ -259,25 +302,30 @@ $(document).ready(function () {
         This function is not supported by Materialize natively
     --------------------------------------------------------------
     */
-    $(".select-wrapper input.select-dropdown").on("focusin", function () {
-        $(this).parent(".select-wrapper").on("change", function () {
-            if ($(this).children("ul").children("li.selected:not(.disabled)").on("click", function () {})) {
-                $(this).children("input").css({"border-bottom": "1px solid #4caf50", "box-shadow": "0 1px 0 0 #4caf50"});
-            }
-        });
-    }).on("click", function () {
-        if ($(this).parent(".select-wrapper").children("ul").children("li.selected:not(.disabled)").css("background-color") === "rgba(233, 30, 99, 0.15)") {
-            $(this).parent(".select-wrapper").children("input").css({"border-bottom": "1px solid #4caf50", "box-shadow": "0 1px 0 0 #4caf50"});
-        } else {
-            $(".select-wrapper input.select-dropdown").on("focusout", function () {
-                if ($(this).parent(".select-wrapper").children("select").prop("required")) {
-                    if ($(this).css("border-bottom") != "1px solid rgb(76, 175, 80)") {
-                        $(this).parent(".select-wrapper").children("input").css({"border-bottom": "1px solid #f44336", "box-shadow": "0 1px 0 0 #f44336"});
-                    }
+    validateMaterializeSelect();
+    function validateMaterializeSelect() {
+        let classValid = {"border-bottom": "1px solid #4caf50", "box-shadow": "0 1px 0 0 #4caf50"};
+        let classInvalid = {"border-bottom": "1px solid #f44336", "box-shadow": "0 1px 0 0 #f44336"};
+        $(".select-wrapper input.select-dropdown").on("focusin", function () {
+            $(this).parent(".select-wrapper").on("change", function () {
+                if ($(this).children("ul").children("li.selected:not(.disabled)").on("click", function () {})) {
+                    $(this).children("input").css(classValid);
                 }
             });
-        }
-    });
+        }).on("click", function () {
+            if ($(this).parent(".select-wrapper").children("ul").children("li.selected:not(.disabled)").css("background-color") === "rgba(233, 30, 99, 0.15)") {
+                $(this).parent(".select-wrapper").children("input").css(classValid);
+            } else {
+                $(".select-wrapper input.select-dropdown").on("focusout", function () {
+                    if ($(this).parent(".select-wrapper").children("select").prop("required")) {
+                        if ($(this).css("border-bottom") != "1px solid rgb(76, 175, 80)") {
+                            $(this).parent(".select-wrapper").children("input").css(classInvalid);
+                        }
+                    }
+                });
+            }
+        });
+    }
 
 
     /*
@@ -443,7 +491,8 @@ $(document).ready(function () {
 
     // on dessert-type change
     $("#dessert_type").change(function () {
-        $("input#img_src.validate").focus(); // focus back on img_src url to check if already a valid image
+        // focus back on img_src url to check if already a valid image
+        $("input#img_src.validate").focus();
         let dessertCategory;
         if ($("#dessert_type option:selected").text() == "Dessert Category") {
             dessertCategory = "other-desserts";
