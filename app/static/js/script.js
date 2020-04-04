@@ -40,23 +40,23 @@ $(document).ready(function () {
         Clone a new 'Ingredient' line on user-click event
     ---------------------------------------------------------
     */
-    var ingredientCount = $(".ingredient").length;
-    /* add new cloned item */
+    let ingredientCount = $(".ingredient").length;
+    // add new cloned item //
     $(".add-ingredient").on("click", function () {
-        /* 'destroy' is required to clone <select> elements */
+        // 'destroy' is required to clone <select> elements //
         $("select").formSelect("destroy");
-        /* clone and remove existing values */
+        // clone and remove existing values //
         $(".new-ingredient:first").clone().insertBefore(".add-ingredient").find("input[type='text'], select, textarea").val("");
         $("select").formSelect();
-        /* increase counter so original ingredient is never removed */
+        // increase counter so original ingredient is never removed //
         ingredientCount += 1;
     });
-    /* delete last cloned item */
+    // delete last cloned item //
     $(".remove-ingredient").on("click", function () {
         if (ingredientCount > 1) {
-            /* only remove the :last item */
+            // only remove the :last item //
             $(this).siblings(".new-ingredient:last").remove();
-            /* ensure original ingredient line never gets deleted */
+            // ensure original ingredient line never gets deleted //
             ingredientCount -= 1;
         }
     });
@@ -67,20 +67,20 @@ $(document).ready(function () {
         Clone a new 'Direction' line on user-click event
     ---------------------------------------------------------
     */
-    var directionCount = $(".direction").length;
-    /* add new cloned item */
+    let directionCount = $(".direction").length;
+    // add new cloned item //
     $(".add-direction").on("click", function () {
-        /* clone and remove existing values */
+        // clone and remove existing values //
         $(".new-direction:first").clone().insertBefore(".add-direction").find("input[type='text'], select, textarea").val("");
-        /* increase counter so original direction is never removed */
+        // increase counter so original direction is never removed //
         directionCount += 1;
     });
-    /* delete last cloned item */
+    // delete last cloned item //
     $(".remove-direction").on("click", function () {
         if (directionCount > 1) {
-            /* only remove the :last item */
+            // only remove the :last item //
             $(this).siblings(".new-direction:last").remove();
-            /* ensure original direction line never gets deleted */
+            // ensure original direction line never gets deleted //
             directionCount -= 1;
         }
     });
@@ -91,15 +91,14 @@ $(document).ready(function () {
         Mark ingredients / directions as 'Complete' on user-click event
     -----------------------------------------------------------------------
     */
-    /* ingredients */
+    // ingredients //
     $(".ingredient-item").on("click", function () {
         $(this).children("i").toggleClass("fa-circle fa-check-circle green-text");
         $(this).closest("li").find("span").toggleClass("grey-text strike");
     });
-    /* directions */
+    // directions //
     $(".direction-item").on("click", function () {
-        $(this).toggleClass("grey-text strike");
-        $(this).toggleClass("completed");
+        $(this).toggleClass("grey-text strike completed");
     });
 
 
@@ -108,16 +107,16 @@ $(document).ready(function () {
         Only enable 'Search' if user selects one of two items
     -------------------------------------------------------------
     */
-    var search_keyword = $("#search_keyword").val();
-    var search_dessert = $("#search_dessert").val();
-    /* on page reload */
+    let search_keyword = $("#search_keyword").val();
+    let search_dessert = $("#search_dessert").val();
+    // on page reload //
     if (search_keyword > "" || search_dessert > "") {
         $("#search_allergen, #sort").prop("disabled", false);
         $("i.fa-ban, i.fa-sort-amount-down").removeClass("grey-text").addClass("purple-text");
         $("select").formSelect();
         $("#search_btn").prop("disabled", false).addClass("text-shadow-2");
-        /* collapsible should be 'open' if search function used */
-        var instance = M.Collapsible.getInstance($(".collapsible"));
+        // collapsible should be 'open' if search function used //
+        let instance = M.Collapsible.getInstance($(".collapsible"));
         instance.open();
     } else {
         $("#search_allergen, #sort").prop("disabled", true);
@@ -125,7 +124,7 @@ $(document).ready(function () {
         $("select").formSelect();
         $("#search_btn").prop("disabled", true).removeClass("text-shadow-2");
     }
-    /* on user interaction */
+    // on user interaction //
     $("#search_keyword, #search_dessert").on("keyup input change", function () {
         if ($("#search_keyword").val().length >= 3 || $("#search_dessert").val().length > 0) {
             $("#search_allergen, #sort").prop("disabled", false);
@@ -146,30 +145,13 @@ $(document).ready(function () {
         Populate the 'Order By' text and icons based on user-selection
     ----------------------------------------------------------------------
     */
-    /* on page reload */
-    var sort_value = $("#sort").val();
-    switch (sort_value) {
-        case "author":
-        case "recipe_name":
-            $(".order-span-asc").html("<i class='fas fa-sort-alpha-down materialize-icons hide-on-small-only' aria-hidden='true'></i> Alphabetical <strong>(A-Z)</strong>");
-            $(".order-span-desc").html("<i class='fas fa-sort-alpha-up materialize-icons hide-on-small-only' aria-hidden='true'></i> Alphabetical <strong>(Z-A)</strong>");
-            break;
-        case "user_favs":
-        case "views":
-            $(".order-span-asc").html("<i class='fas fa-sort-numeric-down materialize-icons hide-on-small-only' aria-hidden='true'></i> Lowest first");
-            $(".order-span-desc").html("<i class='fas fa-sort-numeric-up materialize-icons hide-on-small-only' aria-hidden='true'></i> Highest first");
-            break;
-        case "last_edit":
-            $(".order-span-asc").html("<i class='fas fa-calendar-check materialize-icons hide-on-small-only' aria-hidden='true'></i> Oldest first");
-            $(".order-span-desc").html("<i class='far fa-calendar-check materialize-icons hide-on-small-only' aria-hidden='true'></i> Newest first");
-            break;
-        case "total_time":
-            $(".order-span-asc").html("<i class='fas fa-clock materialize-icons hide-on-small-only' aria-hidden='true'></i> Shortest first");
-            $(".order-span-desc").html("<i class='far fa-clock materialize-icons hide-on-small-only' aria-hidden='true'></i> Longest first");
-            break;
-    }
-    /* on user selection */
+    // on page reload //
+    sortIcons();
+    // on user selection //
     $("#sort").on("change", function () {
+        sortIcons();
+    });
+    function sortIcons() {
         switch ($("#sort").val()) {
             case "author":
             case "recipe_name":
@@ -190,7 +172,7 @@ $(document).ready(function () {
                 $(".order-span-desc").html("<i class='far fa-clock materialize-icons hide-on-small-only' aria-hidden='true'></i> Longest first");
                 break;
         }
-    });
+    }
 
 
     /*
@@ -198,12 +180,12 @@ $(document).ready(function () {
         Carousel 'auto-play' function
     -------------------------------------
     */
-    /* slides every 4 seconds */
-    var timer = 4000;
-    var autoplay = setInterval(function () {
+    // slides every 4 seconds //
+    let timer = 4000;
+    let autoplay = setInterval(function () {
         $(".carousel.carousel-slider").carousel("next");
     }, timer);
-    /* pause carousel if user hovers */
+    // pause carousel if user hovers //
     $(".carousel").mouseover(function () {
         clearInterval(autoplay);
     }).mouseout(function () {
@@ -228,14 +210,14 @@ $(document).ready(function () {
         Share the Recipe
     ------------------------
     */
-     /* insert URL into <input> */
-    var recipeUrl = $(location).attr("href");
+     // insert URL into <input> //
+    let recipeUrl = $(location).attr("href");
     $("#share-btn").on("click", function () {
         $("#share-url").val(recipeUrl);
     });
-    /* copy value of <input> */
+    // copy value of <input> //
     $("#copy-btn").on("click", function () {
-        var copyUrl = $("#share-url").val(recipeUrl);
+        let copyUrl = $("#share-url").val(recipeUrl);
         copyUrl.select();
         document.execCommand("copy");
         M.toast({html: "<i class='fas fa-clipboard-check material-icons left' aria-hidden='true'></i> Copied to Clipboard"});
@@ -308,12 +290,12 @@ $(document).ready(function () {
         $("#convert-result").html("");
         $("select").formSelect();
 
-        var selectedVal = $("#convert-ingredient option:selected").text();
-        var ingredientVal = $("#convert-ingredient").val();
+        let selectedVal = $("#convert-ingredient option:selected").text();
+        let ingredientVal = $("#convert-ingredient").val();
 
-        var gramToCup1 = "<h4><strong>100 grams</strong> of <span class='purple-text'>" + selectedVal + "</span><br>=<br><strong>";
-        var gramToCup2 = " cups</strong> of <span class='purple-text'>" + selectedVal + "</span></h4>";
-        var cupToGram = "<h4><strong>1 cup</strong> of <span class='purple-text'>" + selectedVal + "</span><br>=<br><strong>" + ingredientVal + " grams</strong> of <span class='purple-text'>" + selectedVal + "</span></h4>";
+        let gramToCup1 = "<h4><strong>100 grams</strong> of <span class='purple-text'>" + selectedVal + "</span><br>=<br><strong>";
+        let gramToCup2 = " cups</strong> of <span class='purple-text'>" + selectedVal + "</span></h4>";
+        let cupToGram = "<h4><strong>1 cup</strong> of <span class='purple-text'>" + selectedVal + "</span><br>=<br><strong>" + ingredientVal + " grams</strong> of <span class='purple-text'>" + selectedVal + "</span></h4>";
 
         switch ($("#convert-ingredient").val()) {
             case "85":
