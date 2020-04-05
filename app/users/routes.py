@@ -175,6 +175,12 @@ def profile(username):
         "%d %b %Y") for user in deepcopy(admin_list)]
     zip_data = zip(admin_list, date_joined)
     visitor_list = list(visitors_collection.find())
+    total_views = list(visitors_collection.aggregate([
+        {"$group": {
+            "_id": "",
+            "total": {"$sum": "$visits"}
+        }}
+    ]))
     return render_template(
         "profile.html",
         username=username,
@@ -184,7 +190,8 @@ def profile(username):
         admin_list=admin_list,
         date_joined=date_joined,
         zip_data=zip_data,
-        visitor_list=visitor_list)
+        visitor_list=visitor_list,
+        total_views=total_views[0]["total"])
 
 
 # ----- CHANGE PASSWORD ----- #

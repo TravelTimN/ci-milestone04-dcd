@@ -9,8 +9,49 @@
 {% endblock %}
 
 
-<!-- the map -->
-<div id="map"></div>
+<div class="row">
+    <div class="col s12 recipe-card card white center-align">
+
+        <!-- the map -->
+        <div id="map"></div>
+
+        <h4 class="purple-text text-shadow-2 font-special">
+            Unique: {{ visitor_list|count }} - Total: {{ total_views }}
+        </h4>
+        <div class="divider pink lighten-2"></div>
+        <div class="divider red"></div>
+        <div class="divider orange"></div>
+        <div class="divider yellow"></div>
+        <div class="divider green"></div>
+        <div class="divider blue"></div>
+        <div class="divider purple"></div>
+        <div class="divider pink"></div>
+        <br>
+
+        <!-- create chip for each unique country -->
+        {% for country in visitor_list|groupby("country") %}
+        <div class="chip chip-flag text-shadow-2">
+            {% for flag in country.list|groupby("iso2") %}
+                <img src="https://www.countryflags.io/{{ flag.grouper }}/shiny/64.png" alt="{{ flag.grouper }}">
+            {% endfor %}
+            {{ country.grouper }}
+            ( <span class="bold">{{ country.list|count }}</span> )
+        </div>
+        {% endfor %}
+
+        <br><br>
+        <div class="divider pink lighten-2"></div>
+        <div class="divider red"></div>
+        <div class="divider orange"></div>
+        <div class="divider yellow"></div>
+        <div class="divider green"></div>
+        <div class="divider blue"></div>
+        <div class="divider purple"></div>
+        <div class="divider pink"></div>
+        <br>
+
+    </div>
+</div>
 
 
 {% block js %}
@@ -39,7 +80,7 @@
             iconAnchor: [16, 24],
         });
         marker = L.marker([{{ visitor.latitude }}, {{ visitor.longitude }}], {icon: flagIcon})
-            .bindTooltip("IP: {{ visitor.ip }}<br>{{ visitor.city }}, {{ visitor.country }}<br>{{ visitor.datetime }}");
+            .bindTooltip("IP: {{ visitor.ip }}<br>Username: {{ visitor.username }}<br>{{ visitor.city }}, {{ visitor.country }}<br>{{ visitor.datetime }}<br>Views: {{ visitor.visits }}");
         markersArray.push(marker);  // push marker to markerArray
         markerCluster.addLayer(marker);  // add marker to markerCluster
     {% endfor %}
