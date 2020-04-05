@@ -135,7 +135,8 @@ table {
     font-size: 1.25rem;
 }
 
-td:hover {
+table.conversion-table tbody tr td:hover,
+table#visitors-table tbody tr:hover {
     background-color: rgba(var(--purpleLight3), 1);
 }
 
@@ -589,13 +590,12 @@ ul.collapsible {
     border-radius: var(--radius8px);
 }
 
-.chip.chip-flag {
-    background-color: rgba(var(--purple), 1);
-    color: rgba(var(--white), 1);
-}
-
 .chip.chip-flag > img {
     margin: 0 5px 0 -5px;
+}
+
+.flag-icon {
+    vertical-align: bottom;
 }
 
 

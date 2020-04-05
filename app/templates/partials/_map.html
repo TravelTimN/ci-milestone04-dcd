@@ -15,9 +15,11 @@
         <!-- the map -->
         <div id="map"></div>
 
-        <h4 class="purple-text text-shadow-2 font-special">
-            Unique: {{ visitor_list|count }} - Total: {{ total_views }}
+        <h4 class="text-shadow-2 font-special">
+            Unique ( <span class="blue-text bold">{{ visitors|count }}</span> ) - 
+            Total ( <span class="green-text bold">{{ total_views[0]["total"][0]["total"] }}</span> )
         </h4>
+
         <div class="divider pink lighten-2"></div>
         <div class="divider red"></div>
         <div class="divider orange"></div>
@@ -26,29 +28,55 @@
         <div class="divider blue"></div>
         <div class="divider purple"></div>
         <div class="divider pink"></div>
+
+        <!-- create table of stats -->
+
+        <table id="visitors-table" class="striped bold font-special center-align">
+            <thead class="upper">
+                <tr>
+                    <th>Country</th>
+                    <th>Unique Visitors</th>
+                    <th>Total Visits</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for country in visitors|groupby("country") %}
+                <tr>
+                    <!-- get country and flag -->
+                    <td>
+                        {% for flag in country.list|groupby("iso2") %}
+                            <img src="https://www.countryflags.io/{{ flag.grouper }}/shiny/32.png" alt="{{ flag.grouper }}" class="flag-icon">
+                        {% endfor %}
+                        {{ country.grouper }}
+                    </td>
+
+                    <!-- get total unique visitors by country -->
+                    <td class="blue-text">{{ country.list|count }}</td>
+
+                    <!-- get total visits by country -->
+                    <td class="green-text">
+                        {% for country_views in total_views[0]["countries"] %}
+                            {% if country.grouper == country_views["_id"] %}
+                                {{ country_views["total"] }}
+                            {% endif %}
+                        {% endfor %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
         <br>
-
-        <!-- create chip for each unique country -->
-        {% for country in visitor_list|groupby("country") %}
-        <div class="chip chip-flag text-shadow-2">
-            {% for flag in country.list|groupby("iso2") %}
-                <img src="https://www.countryflags.io/{{ flag.grouper }}/shiny/64.png" alt="{{ flag.grouper }}">
-            {% endfor %}
-            {{ country.grouper }}
-            ( <span class="bold">{{ country.list|count }}</span> )
-        </div>
-        {% endfor %}
-
+        <div class="divider pink lighten-2"></div>
+        <div class="divider red"></div>
+        <div class="divider orange"></div>
+        <div class="divider yellow"></div>
+        <div class="divider green"></div>
+        <div class="divider blue"></div>
+        <div class="divider purple"></div>
+        <div class="divider pink"></div>
         <br><br>
-        <div class="divider pink lighten-2"></div>
-        <div class="divider red"></div>
-        <div class="divider orange"></div>
-        <div class="divider yellow"></div>
-        <div class="divider green"></div>
-        <div class="divider blue"></div>
-        <div class="divider purple"></div>
-        <div class="divider pink"></div>
-        <br>
 
     </div>
 </div>
@@ -73,10 +101,10 @@
     // add each visitor marker to the map
     let markersArray = [];
     let markerCluster = L.markerClusterGroup();
-    {% for visitor in visitor_list %}
+    {% for visitor in visitors %}
         // set each marker to the country flag (https://www.countryflags.io/)
         flagIcon = new L.Icon({
-            iconUrl: "https://www.countryflags.io/{{ visitor.iso2 }}/flat/32.png",
+            iconUrl: "https://www.countryflags.io/{{ visitor.iso2 }}/shiny/32.png",
             iconAnchor: [16, 24],
         });
         marker = L.marker([{{ visitor.latitude }}, {{ visitor.longitude }}], {icon: flagIcon})

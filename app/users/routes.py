@@ -174,13 +174,19 @@ def profile(username):
     date_joined = [user["_id"].generation_time.date().strftime(
         "%d %b %Y") for user in deepcopy(admin_list)]
     zip_data = zip(admin_list, date_joined)
-    visitor_list = list(visitors_collection.find())
+    visitors = list(visitors_collection.find())
+    # get total views and total views by grouped country
     total_views = list(visitors_collection.aggregate([
-        {"$group": {
-            "_id": "",
-            "total": {"$sum": "$visits"}
+        {"$facet": {
+            "total": [
+                {"$group": {"_id": "", "total": {"$sum": "$visits"}}}
+            ],
+            "countries": [
+                {"$group": {"_id": "$country", "total": {"$sum": "$visits"}}}
+            ]
         }}
     ]))
+    # end ADMIN-ONLY section
     return render_template(
         "profile.html",
         username=username,
@@ -190,8 +196,8 @@ def profile(username):
         admin_list=admin_list,
         date_joined=date_joined,
         zip_data=zip_data,
-        visitor_list=visitor_list,
-        total_views=total_views[0]["total"])
+        visitors=visitors,
+        total_views=total_views)
 
 
 # ----- CHANGE PASSWORD ----- #
