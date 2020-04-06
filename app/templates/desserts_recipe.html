@@ -104,6 +104,17 @@
                 </span>
             </p>
             <p class="print-no">
+                <i class="fas fa-eye" aria-hidden="true"></i>
+                Views:
+                <span class="purple-text bold">{{ recipe.views }}</span>
+                {% if recipe.user_favs != 0 %}
+                ||
+                <i class="fas fa-thumbs-up" aria-hidden="true"></i>
+                Likes:
+                <span class="purple-text bold">{{ recipe.user_favs }}</span>
+                {% endif %}
+            </p>
+            <p class="print-no">
                 <i class="fas fa-calendar-plus" aria-hidden="true"></i> Added:
                 <span class="purple-text bold">{{ recipe.date_added }}</span>
                 {% if recipe.date_added != recipe.date_updated %}
