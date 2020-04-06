@@ -73,10 +73,13 @@ def home():
             }
             visitors_collection.insert_one(visitor)
         else:
+            # update username from guest to session user if logged in
+            user = visitors_collection.find_one({"ip": client_ip})["username"]
+            username = user if user != "guest" else username
             # if existing visitor ip, then increment their view count
             visitors_collection.update_one(
                 {"ip": client_ip},
-                {"$set": {"datetime": datetimenow},
-                "$inc": {"visits": 1}})
+                {"$set": {"username": username, "datetime": datetimenow},
+                    "$inc": {"visits": 1}})
 
     return render_template("index.html", carousel=carousel)
