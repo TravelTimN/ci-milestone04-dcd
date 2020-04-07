@@ -500,15 +500,17 @@ footer {
 
 .pagination li a {
     font-size: 1.5rem;
+    font-weight: bold;
 }
 
-.pagination li:first-child:not(.disabled) a,
-.pagination li:last-child:not(.disabled) a {
+.pagination li:nth-child(-n+2) a,
+.pagination li:nth-last-child(-n+2) a {
+    padding: 0;
     color: rgba(var(--purple), 1);
 }
 
-.pagination li:first-child a i,
-.pagination li:last-child a i {
+.pagination li:nth-child(-n+2) a i,
+.pagination li:nth-last-child(-n+2) a i {
     font-size: 2em;
 }
 
