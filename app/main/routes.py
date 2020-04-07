@@ -56,7 +56,7 @@ def home():
 
     if response:
         datetimenow = datetime.now().strftime("%d %B, %Y @ %H:%M")
-        pattern = "^\-?[0-9]+\.[0-9]+$"
+        pattern = "^\-?[0-9]*\.?[0-9]*$"
         lat = str(response["latitude"])
         lon = str(response["longitude"])
         if bool(
