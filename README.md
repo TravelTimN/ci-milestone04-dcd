@@ -179,15 +179,26 @@ I've added a few extra features to my project that weren't part of the requireme
 **Remove a Recipe from Favorites**
 - If a user no longer likes a recipe, or simply wants to remove it from their favorites, a single click can remove a recipe.
 
+**Admin Superuser**
+- My ***'Admin'*** profile has several extra features, which currently include:
+    - Edit / Delete any recipe from the database.
+    - View join date / favs / recipes of all registered users. (added February 2020)
+    - Delete any registered user from the database. (added February 2020)
+    - Receive email for new recipes added or edited from database as backup in case database is lost. (added March 2020)
+    - View an interactive map of all visitors to the site. (added April 2020)
+    - View statistics of unique visitors by country, and total count. (added April 2020)
+
 ### Features Left to Implement
 
 In an ideal world, there are a couple items that I would've loved to have completed as well, but just didn't have the time or knowledge just yet as to how to implement these features.
 
-**Pagination Truncation**
-- I have core functionality to properly paginate, but should my database start to expand with several dozen more recipes, then the current pagination will display every page number that exists. If pagination gets too long, ideally it should truncate the middle section of page numbers, so that only the first and last page numbers are displayed, leaving the center section as an ellipse (...) to not clog up too much space on the page.
+~~**Pagination Truncation**~~ (added: 07APR2020)
+- ~~I have core functionality to properly paginate, but should my database start to expand with several dozen more recipes, then the current pagination will display every page number that exists. If pagination gets too long, ideally it should truncate the middle section of page numbers, so that only the first and last page numbers are displayed, leaving the center section as an ellipse (...) to not clog up too much space on the page.~~
+- **07APR2020**: Ellipse wasn't showing the current page in view, so now I have pagination showing the current page number +/-2 pages on either end. Can now also go to First and Last page instead of each page number one at a time.
 
-**Add / Delete individual Ingredients / Directions**
-- Currently, I have a single add / delete button for the Ingredients and Directions sections of the recipe. Once a user clicks to add a new ingredient for example, then the previous line is cloned just below that. The same functionality for directions is in place. However, if a user needs to delete something, it will only delete the absolute last item in the list. This means that if the user needs to delete ingredient #2 for example, they cannot currently delete that line independently without going through all other items in the list that come after it. Eventually I would like to append an add / delete button for each item that's generated.
+~~**Add / Delete individual Ingredients / Directions**~~ (added: 04APR2020)
+- ~~Currently, I have a single add / delete button for the Ingredients and Directions sections of the recipe. Once a user clicks to add a new ingredient for example, then the previous line is cloned just below that. The same functionality for directions is in place. However, if a user needs to delete something, it will only delete the absolute last item in the list. This means that if the user needs to delete ingredient #2 for example, they cannot currently delete that line independently without going through all other items in the list that come after it. Eventually I would like to append an add / delete button for each item that's generated.~~
+- **04APR2020**: This capability was added now so uses can add/remove single individual ingredients or directions chosen, not necessarily the last one from the list only.
 
 ##### back to [top](#table-of-contents)
 
@@ -206,6 +217,7 @@ In an ideal world, there are a couple items that I would've loved to have comple
 - [CSS](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS3) - Used as the base for cascading styles.
 - [jQuery 3.4.0](https://code.jquery.com/jquery/) - Used as the primary JavaScript functionality.
 - [Materialize 1.0.0](https://materializecss.com/) - Used as the overall design framework.
+- [Leaflet](https://leafletjs.com/): Used for Admin visitor tracking purposes.
 
 
 ### Back-End Technologies
@@ -539,6 +551,11 @@ Sources of the images used on this site:
     - [StackOverflow](https://stackoverflow.com/a/17596848)
     - [StackOverflow](https://stackoverflow.com/q/16512592)
     - [StackOverflow](https://stackoverflow.com/a/8519646)
+- **Find Client IP Address** :
+    - [StackOverflow](https://stackoverflow.com/a/35123097)
+    - [IP API](https://ipapi.co/json/)
+    - [IP Info](https://ipinfo.io/json)
+- **Get Proper IP Address, not Heroku IP** : [StackOverflow](https://stackoverflow.com/a/37061471)
 
 ### Acknowledgements
 
