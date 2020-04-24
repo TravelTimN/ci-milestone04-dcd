@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 import html
 import math
+import os
 import re
+import requests
 from datetime import datetime
 from bson.objectid import ObjectId
 from flask import (
@@ -11,20 +13,19 @@ from slugify import slugify
 from app.utils import (
     recipes_collection, users_collection,
     dropdown_allergens, dropdown_dessert_type, dropdown_measurement,
-    get_recipe, get_user_lower)
+    get_recipe, get_user_lower, visitors_collection)
 
 
 # ----- EMAIL SETTINGS ----- #
-import os
-import smtplib  # SMTP protocol client (sending emails)
-from email.mime.multipart import MIMEMultipart  # MIME (sending emails)
-from email.mime.text import MIMEText  # Multipurpose Internet Mail Extensions
-if os.path.exists(".env"):
-    from dotenv import load_dotenv
-    load_dotenv()
-MY_ADDRESS = os.getenv("MY_ADDRESS")
-SEND_TO = os.getenv("SEND_TO")
-PASSWORD = os.getenv("PASSWORD")
+# import smtplib  # SMTP protocol client (sending emails)
+# from email.mime.multipart import MIMEMultipart  # MIME (sending emails)
+# from email.mime.text import MIMEText  # Multipurpose Internet Mail Extensions
+# if os.path.exists(".env"):
+#     from dotenv import load_dotenv
+#     load_dotenv()
+# MY_ADDRESS = os.getenv("MY_ADDRESS")
+# SEND_TO = os.getenv("SEND_TO")
+# PASSWORD = os.getenv("PASSWORD")
 
 
 # --------------------- #
@@ -117,20 +118,25 @@ def desserts_new():
                 {"_id": newID.inserted_id},
                 {"$inc": {"user_favs": 1}})
 
-        # send me an email when a recipe gets added (personal backup)
-        msg = MIMEMultipart()
-        msg["From"] = MY_ADDRESS
-        msg["To"] = SEND_TO
-        msg["Subject"] = "2BN-Desserts | New Recipe Added: " + slugUrl
-        formatEmail = "<br><br>".join(["%s: %s" % kv for kv in submit.items()])
-        msg.attach(MIMEText(str(formatEmail), "html"))  # must convert to str()
-        smtpserver = smtplib.SMTP("smtp.gmail.com", 587)  # access server
-        smtpserver.ehlo()  # identify ourselves to smtp gmail client
-        smtpserver.starttls()  # secure our email with tls encryption
-        smtpserver.ehlo()  # re-identify ourselves as an encrypted connection
-        smtpserver.login(MY_ADDRESS, PASSWORD)  # login to the server
-        smtpserver.send_message(msg)  # send the message
-        smtpserver.quit()  # quit the server
+        # # send me an email when a recipe gets added (personal backup)
+        # msg = MIMEMultipart()
+        # msg["From"] = MY_ADDRESS
+        # msg["To"] = SEND_TO
+        # msg["Subject"] = "2BN-Desserts | New Recipe Added: " + slugUrl
+        # formatEmail = "<br><br>".join(["%s: %s" % kv for kv in submit.items()])
+        # msg.attach(MIMEText(str(formatEmail), "html"))  # must convert to str()
+        # smtpserver = smtplib.SMTP("smtp.gmail.com", 587)  # access server
+        # smtpserver.ehlo()  # identify ourselves to smtp gmail client
+        # smtpserver.starttls()  # secure our email with tls encryption
+        # smtpserver.ehlo()  # re-identify ourselves as an encrypted connection
+        # smtpserver.login(MY_ADDRESS, PASSWORD)  # login to the server
+        # smtpserver.send_message(msg)  # send the message
+        # smtpserver.quit()  # quit the server
+
+        # add recipe to admin's profile as back-up (in lieu of email)
+        users_collection.update_one(
+            {"username": "Admin"},
+            {"$push": {"new_recipes": submit}})
 
         return redirect(url_for(
             "recipes.desserts_recipe",
@@ -246,6 +252,80 @@ def desserts():
             page_args * limit_args if (
                 page_args * limit_args) < search_results.count(
                 ) else search_results.count())
+
+    """
+        Get visitor's IP and Location for Admin tracking.
+        Get last item in 'X-Forwarded-For' list to avoid
+        getting the Heroku server IP address instead
+        https://stackoverflow.com/a/37061471
+    """
+    # https://stackoverflow.com/a/35123097 (excellent!!)
+    # http://httpbin.org/ip | http://icanhazip.com
+    # https://ipapi.co/json/ or https://ipapi.co/<ip>/json/ (10k/mo)
+    # https://ipinfo.io/json or https://ipinfo.io/<ip>/json (1k/day)
+
+    # check if guest or registered user
+    username = get_user_lower(
+        session["user"])["username"] if "user" in session else "guest"
+
+    if os.environ.get("DEVELOPMENT"):
+        # local development
+        url = "https://ipapi.co/json/"
+        response = requests.get(url).json()
+        client_ip = response["ip"]
+    else:
+        # live server on Heroku
+        client_ip = request.access_route[-1]
+        url = "https://ipapi.co/" + client_ip + "/json/"
+        url2 = "https://ipinfo.io/" + client_ip + "/json"
+        response = requests.get(url).json()
+
+    if response:
+        datetimenow = datetime.now().strftime("%d %B, %Y @ %H:%M")
+        pattern = "^\-?[0-9]*\.?[0-9]*$"
+        lat = str(response["latitude"])
+        lon = str(response["longitude"])
+        if bool(
+            re.match(rf"{pattern}", lat)) and bool(
+                re.match(rf"{pattern}", lon)):
+            latitude = lat
+            longitude = lon
+            proceed = True
+        else:
+            response2 = requests.get(url2).json()
+            if response2:
+                latitude = str(response2["loc"].split(",")[0])
+                longitude = str(response2["loc"].split(",")[1])
+                proceed = True
+        # check if existing ip visitor already exists
+        if proceed and visitors_collection.count_documents(
+                {"ip": client_ip}, limit=1) == 0:
+            visitor = {
+                "ip": client_ip,
+                "username": username,
+                "city": response["city"],
+                "region": response["region"],
+                "country": response["country_name"],
+                "iso2": response["country_code"].lower(),
+                "iso3": response["country_code_iso3"].lower(),
+                "latitude": latitude,
+                "longitude": longitude,
+                "timezone": response["timezone"],
+                "utc_offset": response["utc_offset"],
+                "datetime": [datetimenow],
+                "visits": 1
+            }
+            visitors_collection.insert_one(visitor)
+        elif proceed:
+            # update username from guest to session user if logged in
+            user = visitors_collection.find_one({"ip": client_ip})["username"]
+            username = user if user != "guest" else username
+            # if existing visitor ip, then increment their view count
+            visitors_collection.update_one(
+                {"ip": client_ip},
+                {"$push": {"datetime": datetimenow},
+                    "$set": {"username": username},
+                    "$inc": {"visits": 1}})
 
     # render results on page and pass all data to template
     return render_template(
@@ -441,19 +521,24 @@ def desserts_edit(recipe_id, slugUrl):
             Your recipe has been updated successfully!"))
 
         # send me an email when a recipe gets updated (personal backup)
-        msg = MIMEMultipart()
-        msg["From"] = MY_ADDRESS
-        msg["To"] = SEND_TO
-        msg["Subject"] = "2BN-Desserts | Recipe Updated: " + slugUrl
-        formatEmail = "<br><br>".join(["%s: %s" % kv for kv in submit.items()])
-        msg.attach(MIMEText(str(formatEmail), "html"))  # must convert to str()
-        smtpserver = smtplib.SMTP("smtp.gmail.com", 587)  # access server
-        smtpserver.ehlo()  # identify ourselves to smtp gmail client
-        smtpserver.starttls()  # secure our email with tls encryption
-        smtpserver.ehlo()  # re-identify ourselves as an encrypted connection
-        smtpserver.login(MY_ADDRESS, PASSWORD)  # login to the server
-        smtpserver.send_message(msg)  # send the message
-        smtpserver.quit()  # quit the server
+        # msg = MIMEMultipart()
+        # msg["From"] = MY_ADDRESS
+        # msg["To"] = SEND_TO
+        # msg["Subject"] = "2BN-Desserts | Recipe Updated: " + slugUrl
+        # formatEmail = "<br><br>".join(["%s: %s" % kv for kv in submit.items()])
+        # msg.attach(MIMEText(str(formatEmail), "html"))  # must convert to str()
+        # smtpserver = smtplib.SMTP("smtp.gmail.com", 587)  # access server
+        # smtpserver.ehlo()  # identify ourselves to smtp gmail client
+        # smtpserver.starttls()  # secure our email with tls encryption
+        # smtpserver.ehlo()  # re-identify ourselves as an encrypted connection
+        # smtpserver.login(MY_ADDRESS, PASSWORD)  # login to the server
+        # smtpserver.send_message(msg)  # send the message
+        # smtpserver.quit()  # quit the server
+
+        # add recipe to admin's profile as back-up (in lieu of email)
+        users_collection.update_one(
+            {"username": "Admin"},
+            {"$push": {"edited_recipes": submit}})
 
         return redirect(url_for(
             "recipes.desserts_recipe",

@@ -16,12 +16,14 @@
     --pinkLight4: 248, 187, 208; /* #F8BBD0 */
     --pinkLight5: 252, 228, 236; /* #FCE4EC */
     --green: 76, 175, 80; /* #4CAF50 */
+    --blue: 33, 150, 243; /* #2196F3 */
     --black: 0, 0, 0; /* #000000 */
     --grey: 158, 158, 158; /* #9E9E9E */
     --greyDark3: 66, 66, 66; /* #424242 */
     --white: 255, 255, 255; /* #FFFFFF */
     --fontDefault: Verdana, Geneva, Tahoma, sans-serif, serif, cursive;
     --radius8px: 0.5em;
+    --txtShadow: 2px 2px 2px rgba(var(--black), 0.5);
 }
 
 
@@ -604,6 +606,22 @@ ul.collapsible {
 /*-------------------- Errors --------------------*/
 .error-img {
     width: 75vw;
+}
+
+
+/*-------------------- LeafletJS Map --------------------*/
+.leaflet-popup-tip-container {
+    display: none !important;
+}
+
+.leaflet-popup-content-wrapper,
+.leaflet-tooltip {
+    font-size: 1.25em !important;
+    border: 2px solid rgba(var(--white), 1) !important;
+    background-color: rgba(var(--black), 0.95) !important;
+    box-shadow: 0 0 0 5px rgba(var(--white), 0.25) !important;
+    color: rgba(var(--white), 1) !important;
+    text-shadow: var(--txtShadow) !important;
 }
 
 

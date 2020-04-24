@@ -16,7 +16,8 @@
         <div id="map"></div>
 
         <h4 class="text-shadow-2 font-special">
-            Unique ( <span class="blue-text bold">{{ visitors|count }}</span> ) - 
+            Unique ( <span class="blue-text bold">{{ visitors|count }}</span> ) -
+            <br class="show-on-small show-on-medium hide-on-large-only hide-on-extra-large-only">
             Total ( <span class="green-text bold">{{ total_views[0]["total"][0]["total"] }}</span> )
         </h4>
 
@@ -103,12 +104,15 @@
     let markerCluster = L.markerClusterGroup();
     {% for visitor in visitors %}
         // set each marker to the country flag (https://www.countryflags.io/)
+        iconUrl = "https://www.countryflags.io/{{ visitor.iso2 }}/{% if visitor.username != 'guest' %}flat/32{% else %}shiny/24{% endif %}.png";
+        iconAnchor = {% if visitor.username != 'guest' %}[16, 24]{% else %}[12, 18]{% endif %};
         flagIcon = new L.Icon({
-            iconUrl: "https://www.countryflags.io/{{ visitor.iso2 }}/shiny/32.png",
-            iconAnchor: [16, 24],
+            iconUrl: iconUrl,
+            iconAnchor: iconAnchor,
         });
         marker = L.marker([{{ visitor.latitude }}, {{ visitor.longitude }}], {icon: flagIcon})
-            .bindTooltip("IP: {{ visitor.ip }}<br>Username: {{ visitor.username }}<br>{{ visitor.city }}, {{ visitor.country }}<br>{{ visitor.datetime }}<br>Views: {{ visitor.visits }}");
+            {% if visitor.username != 'guest' %}.bindTooltip("{{ visitor.username }}"){% endif %}
+            .bindPopup("IP: {{ visitor.ip }}<br>Username: {{ visitor.username }}<br>{{ visitor.city }}, {{ visitor.country }}<br>Views: {{ visitor.visits }}<hr>{% for date in visitor.datetime %}<small>{{ date }}</small><br>{% endfor %}");
         markersArray.push(marker);  // push marker to markerArray
         markerCluster.addLayer(marker);  // add marker to markerCluster
     {% endfor %}
