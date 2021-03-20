@@ -9,7 +9,7 @@ flask-talisman==0.6.0
 Flask-WTF==0.14.2
 idna==2.9
 itsdangerous==1.1.0
-Jinja2==2.11.1
+Jinja2==2.11.3
 MarkupSafe==1.1.1
 pbr==5.2.1
 postgres==2.2.2
