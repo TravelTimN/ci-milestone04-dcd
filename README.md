@@ -1,6 +1,6 @@
 # [2BN-Desserts](https://desserts-2bn.herokuapp.com)
 
-<img src="https://github.com/TravelTimN/ci-milestone04-dcd/blob/master/app/wireframes/mockups.png?raw=true" alt="2BN-Desserts" width="800">
+![mockup](app/wireframes/mockups.png)
 
 Looking for something sweet? You've come to the right place! [2BN-Desserts](https://desserts-2bn.herokuapp.com) is a place to find tasty recipes that will satisfy any sweet tooth. Do you have recipes that you'd like to share as well? Great news! You can create your own free account and add an unlimited number of delicious desserts to share with the world! If you like some of the recipes that other's have submitted, you can save them to your favorites for easier access later. You can even print and share recipes directly from the site!
 
@@ -93,10 +93,10 @@ When it comes to dessert, I think of *sweet* and *sugary* treats, so this is why
 
 In keeping with the overall *sweet* theme, I have opted for a bright and colorful color scheme. These standard [Materialize Colors](https://materializecss.com/color.html) work quite well for my project.
 
-- ![#9C27B0](https://placehold.it/15/9C27B0/9C27B0) `#9C27B0` (**purple** - *primary color*)
-- ![#F06292](https://placehold.it/15/F06292/F06292) `#F06292` (**pink lighten-2** - *secondary color*)
-- ![#2196F3](https://placehold.it/15/2196F3/2196F3) `#2196F3` (**blue** - *tertiary color*)
-- ![#4CAF50](https://placehold.it/15/4CAF50/4CAF50) `#4CAF50` (**green** - *quaternary color*)
+- ![#9C27B0](https://via.placeholder.com/15/9C27B0/9C27B0) `#9C27B0` (**purple** - *primary color*)
+- ![#F06292](https://via.placeholder.com/15/F06292/F06292) `#F06292` (**pink lighten-2** - *secondary color*)
+- ![#2196F3](https://via.placeholder.com/15/2196F3/2196F3) `#2196F3` (**blue** - *tertiary color*)
+- ![#4CAF50](https://via.placeholder.com/15/4CAF50/4CAF50) `#4CAF50` (**green** - *quaternary color*)
 
 #### Icons
 
@@ -123,7 +123,7 @@ For my wireframes, I have used [Balsamiq Wireframes](https://balsamiq.com/) for 
 - Code Institute have provided all students with free access until the end of ~~2019~~ 2020.
 - The simplicity and ease of use. I actually found Balsamiq much easier and quicker to use than my former preferred wireframe program, Adobe XD.
 
-All of my wireframes for this project can be found [here](https://github.com/TravelTimN/ci-milestone04-dcd/tree/master/app/wireframes) in the *wireframes* sub-directory.
+All of my wireframes for this project can be found [here](app/wireframes/) in the *wireframes* sub-directory.
 
 ##### back to [top](#table-of-contents)
 
@@ -381,9 +381,9 @@ To ensure a broad range of users can successfully use this site, I tested it acr
 - Opera *v.56*
 - Internet Explorer *v.11*
 
-For testing compatibility, I created a testing matrix to test across multiple devices and browsers. The test matrix can be found [here](https://github.com/TravelTimN/ci-milestone04-dcd/blob/master/app/testing/test-matrix.png). A brief overview:
+For testing compatibility, I created a testing matrix to test across multiple devices and browsers. The test matrix can be found [here](app/testing/test-matrix.png). A brief overview:
 
-<img src="https://github.com/TravelTimN/ci-milestone04-dcd/blob/master/app/testing/test-matrix.png?raw=true" alt="Test Matrix" width="800">
+![testing-matrix](app/testing/test-matrix.png)
 
 ### Known Issues
 
@@ -415,11 +415,11 @@ Next, there's a series of steps to take in order to proceed with local deploymen
     - `git clone https://github.com/TravelTimN/ci-milestone04-dcd.git`.
 - Navigate to the correct file location after unpacking the files.
     - `cd <path to folder>`
-- Create a `.env` file with your credentials. An example can be found [here](https://github.com/TravelTimN/ci-milestone04-dcd/blob/master/.env_sample). Be sure to include your *MONGO_URI* and *SECRET_KEY* values.
+- Create a `.env` file with your credentials. An example can be found [here](.env_sample). Be sure to include your *MONGO_URI* and *SECRET_KEY* values.
 - Create a `.flaskenv` file and add the following entries:
     - `FLASK_APP=run.py`
     - `FLASK_ENV=development`
-- Install all requirements from the [requirements.txt](https://github.com/TravelTimN/ci-milestone04-dcd/blob/master/requirements.txt) file using this command:
+- Install all requirements from the [requirements.txt](requirements.txt) file using this command:
     - `sudo -H pip3 -r requirements.txt`
 - Sign up for a free account on [MongoDB](https://www.mongodb.com) and create a new Database called **2BN-Desserts**. The *Collections* in that database should be as follows:
 
@@ -482,14 +482,14 @@ user_favs: <array>
 
 ### Remote Deployment
 
-This site is currently deployed on [Heroku](https://www.heroku.com/) using the **master** branch on GitHub. To implement this project on Heroku, the following steps were taken:
+This site is currently deployed on [Heroku](https://www.heroku.com/) using the **main** branch on GitHub. To implement this project on Heroku, the following steps were taken:
 
 1. Create a **requirements.txt** file so Heroku can install the required dependencies to run the app.
     - `sudo pip3 freeze --local > requirements.txt`
-    - My file can be found [here](https://github.com/TravelTimN/ci-milestone04-dcd/blob/master/requirements.txt).
+    - My file can be found [here](requirements.txt).
 2. Create a **Procfile** to tell Heroku what type of application is being deployed, and how to run it.
     - `echo web: python run.py > Procfile`
-    - My file can be found [here](https://github.com/TravelTimN/ci-milestone04-dcd/blob/master/Procfile).
+    - My file can be found [here](Procfile).
 3. Sign up for a free Heroku account, create your project app, and click the **Deploy** tab, at which point you can *Connect GitHub* as the Deployment Method, and select *Enable Automatic Deployment*.
 4. In the Heroku **Settings** tab, click on the *Reveal Config Vars* button to configure environmental variables as follows:
     - **IP** : `0.0.0.0`
