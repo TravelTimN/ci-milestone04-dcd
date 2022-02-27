@@ -45,9 +45,9 @@
                 {% for country in visitors|groupby("country") %}
                 <tr>
                     <!-- get country and flag -->
-                    <td>
+                    <td class="valign-wrapper">
                         {% for flag in country.list|groupby("iso2") %}
-                            <img src="https://www.countryflags.io/{{ flag.grouper }}/shiny/32.png" alt="{{ flag.grouper }}" class="flag-icon">
+                            <img src="https://assets.2bn.dev/flags/sm/{{ flag.grouper }}.png" alt="{{ flag.grouper }}" class="flag-icon">
                         {% endfor %}
                         {{ country.grouper }}
                     </td>
@@ -104,7 +104,7 @@
     let markerCluster = L.markerClusterGroup();
     {% for visitor in visitors %}
         // set each marker to the country flag (https://www.countryflags.io/)
-        iconUrl = "https://www.countryflags.io/{{ visitor.iso2 }}/{% if visitor.username != 'guest' %}flat/32{% else %}shiny/24{% endif %}.png";
+        iconUrl = "https://assets.2bn.dev/flags/sm/{{ visitor.iso2 }}.png";
         iconAnchor = {% if visitor.username != 'guest' %}[16, 24]{% else %}[12, 18]{% endif %};
         flagIcon = new L.Icon({
             iconUrl: iconUrl,
