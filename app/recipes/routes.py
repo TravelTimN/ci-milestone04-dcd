@@ -363,10 +363,11 @@ def desserts():
                 {"$push": {"datetime": datetimenow},
                     "$set": {"username": username},
                     "$inc": {"visits": 1}})
-            users_collection.update_one(
-                {"username_lower": session["user"].lower()},
-                {"$set": {"country": iso2}}
-            )
+            if "user" in session:
+                users_collection.update_one(
+                    {"username_lower": session["user"].lower()},
+                    {"$set": {"country": iso2}}
+                )
 
     # render results on page and pass all data to template
     return render_template(
