@@ -2,6 +2,8 @@
 import copy
 import random
 import re
+from datetime import datetime
+from functools import wraps
 from flask import (
     Blueprint, render_template, redirect,
     request, url_for, flash, session, Markup)
@@ -16,6 +18,40 @@ from copy import deepcopy
 #    Flask Blueprint    #
 # --------------------- #
 users = Blueprint("users", __name__)
+
+
+# ---------------- #
+#    DECORATORS    #
+# ---------------- #
+
+# @login_required decorator
+# https://flask.palletsprojects.com/en/2.0.x/patterns/viewdecorators/#login-required-decorator
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        # no "user" in session
+        if "user" not in session:
+            flash(Markup(
+                f"<i class='fas fa-user-times red-text'></i>\
+                You must log in to view this page"))
+            return redirect(url_for("users.login"))
+        # user is in session
+        return f(*args, **kwargs)
+    return decorated_function
+
+
+def admin_only(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        # session "user" must be admin
+        if session["user"].lower() != "admin":
+            flash(Markup(
+                f"<i class='fas fa-user-times red-text'></i>\
+                You must be an Admin User to view this page"))
+            return redirect(url_for("main.home"))
+        # user is admin
+        return f(*args, **kwargs)
+    return decorated_function
 
 
 # ---------------- #
@@ -100,7 +136,9 @@ def register():
                 request.form.get("new_password")),
             "user_avatar": user_avatar,
             "user_recipes": [],
-            "user_favs": []
+            "user_favs": [],
+            "last_visit": datetime.now().strftime("%d %b %Y (@%H:%M)"),
+            "country": "",
         }
         users_collection.insert_one(register)
         # put the user in 'session'
@@ -127,6 +165,14 @@ def login():
                     existing_user["user_password"], request.form.get(
                     "password")):
                 session["user"] = request.form.get("username").lower()
+                users_collection.update_one(
+                    {"username_lower": session["user"].lower()},
+                    {"$set": {
+                        "last_visit": datetime.now().strftime(
+                            "%d %b %Y (@%H:%M)")
+                        }
+                    }
+                )
                 return redirect(
                     url_for("users.profile", username=session["user"]))
             else:
@@ -151,6 +197,7 @@ def login():
 
 # ----- PROFILE ----- #
 @users.route("/profile/<username>", methods=["GET", "POST"])
+@login_required
 def profile(username):
     """
     User Profile Page.
@@ -202,6 +249,7 @@ def profile(username):
 
 # ----- CHANGE PASSWORD ----- #
 @users.route("/profile/<username>/edit", methods=["GET", "POST"])
+@login_required
 def profile_change_password(username):
     """
     Update user hashed password.
@@ -232,6 +280,7 @@ def profile_change_password(username):
 
 # ----- DELETE ACCOUNT ----- #
 @users.route("/profile/<username>/delete", methods=["GET", "POST"])
+@login_required
 def profile_delete_account(username):
     """
     Delete entire user account if desired.
@@ -272,6 +321,8 @@ def profile_delete_account(username):
 
 # ----- ADMIN DELETE USERS ----- #
 @users.route("/admin/<username>/delete", methods=["GET", "POST"])
+@login_required
+@admin_only
 def admin_delete_user(username):
     """
     ADMIN: Delete users if necessary.
@@ -302,6 +353,7 @@ def admin_delete_user(username):
 
 # ----- LOGOUT ----- #
 @users.route("/logout")
+@login_required
 def logout():
     """ Remove the user from 'Session' cookies with session.pop(). """
     username = get_user_lower(session["user"])["username"]
