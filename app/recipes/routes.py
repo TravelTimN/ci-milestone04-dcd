@@ -280,7 +280,7 @@ def desserts():
         url2 = "https://ipinfo.io/" + client_ip + "/json"
         response = requests.get(url).json()
 
-    if response:
+    if not response["error"]:
         datetimenow = datetime.now().strftime("%d %B, %Y @ %H:%M")
         pattern = "^\-?[0-9]*\.?[0-9]*$"
         lat = str(response["latitude"])
