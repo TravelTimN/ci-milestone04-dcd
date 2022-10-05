@@ -29,44 +29,56 @@
         <div class="divider blue"></div>
         <div class="divider purple"></div>
         <div class="divider pink"></div>
+        <br>
 
-        <!-- create table of stats -->
+        <a class="waves-effect waves-red btn btn-large bold purple text-shadow-2 modal-trigger"
+            href="#modal-countries">
+            <i class="fas fa-globe-europe material-icons left" aria-hidden="true"></i>
+            Countries
+        </a>
+        <br>
 
-        <table id="visitors-table" class="striped bold font-special center-align">
-            <thead class="upper">
-                <tr>
-                    <th>Country</th>
-                    <th>Unique Visitors</th>
-                    <th>Total Visits</th>
-                </tr>
-            </thead>
+        <div id="modal-countries" class="modal bottom-sheet grey lighten-2">
+            <div class="modal-content">
+                <!-- create table of stats -->
+                <table id="visitors-table" class="striped bold font-special center-align">
+                    <thead class="upper">
+                        <tr>
+                            <th>Country</th>
+                            <th>Unique Visitors</th>
+                            <th>Total Visits</th>
+                        </tr>
+                    </thead>
 
-            <tbody>
-                {% for country in visitors|groupby("country") %}
-                <tr>
-                    <!-- get country and flag -->
-                    <td class="valign-wrapper">
-                        {% for flag in country.list|groupby("iso2") %}
-                            <img src="https://assets.2bn.dev/flags/sm/{{ flag.grouper }}.png" alt="{{ flag.grouper }}" class="flag-icon">
-                        {% endfor %}
-                        {{ country.grouper }}
-                    </td>
+                    <tbody>
+                        {% for country in visitors|groupby("country") %}
+                        <tr>
+                            <!-- get country and flag -->
+                            <td class="valign-wrapper">
+                                {% for flag in country.list|groupby("iso2") %}
+                                <img src="https://assets.2bn.dev/flags/sm/{{ flag.grouper }}.png"
+                                    alt="{{ flag.grouper }}" class="flag-icon">
+                                {% endfor %}
+                                {{ country.grouper }}
+                            </td>
 
-                    <!-- get total unique visitors by country -->
-                    <td class="blue-text">{{ country.list|count }}</td>
+                            <!-- get total unique visitors by country -->
+                            <td class="blue-text">{{ country.list|count }}</td>
 
-                    <!-- get total visits by country -->
-                    <td class="green-text">
-                        {% for country_views in total_views[0]["countries"] %}
-                            {% if country.grouper == country_views["_id"] %}
+                            <!-- get total visits by country -->
+                            <td class="green-text">
+                                {% for country_views in total_views[0]["countries"] %}
+                                {% if country.grouper == country_views["_id"] %}
                                 {{ country_views["total"] }}
-                            {% endif %}
+                                {% endif %}
+                                {% endfor %}
+                            </td>
+                        </tr>
                         {% endfor %}
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
         <br>
         <div class="divider pink lighten-2"></div>
@@ -103,7 +115,7 @@
     let markersArray = [];
     let markerCluster = L.markerClusterGroup();
     {% for visitor in visitors %}
-        // set each marker to the country flag (https://www.countryflags.io/)
+        // set each marker to the country flag
         iconUrl = "https://assets.2bn.dev/flags/sm/{{ visitor.iso2 }}.png";
         iconAnchor = {% if visitor.username != 'guest' %}[16, 24]{% else %}[12, 18]{% endif %};
         flagIcon = new L.Icon({
@@ -112,7 +124,7 @@
         });
         marker = L.marker([{{ visitor.latitude }}, {{ visitor.longitude }}], {icon: flagIcon})
             {% if visitor.username != 'guest' %}.bindTooltip("{{ visitor.username }}"){% endif %}
-            .bindPopup("IP: {{ visitor.ip }}<br>Username: {{ visitor.username }}<br>{{ visitor.city }}, {{ visitor.country }}<br>Views: {{ visitor.visits }}<hr>{% for date in visitor.datetime %}<small>{{ date }}</small><br>{% endfor %}");
+            .bindPopup("<small>IP: {{ visitor.ip }}</small><br>Username: {{ visitor.username }}<br>{{ visitor.city }}, {{ visitor.country }}<br>Total Visits: {{ visitor.visits }}<hr><small>Most Recent:<br>{{ visitor.datetime|last }}</small>");
         markersArray.push(marker);  // push marker to markerArray
         markerCluster.addLayer(marker);  // add marker to markerCluster
     {% endfor %}
