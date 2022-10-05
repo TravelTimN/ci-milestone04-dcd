@@ -5,6 +5,7 @@ import os
 import re
 import requests
 from datetime import datetime
+from functools import wraps
 from bson.objectid import ObjectId
 from flask import (
     Blueprint, render_template, redirect,
@@ -28,6 +29,26 @@ from app.utils import (
 # PASSWORD = os.getenv("PASSWORD")
 
 
+# ---------------- #
+#    DECORATORS    #
+# ---------------- #
+
+# @login_required decorator
+# https://flask.palletsprojects.com/en/2.0.x/patterns/viewdecorators/#login-required-decorator
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        # no "user" in session
+        if "user" not in session:
+            flash(Markup(
+                f"<i class='fas fa-user-times red-text'></i>\
+                You must log in to view this page"))
+            return redirect(url_for("users.login"))
+        # user is in session
+        return f(*args, **kwargs)
+    return decorated_function
+
+
 # --------------------- #
 #    Flask Blueprint    #
 # --------------------- #
@@ -44,6 +65,7 @@ recipes = Blueprint("recipes", __name__)
 
 # ----- CREATE ----- #
 @recipes.route("/desserts/new", methods=["GET", "POST"])
+@login_required
 def desserts_new():
     """
     Create recipe for database.
@@ -271,16 +293,28 @@ def desserts():
     if os.environ.get("DEVELOPMENT"):
         # local development
         url = "https://ipapi.co/json/"
-        response = requests.get(url).json()
-        client_ip = response["ip"]
+        try:
+            response = requests.get(url).json()
+            if "error" not in response:
+                client_ip = response["ip"]
+            else:
+                print(f"local error response: {response}")
+        except requests.exceptions.RequestException as e:
+            print(f"local error: {e}")
     else:
-        # live server on Heroku
-        client_ip = request.access_route[-1]
-        url = "https://ipapi.co/" + client_ip + "/json/"
-        url2 = "https://ipinfo.io/" + client_ip + "/json"
-        response = requests.get(url).json()
+        # production server on Heroku
+        try:
+            IPAPI_KEY = os.getenv("IPAPI")
+            client_ip = request.access_route[-1]
+            url = f"https://ipapi.co/{client_ip}/json/?key={IPAPI_KEY}"
+            url2 = f"https://ipinfo.io/{client_ip}/json"
+            response = requests.get(url).json()
+            if "error" in response:
+                print(f"production error response: {response}")
+        except requests.exceptions.RequestException as e:
+            print(f"production error: {e}")
 
-    if not response["error"]:
+    if response and "error" not in response:
         datetimenow = datetime.now().strftime("%d %B, %Y @ %H:%M")
         pattern = "^\-?[0-9]*\.?[0-9]*$"
         lat = str(response["latitude"])
@@ -293,10 +327,17 @@ def desserts():
             proceed = True
         else:
             response2 = requests.get(url2).json()
-            if response2:
+            if "error" not in response2:
                 latitude = str(response2["loc"].split(",")[0])
                 longitude = str(response2["loc"].split(",")[1])
                 proceed = True
+
+        if "country_name" in response:
+            country = response["country_name"]  # full name
+        else:
+            country = response["country"]  # iso2
+        iso2 = response["country"].lower()
+
         # check if existing ip visitor already exists
         if proceed and visitors_collection.count_documents(
                 {"ip": client_ip}, limit=1) == 0:
@@ -304,14 +345,10 @@ def desserts():
                 "ip": client_ip,
                 "username": username,
                 "city": response["city"],
-                "region": response["region"],
-                "country": response["country_name"],
-                "iso2": response["country_code"].lower(),
-                "iso3": response["country_code_iso3"].lower(),
+                "country": country,
+                "iso2": iso2,
                 "latitude": latitude,
                 "longitude": longitude,
-                "timezone": response["timezone"],
-                "utc_offset": response["utc_offset"],
                 "datetime": [datetimenow],
                 "visits": 1
             }
@@ -326,6 +363,10 @@ def desserts():
                 {"$push": {"datetime": datetimenow},
                     "$set": {"username": username},
                     "$inc": {"visits": 1}})
+            users_collection.update_one(
+                {"username_lower": session["user"].lower()},
+                {"$set": {"country": iso2}}
+            )
 
     # render results on page and pass all data to template
     return render_template(
@@ -442,6 +483,7 @@ def desserts_recipe(recipe_id, slugUrl):
 
 # ----- UPDATE ----- #
 @recipes.route("/desserts/<recipe_id>/<slugUrl>/edit", methods=["GET", "POST"])
+@login_required
 def desserts_edit(recipe_id, slugUrl):
     """
     Update recipe in database.
@@ -548,6 +590,7 @@ def desserts_edit(recipe_id, slugUrl):
 
 # ----- DELETE ----- #
 @recipes.route("/desserts/<recipe_id>/<slugUrl>/delete")
+@login_required
 def desserts_delete(recipe_id, slugUrl):
     """
     Delete recipe from database.
@@ -584,6 +627,7 @@ def desserts_delete(recipe_id, slugUrl):
 
 # ----- ADD FAVORITE ----- #
 @recipes.route("/desserts/<recipe_id>/<slugUrl>/add_favorite")
+@login_required
 def desserts_add_favorite(recipe_id, slugUrl):
     """
     Add recipe to user favorites, increase number of favorites by +1,
@@ -603,6 +647,7 @@ def desserts_add_favorite(recipe_id, slugUrl):
 
 # ----- DELETE FAVORITE ----- #
 @recipes.route("/desserts/<recipe_id>/<slugUrl>/delete_favorite")
+@login_required
 def desserts_delete_favorite(recipe_id, slugUrl):
     """
     Remove recipe from user favorites, decrease number of favorites
