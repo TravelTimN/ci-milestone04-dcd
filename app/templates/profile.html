@@ -61,6 +61,7 @@
 
 
 <!-- user recipes modal -->
+{% if session.user %}
 <div id="modal-user-recipes" class="modal bottom-sheet blue lighten-5">
     <div class="modal-content">
         <h4 class="bold blue-text text-shadow-1 font-rye center-align">{{ username }}'s Recipes</h4>
@@ -97,10 +98,11 @@
         </ul>
     </div>
 </div>
-
+{% endif %}
 
 
 <!-- user favorites modal -->
+{% if session.user %}
 <div id="modal-user-favorites" class="modal bottom-sheet pink lighten-5">
     <div class="modal-content">
         <h4 class="bold pink-text text-lighten-2 text-shadow-1 font-rye center-align">
@@ -141,10 +143,11 @@
         </ul>
     </div>
 </div>
-
+{% endif %}
 
 
 <!-- change password modal -->
+{% if session.user %}
 <div id="modal-change-password" class="modal bottom-sheet green lighten-5">
     <div class="modal-content collection white card">
         <h4 class="bold green-text text-shadow-1 font-rye center-align">Change Password</h4>
@@ -182,10 +185,11 @@
         </form>
     </div>
 </div>
-
+{% endif %}
 
 
 <!-- delete account modal -->
+{% if session.user %}
 <div id="modal-delete-account" class="modal bottom-sheet red lighten-5">
     <div class="modal-content collection white card center-align">
         <h4 class="bold red-text text-shadow-1 font-rye">Delete Account</h4>
@@ -214,7 +218,7 @@
         </form>
     </div>
 </div>
-
+{% endif %}
 
 
 <!-- admin modal -->
@@ -224,48 +228,52 @@
         <h4 class="bold black-text text-shadow-1 font-rye center-align">All Users</h4>
         <ul class="collection">
             {% for admin_list, date_joined in zip_data %}
-            <!-- exclude the admin account! -->
-            {% if admin_list.username_lower != "admin"|lower %}
-            <li class="collection-item avatar">
-                <span class="title font-special bold black-text">
-                    <span class="purple-text">{{ admin_list.username }}</span>
-                    <h6>
-                        recipes: <span class="red-text bold">{{ admin_list.user_recipes|length }}</span> |
-                        favorites: <span class="red-text bold">{{ admin_list.user_favs|length }}</span> |
-                        joined: <span class="red-text bold">{{ date_joined }}</span>
-                    </h6>
-                </span>
-                <!-- delete specific user and their recipes -->
-                {% set user_modal = "#modal-admin-delete-user " + admin_list.username %}
-                <!-- setting the modal id to be: #modal-name + loop-index-variable -->
-                <a href="{{ user_modal }}" class="modal-trigger">
-                    <i class="fas fa-user-times material-icons black-text text-shadow-1 secondary-content tooltipped"
-                        data-position="left" data-tooltip="Delete User Account" aria-hidden="true"></i>
-                </a>
-                <!-- nested modal within bottom-sheet modal -->
-                <!-- |replace # from user_modal with nothing, so proper modal-id is called -->
-                <div id="{{ user_modal|replace('#', '') }}" class="modal">
-                    {% set extracted_user = user_modal|replace('#modal-admin-delete-user ', '') %}
-                    <div class="modal-content">
-                        <h4 class="red-text bold upper">Confirm Deletion of<br>
-                            <span class="purple-text font-special bold">{{ extracted_user }}</span>
-                        </h4>
-                        <h5 class="bold">Are you sure you want to delete this user?</h5>
-                        <p class="grey-text bold">This action cannot be undone.</p>
-                    </div>
-                    <div class="modal-footer center-align">
-                        <a class="waves-effect waves-purple red btn text-shadow-2 upper"
-                            href="{{ url_for('users.admin_delete_user', username=extracted_user) }}">
-                            <i class="far fa-trash-alt material-icons right" aria-hidden="true"></i>Yes
+                <!-- exclude the admin account! -->
+                {% if admin_list.username_lower != "admin"|lower %}
+                    <li class="collection-item avatar">
+                        <span class="title font-special bold black-text">
+                            <span class="purple-text">{{ admin_list.username }}</span>
+                            {% if admin_list.country %}
+                                <img src="https://assets.2bn.dev/flags/sm/{{ admin_list.country }}.png" alt="{{ admin_list.country }}" class="responsive-img">
+                            {% endif %}
+                            <h6>
+                                recipes: <span class="red-text bold">{{ admin_list.user_recipes|length }}</span> |
+                                favorites: <span class="red-text bold">{{ admin_list.user_favs|length }}</span> |
+                                joined: <span class="red-text bold">{{ date_joined }}</span> |
+                                last visit: <span class="red-text bold">{{ admin_list.last_visit }}</span>
+                            </h6>
+                        </span>
+                        <!-- delete specific user and their recipes -->
+                        {% set user_modal = "#modal-admin-delete-user-" + admin_list.username %}
+                        <!-- setting the modal id to be: #modal-name + loop-index-variable -->
+                        <a href="{{ user_modal }}" class="modal-trigger">
+                            <i class="fas fa-user-times material-icons black-text text-shadow-1 secondary-content tooltipped"
+                                data-position="left" data-tooltip="Delete User Account" aria-hidden="true"></i>
                         </a>
-                        <a class="modal-close waves-effect waves-yellow green btn text-shadow-2 upper">
-                            <i class="fas fa-reply material-icons right" aria-hidden="true"></i>No
-                        </a>
-                    </div>
-                </div>
-                <!-- end of nested modal -->
-            </li>
-            {% endif %}
+                        <!-- nested modal within bottom-sheet modal -->
+                        <!-- |replace # from user_modal with nothing, so proper modal-id is called -->
+                        <div id="{{ user_modal|replace('#', '') }}" class="modal">
+                            {% set extracted_user = user_modal|replace('#modal-admin-delete-user-', '') %}
+                            <div class="modal-content">
+                                <h4 class="red-text bold upper">Confirm Deletion of<br>
+                                    <span class="purple-text font-special bold">{{ extracted_user }}</span>
+                                </h4>
+                                <h5 class="bold">Are you sure you want to delete this user?</h5>
+                                <p class="grey-text bold">This action cannot be undone.</p>
+                            </div>
+                            <div class="modal-footer center-align">
+                                <a class="waves-effect waves-purple red btn text-shadow-2 upper"
+                                    href="{{ url_for('users.admin_delete_user', username=extracted_user) }}">
+                                    <i class="far fa-trash-alt material-icons right" aria-hidden="true"></i>Yes
+                                </a>
+                                <a class="modal-close waves-effect waves-yellow green btn text-shadow-2 upper">
+                                    <i class="fas fa-reply material-icons right" aria-hidden="true"></i>No
+                                </a>
+                            </div>
+                        </div>
+                        <!-- end of nested modal -->
+                    </li>
+                {% endif %}
             {% endfor %}
         </ul>
     </div>
