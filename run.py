@@ -17,8 +17,8 @@ def desserts_total():
 
 # execute app__init__.py
 if __name__ == "__main__":
-        app.run(
-            host=os.getenv("IP"),
-            port=os.getenv("PORT"),
-            debug=os.getenv("DEBUG", False)
-        )
+    app.run(
+        host=os.getenv("IP"),
+        port=os.getenv("PORT"),
+        debug=os.getenv("DEBUG", False)
+    )
