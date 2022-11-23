@@ -1,8 +1,8 @@
-# [2BN-Desserts](https://desserts-2bn.herokuapp.com)
+# [2BN-Desserts](https://tim-ms4.2bn.dev)
 
 ![mockup](app/wireframes/mockups.png)
 
-Looking for something sweet? You've come to the right place! [2BN-Desserts](https://desserts-2bn.herokuapp.com) is a place to find tasty recipes that will satisfy any sweet tooth. Do you have recipes that you'd like to share as well? Great news! You can create your own free account and add an unlimited number of delicious desserts to share with the world! If you like some of the recipes that other's have submitted, you can save them to your favorites for easier access later. You can even print and share recipes directly from the site!
+Looking for something sweet? You've come to the right place! [2BN-Desserts](https://tim-ms4.2bn.dev) is a place to find tasty recipes that will satisfy any sweet tooth. Do you have recipes that you'd like to share as well? Great news! You can create your own free account and add an unlimited number of delicious desserts to share with the world! If you like some of the recipes that other's have submitted, you can save them to your favorites for easier access later. You can even print and share recipes directly from the site!
 
 ---
 
