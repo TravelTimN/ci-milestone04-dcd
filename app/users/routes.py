@@ -216,7 +216,11 @@ def profile(username):
         .sort([("recipe_name", 1)])
     # get the user's avatar
     user_avatar = get_user_lower(session["user"])["user_avatar"]
-    # ADMIN-only: get list of all database users and visitors
+
+    # -----------------
+    # start: ADMIN-ONLY
+    # -----------------
+    # get list of all database users and visitors
     admin_list = users_collection.find().sort([("_id", 1)])
     date_joined = [user["_id"].generation_time.date().strftime(
         "%d %b %Y") for user in deepcopy(admin_list)]
@@ -233,7 +237,9 @@ def profile(username):
             ]
         }}
     ]))
-    # end ADMIN-ONLY section
+    # -----------------
+    # end: ADMIN-ONLY
+    # -----------------
     return render_template(
         "profile.html",
         username=username,

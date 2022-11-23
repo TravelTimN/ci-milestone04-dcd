@@ -36,6 +36,11 @@
             <i class="fas fa-globe-europe material-icons left" aria-hidden="true"></i>
             Countries
         </a>
+        <a class="waves-effect waves-purple btn btn-large bold pink text-shadow-2 modal-trigger"
+            href="#modal-visitors">
+            <i class="fas fa-globe-europe material-icons left" aria-hidden="true"></i>
+            Visitors
+        </a>
         <br>
 
         <div id="modal-countries" class="modal bottom-sheet grey lighten-2">
@@ -46,7 +51,7 @@
                         <tr>
                             <th>Country</th>
                             <th>Unique Visitors</th>
-                            <th>Total Visits</th>
+                            <th>Total Visits ({{ visitors|count }})</th>
                         </tr>
                     </thead>
 
@@ -72,6 +77,42 @@
                                 {{ country_views["total"] }}
                                 {% endif %}
                                 {% endfor %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="modal-visitors" class="modal bottom-sheet grey lighten-2">
+            <div class="modal-content">
+                <!-- create table of visitor stats -->
+                <table id="all-visitors-table" class="striped bold font-special center-align">
+                    <thead class="upper">
+                        <tr>
+                            <th>Date</th>
+                            <th>Total Visits ({{ visitors|count }})</th>
+                            <th>Username</th>
+                            <th>Country</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for visit in visitors|reverse %}
+                        <tr>
+                            <!-- get total unique visitors by country -->
+                            <td class="blue-text">{{ visit.datetime|last }}</td>
+
+                            <td class="green-text">{{ visit.visits }}</td>
+
+                            <td class="{% if visit.username != 'guest' %}purple-text{% endif %}">{{ visit.username }}</td>
+
+                            <!-- get country and flag -->
+                            <td class="valign-wrapper">
+                                <img src="https://assets.2bn.dev/flags/sm/{{ visit.iso2 }}.png"
+                                    alt="{{ visit.iso2 }}" class="flag-icon">
+                                {{ visit.country }}
                             </td>
                         </tr>
                         {% endfor %}
