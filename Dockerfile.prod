@@ -1,0 +1,58 @@
+###########
+# BUILDER #
+###########
+
+# pull official base image
+FROM python:3.9.6-alpine as builder
+
+# set work directory
+WORKDIR /usr/src/tim-ms4
+
+# set environment variables
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+# install psycopg2 dependencies
+RUN apk update && apk add libffi-dev libc-dev gcc python3-dev musl-dev linux-headers curl-dev
+
+# install dependencies
+COPY ./requirements.txt .
+RUN pip wheel --no-cache-dir --no-deps --wheel-dir /usr/src/tim-ms4/wheels -r requirements.txt
+
+
+#########
+# FINAL #
+#########
+
+# pull official base image
+FROM python:3.9.6-alpine
+
+# create directory for the app user
+RUN mkdir -p /home/tim-ms4
+
+# create the app user
+RUN addgroup -S tim-ms4 && adduser -S tim-ms4 -G tim-ms4
+
+# create the appropriate directories
+ENV HOME=/home/tim-ms4
+ENV APP_HOME=/home/tim-ms4/web
+RUN mkdir $APP_HOME
+WORKDIR $APP_HOME
+
+# install dependencies
+RUN apk update && apk add libpq
+COPY --from=builder /usr/src/tim-ms4/wheels /wheels
+COPY --from=builder /usr/src/tim-ms4/requirements.txt .
+RUN pip install --no-cache /wheels/*
+
+# copy project
+COPY . $APP_HOME
+
+# chown all the files to the app user
+RUN chown -R tim-ms4:tim-ms4 $APP_HOME
+
+# change to the app user
+USER tim-ms4
+
+# run Flask
+CMD [ "python3", "-m" , "flask", "run", "--host=0.0.0.0"]
