@@ -16,4 +16,4 @@ requests==2.27.1
 six==1.16.0
 text-unidecode==1.2
 urllib3==1.26.12
-Werkzeug==2.0.3
+Werkzeug==2.2.3
